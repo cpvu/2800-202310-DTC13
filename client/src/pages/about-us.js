@@ -3,5 +3,5 @@ export function AboutUs() {
   function handleClick() {
     return; 
   }
-  return <h1>About-Us</h1>;
+  return <h1>Crytoment AI - About us</h1>;
 }
