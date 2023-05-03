@@ -3,9 +3,10 @@ export function AboutUs() {
   function handleClick() {
     return; 
   }
-  return (
-  <div>
-    <h1>Crytoment AI - About us</h1>
-  </div>
-  )
+  return 
+  <>
+   <h1>Crytoment AI - About us</h1>
+   <p>Hello world</p>
+  </>
+ 
 }
