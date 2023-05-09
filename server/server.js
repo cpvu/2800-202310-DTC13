@@ -1,45 +1,52 @@
 import bodyParser from "body-parser";
 import express from "express";
-import { apiRouter } from "./routes/api.router";
+import cors from "cors";
+import { apiRouter } from "./routes/api.router.js";
 import * as dotenv from "dotenv";
 import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
-import sessions from "express-sessions";
+import session from "express-session";
 
 dotenv.config();
 
-export const expressServer = () => {
-    const app = express();
-
+export let expressServer = () => {
     try {
-        mongoose.connect(process.env, {
+        mongoose.connect(process.env.MONGO_URL, {
             dbName: "CryptomentAI",
-            keepAlive: true
+            useUnifiedTopology: true, // Added option for unified topology
+            useNewUrlParser: true, // Added option for new URL parser
         });
+        
+        console.log("Mongoose connected")
 
-        app.use(json());
+        const app = express();
+
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json());
-        app.use(cors());
+        app.use(cors()); 
 
-        app.use(sessions({
-            saveUninitialized: true,
-            authenticated: Boolean,
-            username: String,
-            cookie: { maxAge: 0 },
-            resave: false,
-            store: MongoStore.create({
+        app.use(
+            session({
+              secret: "secret",
+              saveUninitialized: true,
+              authenticated: Boolean,
+              username: String,
+              cookie: { maxAge: 0 },
+              resave: false,
+              store: MongoStore.create({
                 mongoUrl: process.env.MONGO_URL,
-            }),
-        })
-        );
-
-        //add root routes here and router
+              }),
+            })
+          );
         app.use("/api", apiRouter());
 
         return app;
+   
+        } catch (e) {
+            console.log(e)
+        }
+  
 
-    } catch (err) {
-        console.log(err);
-    }
+        //add root routes here and router
+
 }
