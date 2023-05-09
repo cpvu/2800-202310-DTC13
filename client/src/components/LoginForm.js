@@ -16,9 +16,12 @@ import {
 export default function LoginForm() {
   return (
     <Flex
-      minH={"100vh"}
+      minH={"90%"}
+      py={{ base: "5", md: "auto" }}
+      minW={"100vw"}
       align={"center"}
       justify={"center"}
+      flex={"1"}
       bg={useColorModeValue("gray.50", "gray.800")}
     >
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
