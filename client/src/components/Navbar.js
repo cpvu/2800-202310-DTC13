@@ -18,6 +18,7 @@ export const Navbar = () => {
       py={{ sm: "1", base: "2", lg: "5" }}
       bg={useColorModeValue("gray.300", "gray.500")}
       minW={"100vw"}
+      minH={"10%"}
     >
       <HStack spacing="11" justify="space-between">
         <Flex justify="space-between" flex="1">
@@ -25,7 +26,7 @@ export const Navbar = () => {
             variant="link"
             spacing="10"
             justifyContent={"center"}
-            py={{ base: "6", lg: "0" }}
+            py={{ base: "5", lg: "0" }}
           >
             {["Watchlist", "Search", "FAQ", "Settings"].map((item) => (
               <Button key={item}>{item}</Button>
