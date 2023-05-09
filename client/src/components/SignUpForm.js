@@ -4,16 +4,22 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
+  InputGroup,
+  HStack,
+  InputRightElement,
   Stack,
-  Link,
   Button,
   Heading,
   Text,
   useColorModeValue,
+  Link,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
-export function SignUpForm() {
+export default function SignUpForm() {
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <Flex
       minH={"100vh"}
@@ -23,9 +29,11 @@ export function SignUpForm() {
     >
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>Sign in to your account</Heading>
+          <Heading fontSize={"4xl"} textAlign={"center"}>
+            Sign up
+          </Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool <Link color={"blue.400"}>features</Link> ✌️
+            to enjoy all of our cool features ✌️
           </Text>
         </Stack>
         <Box
@@ -35,32 +43,57 @@ export function SignUpForm() {
           p={8}
         >
           <Stack spacing={4}>
-            <FormControl id="email">
+            <HStack>
+              <Box>
+                <FormControl id="firstName" isRequired>
+                  <FormLabel>First Name</FormLabel>
+                  <Input type="text" />
+                </FormControl>
+              </Box>
+              <Box>
+                <FormControl id="lastName">
+                  <FormLabel>Last Name</FormLabel>
+                  <Input type="text" />
+                </FormControl>
+              </Box>
+            </HStack>
+            <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
               <Input type="email" />
             </FormControl>
-            <FormControl id="password">
+            <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
-              <Input type="password" />
+              <InputGroup>
+                <Input type={showPassword ? "text" : "password"} />
+                <InputRightElement h={"full"}>
+                  <Button
+                    variant={"ghost"}
+                    onClick={() =>
+                      setShowPassword((showPassword) => !showPassword)
+                    }
+                  >
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
             </FormControl>
-            <Stack spacing={10}>
-              <Stack
-                direction={{ base: "column", sm: "row" }}
-                align={"start"}
-                justify={"space-between"}
-              >
-                <Checkbox>Remember me</Checkbox>
-                <Link color={"blue.400"}>Forgot password?</Link>
-              </Stack>
+            <Stack spacing={10} pt={2}>
               <Button
+                loadingText="Submitting"
+                size="lg"
                 bg={"blue.400"}
                 color={"white"}
                 _hover={{
                   bg: "blue.500",
                 }}
               >
-                Sign in
+                Sign up
               </Button>
+            </Stack>
+            <Stack pt={6}>
+              <Text align={"center"}>
+                Already a user? <Link color={"blue.400"}>Login</Link>
+              </Text>
             </Stack>
           </Stack>
         </Box>
