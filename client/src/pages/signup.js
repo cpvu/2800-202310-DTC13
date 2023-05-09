@@ -7,7 +7,13 @@ import { useBreakpointValue } from "@chakra-ui/react";
 export default function SignUp() {
   const isDesktop = useBreakpointValue({ base: false, lg: true });
   return (
-    <Box w={"100%"} maxW={"lg"} minH={"100vh"}>
+    <Box
+      w={"100%"}
+      maxW={"lg"}
+      minH={"100vh"}
+      display="flex"
+      flexDirection="column"
+    >
       {isDesktop ? <Navbar /> : <></>}
       <SignUpForm />
       {isDesktop ? <></> : <Navbar style={"align"}></Navbar>}

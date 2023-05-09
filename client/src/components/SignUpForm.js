@@ -22,11 +22,12 @@ export default function SignUpForm() {
 
   return (
     <Flex
-      height={"91vh"}
-      pb={{ base: "5px", md: "40px" }}
+      minH={"90%"}
+      py={{ base: "5", md: "auto" }}
       minW={"100vw"}
       align={"center"}
       justify={"center"}
+      flex={"1"}
       bg={useColorModeValue("gray.50", "gray.800")}
     >
       <Stack spacing={4} px={{ base: 4, md: 6 }}>
