@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { postLogin, postSignup } from "../controllers/authController.js";
 
 export const apiRouter = () => {
     const router = Router(); 

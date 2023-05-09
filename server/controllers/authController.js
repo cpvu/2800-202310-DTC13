@@ -3,7 +3,7 @@ export const postLogin = () => {
     return;
 }
 
-export const postSignup = () => {
+export const postSignup = (req, res) => {
     //add signup logic here
-    return;
+    return res.status(200).send("hello")
 }
