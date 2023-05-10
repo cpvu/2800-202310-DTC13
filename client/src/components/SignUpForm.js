@@ -22,9 +22,8 @@ export default function SignUpForm() {
 
   return (
     <Flex
-      minH={"90%"}
       py={{ base: "5", md: "auto" }}
-      minW={"100vw"}
+      pb={{ md: "150px" }}
       align={"center"}
       justify={"center"}
       flex={"1"}
@@ -41,6 +40,7 @@ export default function SignUpForm() {
         </Stack>
         <Box
           rounded={"lg"}
+          minW={"25vw"}
           bg={useColorModeValue("white", "gray.700")}
           boxShadow={"lg"}
           p={8}

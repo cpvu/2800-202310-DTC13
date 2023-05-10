@@ -16,9 +16,8 @@ import {
 export default function LoginForm() {
   return (
     <Flex
-      minH={"90%"}
       py={{ base: "5", md: "auto" }}
-      minW={"100vw"}
+      pb={{ md: "150px" }}
       align={"center"}
       justify={"center"}
       flex={"1"}
@@ -35,6 +34,7 @@ export default function LoginForm() {
           rounded={"lg"}
           bg={useColorModeValue("white", "gray.700")}
           boxShadow={"lg"}
+          minW={"25vw"}
           p={8}
         >
           <Stack spacing={4}>
