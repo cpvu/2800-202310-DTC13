@@ -12,8 +12,21 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import React, { useRef } from 'react';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
 
 export default function LoginForm() {
+
+  const initialValues = {
+    email: '',
+    password: '',
+  };
+
+  async function handleLogin(values, { setSubmitting }) {
+    alert(JSON.stringify(values, null, 2));
+    setSubmitting(false)
+  }
+
   return (
     <Flex
       py={{ base: "5", md: "auto" }}
@@ -39,33 +52,41 @@ export default function LoginForm() {
           p={8}
         >
           <Stack spacing={4}>
-            <FormControl id="email">
-              <FormLabel>Email address</FormLabel>
-              <Input type="email" />
-            </FormControl>
-            <FormControl id="password">
-              <FormLabel>Password</FormLabel>
-              <Input type="password" />
-            </FormControl>
-            <Stack spacing={10}>
-              <Stack
-                direction={{ base: "column", sm: "row" }}
-                align={"start"}
-                justify={"space-between"}
-              >
-                <Checkbox>Remember me</Checkbox>
-                <Link color={"blue.400"}>Forgot password?</Link>
-              </Stack>
-              <Button
-                bg={"blue.400"}
-                color={"white"}
-                _hover={{
-                  bg: "blue.500",
-                }}
-              >
-                Sign in
-              </Button>
-            </Stack>
+            <Formik initialValues={initialValues} onSubmit={handleLogin}>
+              {({isSubmitting}) => (
+              <Form>
+                <FormControl id="email">
+                  <FormLabel>Email address</FormLabel>
+                  <Input type="email" name="email" />
+                </FormControl>
+                <FormControl id="password">
+                  <FormLabel>Password</FormLabel>
+                  <Input type="password" name="password" />
+                </FormControl>
+                <Stack spacing={10}>
+                  <Stack
+                    direction={{ base: "column", sm: "row" }}
+                    align={"start"}
+                    justify={"space-between"}
+                  >
+                    <Checkbox>Remember me</Checkbox>
+                    <Link color={"blue.400"}>Forgot password?</Link>
+                  </Stack>
+                  <Button
+                    bg={"blue.400"}
+                    color={"white"}
+                    _hover={{
+                      bg: "blue.500",
+                    }}
+
+                   type="submit"
+                  >
+                    Sign in
+                  </Button>
+                </Stack>
+              </Form>
+              )}
+            </Formik>
           </Stack>
         </Box>
       </Stack>
