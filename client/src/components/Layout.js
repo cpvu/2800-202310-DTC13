@@ -1,21 +1,22 @@
 import Navbar from "./Navbar";
-import { Box, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Container, useBreakpointValue } from "@chakra-ui/react";
 
 export default function Layout({ children }) {
   const isDesktop = useBreakpointValue({ base: false, lg: true });
   return (
     <>
-      <Box
-        w={"100%"}
+      {isDesktop ? <Navbar /> : <></>}
+      <Container
         minH={"100vh"}
         minW={"100vw"}
         display="flex"
         flexDirection="column"
+        overflow="hidden"
+        p={0}
       >
-        {isDesktop ? <Navbar /> : <></>}
         {children}
-        {isDesktop ? null : <Navbar></Navbar>}
-      </Box>
+      </Container>
+      {isDesktop ? null : <Navbar></Navbar>}
     </>
   );
 }
