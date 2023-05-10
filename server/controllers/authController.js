@@ -1,4 +1,4 @@
-import { User } from "../models/authSchema";
+import { User } from "../models/authSchema.js";
 import express from "express";
 import session from "express-session";
 import bcrypt from "bcrypt";
@@ -46,10 +46,10 @@ export const postSignup = async (req, res) => {
   const schema = Joi.object({
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
-    email: Joi.string().email().required(),
+    email: Joi.string().required(),
     password: Joi.string().required(),
   });
-
+  
   try {
     const { error, value } = await schema.validateAsync(req.body);
     if (error) {
@@ -57,6 +57,8 @@ export const postSignup = async (req, res) => {
         .status(400)
         .json({ error: `Please provide ${error.details[0].message}.` });
     }
+
+    console.log(req.body)
 
     const existingUser = await User.findOne({ email: value.email });
     if (existingUser) {
