@@ -23,18 +23,19 @@ export default function LoginForm() {
       flex={"1"}
       bg={useColorModeValue("gray.50", "gray.800")}
     >
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
-        <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>Sign in to your account</Heading>
-          <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool <Link color={"blue.400"}>features</Link> ✌️
+      <Stack  align={"center"} spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+        <Stack>
+          <Heading fontSize={"4xl"}>Log in to your account</Heading>
+          <Text fontSize={"lg"} color={"gray.600"} align={"center"}>
+            Not a user? Sign up <Link color={"blue.400"} href="./signup">here</Link> 
           </Text>
         </Stack>
         <Box
           rounded={"lg"}
           bg={useColorModeValue("white", "gray.700")}
           boxShadow={"lg"}
-          minW={"25vw"}
+          minW={"20vw"}
+          align={"center"}
           p={8}
         >
           <Stack spacing={4}>

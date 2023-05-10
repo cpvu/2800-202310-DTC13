@@ -35,12 +35,12 @@ export default function SignUpForm() {
             Sign up
           </Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool features ✌️
+            Get started today!
           </Text>
         </Stack>
         <Box
           rounded={"lg"}
-          minW={"25vw"}
+          minW={"20vw"}
           bg={useColorModeValue("white", "gray.700")}
           boxShadow={"lg"}
           p={8}
