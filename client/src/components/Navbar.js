@@ -11,14 +11,16 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-export const Navbar = () => {
-  const isDesktop = useBreakpointValue({ base: false, lg: true });
+export default function Navbar() {
+  const isDesktop = useBreakpointValue({ base: true, lg: false });
   return (
     <Container
       py={{ sm: "1", base: "2", lg: "5" }}
       bg={useColorModeValue("gray.300", "gray.500")}
       minW={"100vw"}
-      minH={"10%"}
+      position={isDesktop ? "sticky" : "static"}
+      bottom={isDesktop ? "0" : "auto"}
+      zIndex={10}
     >
       <HStack spacing="11" justify="space-between">
         <Flex justify="space-between" flex="1">
@@ -36,4 +38,4 @@ export const Navbar = () => {
       </HStack>
     </Container>
   );
-};
+}
