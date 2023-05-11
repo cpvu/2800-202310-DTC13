@@ -7,7 +7,7 @@ export default function Layout({ children }) {
     <>
       {isDesktop ? <Navbar /> : <></>}
       <Container
-        minH={"100vh"}
+        minH={{lg:"auto", base: "100vh"}}
         minW={"100vw"}
         display="flex"
         flexDirection="column"
