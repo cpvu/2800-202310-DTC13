@@ -12,11 +12,13 @@ export const postLogin = async (req, res) => {
     password: Joi.string().required(),
   });
 
+  console.log(req.body)
+
   const { error, value } = schema.validate(req.body);
   if (error) {
     return res
       .status(400)
-      .json({ message: `Please provide ${error.details[0].message}.` });
+      .json({ message: `Please provide ${error.details[0].message}.`, authenticated: false });
   }
 
   try {
@@ -28,17 +30,17 @@ export const postLogin = async (req, res) => {
     }
     const match = await bcrypt.compare(value.password, user.password);
     if (!match) {
-      return res.status(401).json({ message: "Incorrect password." });
+      return res.status(401).json({ message: "Incorrect password.",  authenticated: false });
     }
     req.session.user = {
       _id: user._id,
       firstName: user.firstName,
       email: user.email,
     };
-    res.status(200).json({ message: "Login successful." });
+    res.status(200).json({ message: "Login successful.", authenticated: true });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error occurred during login." });
+    res.status(500).json({ message: "Error occurred during login.", authenticated: false });
   }
 };
 
