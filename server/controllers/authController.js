@@ -3,6 +3,7 @@ import express from "express";
 import session from "express-session";
 import bcrypt from "bcrypt";
 import Joi from "joi";
+import jwt from "jsonwebtoken";
 
 const saltRounds = 12;
 
@@ -91,6 +92,55 @@ export const postSignup = async (req, res) => {
       .json({ error: "Error occurred during signup. Please try again." });
   }
 };
+
+export const forgot_password = async (req, res) => {
+  const schema = Joi.object({
+    email: Joi.string().email().required(),
+  });
+
+  try {
+    const user = await User.findOne({ email: value.email });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: `No user with email ${value.email}.` });
+    }
+    const payload = {
+      email: user.email,
+      id: user.id,
+    }
+    const token = jwt.sign(payload)
+    const link = `http:localhost:8000/api/reset-password/${user.id}/${token}`;
+    console.log(link);
+    res.send(`Password reset link has been sent to ur email.
+              ${link}`)
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error occurred during login." });
+  }
+}
+
+export const reset_password = async (req, res) => {
+  const { id, token, email } = req.params;
+    const user = await User.findOne({ email: value.email });
+    const { password, password2 } = req.body;
+    
+    if (id !== user.id) {
+        res.send('Invalid id...')
+    }
+    const secret = JWT_SECRET + user.password
+    try {
+        const payload = jwt.verify(token ,secret)
+        await User.updateOne({ username: req.params.email }, { $set: { password: password } })
+        // user.password = password
+        res.send(user) 
+
+    } catch (error) {
+        console.log(error.message);
+        res.send(error.message);
+
+    }
+}
 
 // // Assuming you have already installed the 'nodemailer' package
 // const nodemailer = require('nodemailer');
