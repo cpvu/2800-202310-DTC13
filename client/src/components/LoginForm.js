@@ -11,6 +11,7 @@ import {
   Heading,
   Text,
   useColorModeValue,
+  ButtonSpinner
 } from "@chakra-ui/react";
 import React, { useRef } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
@@ -23,8 +24,11 @@ export default function LoginForm() {
   };
 
   async function handleLogin(values, { setSubmitting }) {
-    alert(JSON.stringify(values, null, 2));
-    setSubmitting(false)
+    setTimeout(() => {
+      await fetch("htto")
+      setSubmitting(false)
+    }, 1000)
+
   }
 
   return (
@@ -52,15 +56,15 @@ export default function LoginForm() {
         >
           <Stack spacing={4}>
             <Formik initialValues={initialValues} onSubmit={handleLogin}>
-              {({isSubmitting}) => (
+              {({isSubmitting, values, handleChange, handleBlur}) => (
               <Form>
                 <FormControl id="email">
                   <FormLabel>Email address</FormLabel>
-                  <Input type="email" name="email" />
+                  <Input type="email" name="email" onChange={handleChange} onBlur={handleBlur} value={values.email} />
                 </FormControl>
                 <FormControl id="password">
                   <FormLabel>Password</FormLabel>
-                  <Input type="password" name="password" />
+                  <Input type="password" name="password" onChange={handleChange} onBlur={handleBlur} value={values.password}  />
                 </FormControl>
                 <Stack spacing={10}>
                   <Stack
@@ -78,9 +82,10 @@ export default function LoginForm() {
                       bg: "blue.500",
                     }}
 
-                   type="submit"
+                    type="submit"
+                    disabled={isSubmitting}
                   >
-                    Sign in
+                     {isSubmitting ? <ButtonSpinner /> : 'Sign In'}
                   </Button>
                 </Stack>
               </Form>
