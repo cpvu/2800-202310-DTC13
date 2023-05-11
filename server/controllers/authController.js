@@ -114,6 +114,9 @@ export const forgot_password = async (req, res) => {
     console.log(link);
     res.send(`Password reset link has been sent to ur email.
               ${link}`)
+
+
+              
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error occurred during login." });
@@ -132,7 +135,7 @@ export const reset_password = async (req, res) => {
     try {
         const payload = jwt.verify(token ,secret)
         await User.updateOne({ username: req.params.email }, { $set: { password: password } })
-        // user.password = password
+        a
         res.send(user) 
 
     } catch (error) {
