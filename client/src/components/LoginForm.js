@@ -15,8 +15,11 @@ import {
 } from "@chakra-ui/react";
 import React, { useRef } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
+import Router, { useRouter } from "next/router";
 
 export default function LoginForm() {
+
+  const router = useRouter();
 
   const initialValues = {
     email: '',
@@ -24,8 +27,35 @@ export default function LoginForm() {
   };
 
   async function handleLogin(values, { setSubmitting }) {
-    setTimeout(() => {
-      await fetch("htto")
+    setTimeout(async () => {
+
+      const payload = {
+       "email": values.email,
+       "password": values.password
+      }
+
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      };
+
+      try {
+        let response = await fetch("http://localhost:8000/api/login", options);
+        let responseJSON = await response.json()
+
+        if (responseJSON.authenticated) {
+          router.push("/searchcoin")
+        }
+        
+        console.log(responseJSON)
+
+      } catch (err) {
+        console.log(err)
+      }
+     
       setSubmitting(false)
     }, 1000)
 
