@@ -34,7 +34,7 @@ export default function Navbar() {
             py={{ base: "5", lg: "0" }}
           >
             {navigationButtons.map((item, index) => (
-              <Link href={item.route}><Button key={index}>{item.name}</Button></Link>
+              <Link key={index} href={item.route}><Button key={index}>{item.name}</Button></Link>
             ))}
           </ButtonGroup>
         </Flex>
