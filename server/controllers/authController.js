@@ -91,3 +91,70 @@ export const postSignup = async (req, res) => {
       .json({ error: "Error occurred during signup. Please try again." });
   }
 };
+
+// // Assuming you have already installed the 'nodemailer' package
+// const nodemailer = require('nodemailer');
+
+// // Sample user data
+// // const users = [];
+ 
+// // Function to reset password
+// function resetPassword(username) {
+//   // Find the user with the provided 
+//   const user = users.find(user => user.email === lastname);
+
+//   if (user) {
+//     // Generate a new password (you can use any method to generate a new password)
+//     const newPassword = generateNewPassword();
+
+//     // Update the user's password
+//     user.password = newPassword;
+
+//     // Send the new password to the user
+//     sendNewPassword(user, newPassword);
+
+//     console.log('Password reset successful. Check your email for the new password.');
+//   } else {
+//     console.log('User not found. Please enter a valid username.');
+//   }
+// }
+
+// // Function to generate a new password
+// function generateNewPassword() {
+//   // Generate a random password here (you can use any method to generate a random password)
+//   const newPassword = 'newPassword123';
+//   return newPassword;
+// }
+
+// // Function to send the new password to the user via email
+// function sendNewPassword(user, newPassword) {
+//   // Create a nodemailer transporter
+//   const transporter = nodemailer.createTransport({
+//     service: 'email_service', // Replace with your email service provider
+//     auth: {
+//       user: 'email_address',
+//       pass: 'email_password'
+//     }
+//   });
+
+//   // Email options
+//   const mailOptions = {
+//     from: 'your_email_address',
+//     to: user.email,
+//     subject: 'Password Reset',
+//     text: `Your new password is: ${newPassword}`
+//   };
+
+//   // Send the email
+//   transporter.sendMail(mailOptions, (error, info) => {
+//     if (error) {
+//       console.log('Error sending email:', error);
+//     } else {
+//       console.log('Email sent:', info.response);
+//     }
+//   });
+// }
+
+// // Usage example
+// const username = prompt('Enter your username:');
+// resetPassword(username);
