@@ -211,3 +211,37 @@ export const reset_password = async (req, res) => {
 // // Usage example
 // const username = prompt('Enter your username:');
 // resetPassword(username);
+
+export const forget_password = (req, res) => {
+  const { email } = req.body;
+  try {
+    const oldUser = await User.findOne({ email });
+    if (!oldUser) {
+      return res.json({ status: "User Not Exists!!" });
+    }
+    const secret = JWT_SECRET + oldUser.password;
+    const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
+      expiresIn: "5m",
+    });
+    const link = `http://localhost:8000/api/reset-password/${oldUser._id}/${token}`;
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+    });
+
+    var mailOptions = {
+      from: "youremail@gmail.com",
+      to: oldUser.email,
+      subject: "Password Reset",
+      text: link,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
+    console.log(link);
+  } catch (error) { }
+};
