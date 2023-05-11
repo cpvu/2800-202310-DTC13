@@ -46,20 +46,18 @@ export const postSignup = async (req, res) => {
   const schema = Joi.object({
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
-    email: Joi.string().required(),
+    email: Joi.string().email().required(),
     password: Joi.string().required(),
   });
-  
+
+  const { error, value } = schema.validate(req.body);
+  if (error) {
+    return res
+      .status(400)
+      .json({ error: `Please provide ${error.details[0].message}.` });
+  }
+
   try {
-    const { error, value } = await schema.validateAsync(req.body);
-    if (error) {
-      return res
-        .status(400)
-        .json({ error: `Please provide ${error.details[0].message}.` });
-    }
-
-    console.log(req.body)
-
     const existingUser = await User.findOne({ email: value.email });
     if (existingUser) {
       return res
