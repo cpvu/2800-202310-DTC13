@@ -1,4 +1,4 @@
-import { User } from "../models/authSchema";
+import { User } from "../models/authSchema.js";
 import express from "express";
 import session from "express-session";
 import bcrypt from "bcrypt";
