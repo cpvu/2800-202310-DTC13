@@ -110,32 +110,35 @@ const transporter = nodemailer.createTransport({
 });
 export const postSendResetPasswordEmail = async (req, res) => {
   try {
-    const existingUser = await User.findOne({ email: value.email });
-    if (!existingUser) {
-      return res.status(404).json({ message: `No user with email ${value.email}.` });
-    }
-    const email = existingUser.email;
-    const username = existingUser.username;
+    const { email } = req.body;
 
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      return res.status(404).json({ message: `No user with email ${email}.` });
+    }
+
+    const mailOptions = {
+      from: 'cryptomentaihelp@gmail.com',
+      to: email,
+      subject: 'Password Reset',
+      html: `<p>Dear ${existingUser.username},</p><p>Please click the following link to reset your password: <a href="https://localhost/changePassword">Reset Password</a></p>`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log('Error sending email:', error);
+        res.status(500).json({ message: "Error occurred while sending password reset email." });
+      } else {
+        console.log('Email sent:', info.response);
+        res.status(200).json({ message: "Password reset email sent successfully." });
+      }
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error occurred password reset." });
+    res.status(500).json({ message: "Error occurred during password reset." });
   }
+};
 
-  const mailOptions = {
-    from: 'cryptomentaihelp@gmail.com',
-    to: '<user email>',
-    subject: 'Password Reset',
-    html: `<p>Dear ${username},</p><p>Please click the following link to reset your password: <a href="https://localhost/changePassword">Reset Password</a></p>`
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log('Error sending email:', error);
-    } else {
-      console.log('Email sent:', info.response);
-    }
-  });
-}
 
 
