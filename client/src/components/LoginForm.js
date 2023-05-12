@@ -29,6 +29,8 @@ export default function LoginForm() {
     setTimeout(async () => {
       const baseURL = process.env.NEXT_PUBLIC_CLIENT_BASE_URL;
 
+      console.log(baseURL)
+
       const result = await signIn('credentials', {
         username: values.username,
         password: values.password,
