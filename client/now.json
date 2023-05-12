@@ -14,7 +14,7 @@
         "src": "/(.*)",
         "status": 301,
         "headers": {
-          "Location": "2800-202310-dtc-13.vercel.app/$1"
+          "Location": "http://2800-202310-dtc-13.vercel.app/$1"
         }
       }
     ]
