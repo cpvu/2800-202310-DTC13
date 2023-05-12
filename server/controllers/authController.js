@@ -139,7 +139,7 @@ export const postSendResetPasswordEmail = async (req, res) => {
       from: "cryptomentaihelp@gmail.com",
       to: email,
       subject: "Password Reset",
-      html: `<p>Dear ${existingUser.username},</p><p>Please click the following link to reset your password: <a href="https://localhost:8000/resetPassword/${resetToken}">Reset Password</a></p>`,
+      html: `<p>Dear ${existingUser.username},</p><p>Please click the following link to reset your password: <a href="http://localhost:3000/reset/password/${resetToken}">Reset Password</a></p>`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -162,7 +162,7 @@ export const postChangePassword = async (req, res) => {
   const schema = Joi.object({
     newPassword: Joi.string().required(),
   });
-
+  console.log(req.body)
   const { error, value } = schema.validate(req.body);
   if (error) {
     return res
