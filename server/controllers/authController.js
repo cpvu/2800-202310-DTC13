@@ -3,6 +3,9 @@ import express from "express";
 import session from "express-session";
 import bcrypt from "bcrypt";
 import Joi from "joi";
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+dotenv.config();
 
 const saltRounds = 12;
 
@@ -92,5 +95,33 @@ export const postLogin = async (req, res) => {
     res.status(500).json({ message: "Error occurred during login." });
   }
 };
+
+
+
+// Attempting to implement reset password functionality
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS,
+  }
+});
+export const postSendResetPasswordEmail = async (req, res) => {
+
+  const mailOptions = {
+    from: 'cryptomentaihelp@gmail.com',
+    to: 'ankitahlwat54@gmail.com',
+    subject: 'Password Reset',
+    html: '<p>Dear User,</p><p>Please click the following link to reset your password: <a href="https://example.com/reset-password">Reset Password</a></p>'
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log('Error sending email:', error);
+    } else {
+      console.log('Email sent:', info.response);
+    }
+  });
+}
 
 
