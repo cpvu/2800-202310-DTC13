@@ -4,6 +4,7 @@ import { LOGIN_ENDPOINT } from '@/constants/endpoints';
 
 const options = {
   secret: process.env.SECRET,
+  csrf: false,
   providers: [
     CredentialsProvider({
       // Credentials provider options
