@@ -1,10 +1,12 @@
 import http from "http";
 import { expressServer } from "./server.js";
 
-(() => {
-    const server = http.createServer(expressServer());
+console.log(`${process.env.PORT}`)
 
-    server.listen(process.env.PORT, () => {
-        console.log(`Listening on port ${process.env.PORT}`);
-    })
-}) ();
+// (() => {
+//     const server = http.createServer(expressServer());
+
+//     server.listen(process.env.PORT, () => {
+//         console.log(`Listening on port ${process.env.PORT}`);
+//     })
+// }) ();
