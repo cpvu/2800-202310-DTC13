@@ -98,7 +98,16 @@ export const postLogin = async (req, res) => {
   }
 };
 
-
+export const postLogout = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ message: "Internal server error" });
+    } else {
+      res.clearCookie("connect.sid").json({ message: "Logout successful" });
+    }
+  });
+};
 
 // Attempting to implement reset password functionality
 const transporter = nodemailer.createTransport({
