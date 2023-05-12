@@ -17,7 +17,8 @@ import {
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Formik, Form, ErrorMessage } from "formik";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
+import { SIGN_UP_ENDPOINT } from "@/constants/endpoints";
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -31,7 +32,7 @@ export default function SignUpForm() {
     password: "",
   };
 
-  async function handleLogin(values, { setSubmitting, setErrors }) {
+  async function handleSignUp(values, { setSubmitting, setErrors }) {
     setTimeout(async () => {
       const options = {
         method: "POST",
@@ -41,17 +42,19 @@ export default function SignUpForm() {
         body: JSON.stringify(values),
       };
 
-      try {
-        let response = await fetch("http://localhost:8000/api/signup", options);
-        let responseJSON = await response.json();
+      const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+      try {
+        let response = await fetch(baseURL + SIGN_UP_ENDPOINT, options);
+        let responseJSON = await response.json();
         router.push("/login");
+
       } catch (err) {
         //setErrors({ server: error.message });
         console.log(err);
       }
+      alert("Successfully signed up!")
     });
-
     setSubmitting(false);
   }
 
@@ -80,7 +83,7 @@ export default function SignUpForm() {
           boxShadow={"lg"}
           p={8}
         >
-          <Formik initialValues={initialValues} onSubmit={handleLogin}>
+          <Formik initialValues={initialValues} onSubmit={handleSignUp}>
             {({ isSubmitting, values, handleChange, handleBlur }) => (
               <Form>
                 <Stack spacing={4}>

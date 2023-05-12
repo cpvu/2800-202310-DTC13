@@ -49,13 +49,13 @@ export default function Navbar() {
         </Flex>
 
         {isDesktop && status != "authenticated" ? (
-          <Link href="./signup">
+          <Link href="/signup">
             <Button>Signup</Button>
           </Link>
         ) :  null}
 
         {isDesktop && status !="authenticated" ? (
-          <Link href="./login">
+          <Link href="/login">
             <Button>Login</Button>
           </Link>
         ) : null}

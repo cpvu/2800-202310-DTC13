@@ -13,9 +13,9 @@ import {
     useColorModeValue,
     ButtonSpinner,
   } from "@chakra-ui/react";
-  import React, { useRef } from "react";
   import { Formik, Field, Form, ErrorMessage } from "formik";
-  import Router, { useRouter } from "next/router";
+  import { useRouter } from "next/router";
+  import { RESET_PASSWORD_ENDPOINT } from "@/constants/endpoints";
   
   export default function ResetPasswordForm() {
     const router = useRouter();
@@ -38,17 +38,17 @@ import {
           body: JSON.stringify(values),
         };
 
-        let jwtToken = query.resetToken;
+        const jwtToken = query.resetToken;
+        const baseURL = process.env.NEXT_PUBLIC_CLIENT_BASE_URL;
   
         try {
-          let response = await fetch(`http://localhost:8000/api/resetPassword/${jwtToken}`, options);
+          let response = await fetch(baseURL + RESET_PASSWORD_ENDPOINT + jwtToken, options);
           let responseJSON = await response.json();
   
           if (responseJSON.authenticated) {
+            alert("Password succesfully changed!")
             router.push("/");
           }
-  
-          console.log(responseJSON);
         } catch (err) {
           console.log(err);
         }
