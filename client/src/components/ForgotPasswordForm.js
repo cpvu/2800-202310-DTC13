@@ -26,10 +26,6 @@ export default function ForgotPasswordForm() {
 
   async function handleLogin(values, { setSubmitting }) {
     setTimeout(async () => {
-
-      const payload = {
-        email: values.email,
-      };
       const options = {
         method: "POST",
         headers: {
@@ -38,6 +34,8 @@ export default function ForgotPasswordForm() {
         body: JSON.stringify(values),
       };
 
+      console.log(values)
+
       try {
         let response = await fetch("http://localhost:8000/api/forgotPassword", options);
         let responseJSON = await response.json();
@@ -45,7 +43,6 @@ export default function ForgotPasswordForm() {
         if (responseJSON.authenticated) {
           router.push("/");
         }
-
         console.log(responseJSON);
       } catch (err) {
         console.log(err);
