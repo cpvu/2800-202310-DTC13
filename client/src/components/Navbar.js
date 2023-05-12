@@ -11,14 +11,23 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import LogoutButton from "./LogoutButton";
+
 export default function Navbar() {
   const isDesktop = useBreakpointValue({ md: false, xl: true });
+  const { data: session, status } = useSession()
+
+  useEffect(()=> {
+    console.log(session)
+  })
 
   const navigationButtons = [{ name: "Watchlist", route: "/" }, { name: "Search", route: "/searchcoin" }, { name: "FAQ", route: "/" }, { name: "Settings", route: "/" }]
 
   return (
     <Container
-      py={{ sm: "1", base: "2", lg: "5" }}
+      py={{ sm: "1", base: "1", lg: "3" }}
       bg={useColorModeValue("gray.300", "gray.500")}
       minW={"100vw"}
       position={isDesktop ? "static" : "sticky"}
@@ -39,18 +48,33 @@ export default function Navbar() {
           </ButtonGroup>
         </Flex>
 
-        {isDesktop ? (
-          <Link href="./signup">
+        {isDesktop && status != "authenticated" ? (
+          <Link href="/signup">
             <Button>Signup</Button>
           </Link>
-        ) : null}
+        ) :  null}
 
-        {isDesktop ? (
-          <Link href="./login">
+        {isDesktop && status !="authenticated" ? (
+          <Link href="/login">
             <Button>Login</Button>
           </Link>
         ) : null}
+
+        {isDesktop && status == "authenticated" ? <Link href="./signup">
+        <LogoutButton></LogoutButton>
+      </Link> : null}
       </HStack>
     </Container>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  console.log(session)
+
+  return {
+    props: {
+      session: session,
+    },
+  };
 }

@@ -13,11 +13,9 @@ import {
   useColorModeValue,
   ButtonSpinner,
 } from "@chakra-ui/react";
-import React, { useRef } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import Router, { useRouter } from "next/router";
-
-import {signIn, getSession} from "next-auth/react"
+import { useRouter } from "next/router";
+import { signIn, getSession } from "next-auth/react"
 
 export default function LoginForm() {
   const router = useRouter();
@@ -29,17 +27,15 @@ export default function LoginForm() {
 
   async function handleLogin(values, { setSubmitting }) {
     setTimeout(async () => {
+      const baseURL = process.env.NEXT_PUBLIC_CLIENT_BASE_URL;
+
       const result = await signIn('credentials', {
         username: values.username,
         password: values.password,
-        callbackUrl: '/searchcoin'
+        callbackUrl: baseURL + '/searchcoin'
       });
-
-      const session = await getSession();
-
-      console.log(session)
-
       setSubmitting(false);
+      alert("Successfully logged in!")
     }, 1000);
   }
 
@@ -107,7 +103,7 @@ export default function LoginForm() {
                       justify={"space-between"}
                     >
                       <Checkbox>Remember me</Checkbox>
-                      <Link color={"blue.400"}>Forgot password?</Link>
+                      <Link href="/forgot/password" color={"blue.400"}>Forgot password?</Link>
                     </Stack>
                     <Button
                       bg={"blue.400"}

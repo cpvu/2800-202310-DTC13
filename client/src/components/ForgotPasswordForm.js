@@ -13,9 +13,9 @@ import {
   useColorModeValue,
   ButtonSpinner,
 } from "@chakra-ui/react";
-import React, { useRef } from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import Router, { useRouter } from "next/router";
+import { Formik, Form, ErrorMessage } from "formik";
+import { useRouter } from "next/router";
+import { FORGOT_PASSWORD_ENDPOINT } from "@/constants/endpoints";
 
 export default function ForgotPasswordForm() {
   const router = useRouter();
@@ -26,10 +26,6 @@ export default function ForgotPasswordForm() {
 
   async function handleLogin(values, { setSubmitting }) {
     setTimeout(async () => {
-
-      const payload = {
-        email: values.email,
-      };
       const options = {
         method: "POST",
         headers: {
@@ -38,15 +34,16 @@ export default function ForgotPasswordForm() {
         body: JSON.stringify(values),
       };
 
+      const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+ 
       try {
-        let response = await fetch("http://localhost:8000/api/forgotPassword", options);
+        let response = await fetch(baseURL + FORGOT_PASSWORD_ENDPOINT, options);
         let responseJSON = await response.json();
 
         if (responseJSON.authenticated) {
-          router.push("/");
+            alert("Email successfully sent!")
+            router.push("/");
         }
-
-        console.log(responseJSON);
       } catch (err) {
         console.log(err);
       }

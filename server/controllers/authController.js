@@ -68,8 +68,6 @@ export const postLogin = async (req, res) => {
     password: Joi.string().required(),
   });
 
-  console.log(req.body)
-
   const { error, value } = schema.validate(req.body);
   if (error) {
     return res
@@ -91,6 +89,7 @@ export const postLogin = async (req, res) => {
     req.session.user = {
       _id: user._id,
       username: user.username,
+      authenticated: true
     };
     res.status(200).json({ message: "Login successful.", authenticated: true });
   } catch (error) {
@@ -100,12 +99,16 @@ export const postLogin = async (req, res) => {
 };
 
 export const postLogout = (req, res) => {
+  if (!req.session.authenticated) {
+    res.status(500).json({ message: "Not authenticated" })
+  }
+
   req.session.destroy((err) => {
     if (err) {
       console.log(err);
       res.status(500).json({ message: "Internal server error" });
     } else {
-      res.clearCookie("connect.sid").json({ message: "Logout successful" });
+      res.clearCookie("connect.sid").json({ message: "Logout successful", user: req.session.username });
     }
   });
 };
@@ -139,7 +142,7 @@ export const postSendResetPasswordEmail = async (req, res) => {
       from: "cryptomentaihelp@gmail.com",
       to: email,
       subject: "Password Reset",
-      html: `<p>Dear ${existingUser.username},</p><p>Please click the following link to reset your password: <a href="https://localhost:8000/resetPassword/${resetToken}">Reset Password</a></p>`,
+      html: `<p>Dear ${existingUser.username},</p><p>Please click the following link to reset your password: <a href="http://localhost:3000/reset/password/${resetToken}">Reset Password</a></p>`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -162,7 +165,7 @@ export const postChangePassword = async (req, res) => {
   const schema = Joi.object({
     newPassword: Joi.string().required(),
   });
-
+  console.log(req.body)
   const { error, value } = schema.validate(req.body);
   if (error) {
     return res

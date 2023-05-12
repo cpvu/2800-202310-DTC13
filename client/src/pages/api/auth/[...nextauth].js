@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials"
+import { LOGIN_ENDPOINT } from '@/constants/endpoints';
 
 const options = {
   providers: [
@@ -19,17 +20,18 @@ const options = {
             body: JSON.stringify(payload),
           };
 
-          console.log(credentials)
+          console.log(credentials);
+
+          const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL; 
     
           try {
-            let response = await fetch("http://localhost:8000/api/login", options);
+            let response = await fetch(baseURL + LOGIN_ENDPOINT, options);
             let responseJSON = await response.json();
             console.log(responseJSON);
 
             if (responseJSON.authenticated) {
                 return { id: 1, name: 'Admin' };
               } 
-
           } catch (err) {
             console.log(err);
           }
