@@ -6,6 +6,7 @@ export default function LogoutButton() {
 
     async function handleLogout() {
         signOut();
+
         const options = {
             method: "POST",
             headers: {
@@ -17,7 +18,7 @@ export default function LogoutButton() {
           const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
     
           try {
-            let response = await fetch(baseURL + "/logout", options);
+            let response = await fetch(baseURL + "/api/logout", options);
             let responseJSON = await response.json();
             console.log(responseJSON)
     
