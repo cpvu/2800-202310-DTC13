@@ -17,6 +17,8 @@ import React, { useRef } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import Router, { useRouter } from "next/router";
 
+import {signIn, getSession} from "next-auth/react"
+
 export default function LoginForm() {
   const router = useRouter();
 
@@ -27,31 +29,15 @@ export default function LoginForm() {
 
   async function handleLogin(values, { setSubmitting }) {
     setTimeout(async () => {
-      const payload = {
-        email: values.username,
+      const result = await signIn('credentials', {
+        username: values.username,
         password: values.password,
-      };
+        callbackUrl: '/searchcoin'
+      });
 
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      };
+      const session = await getSession();
 
-      try {
-        let response = await fetch("http://localhost:8000/api/login", options);
-        let responseJSON = await response.json();
-
-        if (responseJSON.authenticated) {
-          router.push("/searchcoin");
-        }
-
-        console.log(responseJSON);
-      } catch (err) {
-        console.log(err);
-      }
+      console.log(session)
 
       setSubmitting(false);
     }, 1000);
