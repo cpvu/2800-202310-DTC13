@@ -1,0 +1,22 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "next build",
+        "use": "@vercel/static",
+        "config": {
+          "zeroConfig": true
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "status": 301,
+        "headers": {
+          "Location": "https://your-vercel-deployment-url/$1"
+        }
+      }
+    ]
+  }
+  
