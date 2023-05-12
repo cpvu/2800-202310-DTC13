@@ -107,7 +107,7 @@ export default function LoginForm() {
                       justify={"space-between"}
                     >
                       <Checkbox>Remember me</Checkbox>
-                      <Link color={"blue.400"}>Forgot password?</Link>
+                      <Link href="/forgot/password" color={"blue.400"}>Forgot password?</Link>
                     </Stack>
                     <Button
                       bg={"blue.400"}
