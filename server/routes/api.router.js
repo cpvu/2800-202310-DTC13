@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { postLogin, postSignup, postLogout, postSendResetPasswordEmail } from "../controllers/authController.js";
+import { postLogin, postSignup, postLogout, postSendResetPasswordEmail, postChangePassword } from "../controllers/authController.js";
 
 export const apiRouter = () => {
     const router = Router();
@@ -9,6 +9,8 @@ export const apiRouter = () => {
     router.post("/signup", postSignup);
     router.post("/logout", postLogout);
     router.post("/forgotPassword", postSendResetPasswordEmail);
+    router.post("/resetPassword/:token", postChangePassword);
+
 
     return router;
 }
