@@ -145,6 +145,31 @@ export const reset_password = async (req, res) => {
     }
 }
 
+
+export const sendPasswordEmail = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: value.email });
+    if (!user) {
+      return res.status(404).json({ message: `No user with email ${value.email}.` });
+    }
+    const email = user.email;
+    const username = user.lastname;
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error occurred." });
+  }
+
+  const mailOptions = {
+    from: 'cryptomentai@gmail.com',
+    to: '<user email>',
+    subject: 'Password Reset',
+    html: `<p>${username},</p><p>Please click the link to reset your password: <a href="https://localhost/changePassword">Reset Password</a></p>`
+  };
+
+
+}
+
 // // Assuming you have already installed the 'nodemailer' package
 // const nodemailer = require('nodemailer');
 
@@ -212,7 +237,7 @@ export const reset_password = async (req, res) => {
 // const username = prompt('Enter your username:');
 // resetPassword(username);
 
-export const forget_password = (req, res) => {
+export const forget_password = async (req, res) => {
   const { email } = req.body;
   try {
     const oldUser = await User.findOne({ email });
