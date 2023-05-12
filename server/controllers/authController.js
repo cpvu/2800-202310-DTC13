@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import Joi from "joi";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import crypto from "crypto";
 dotenv.config();
 
 const saltRounds = 12;
@@ -108,6 +109,7 @@ const transporter = nodemailer.createTransport({
     pass: process.env.GMAIL_PASS,
   }
 });
+
 export const postSendResetPasswordEmail = async (req, res) => {
   try {
     const { email } = req.body;
@@ -118,25 +120,68 @@ export const postSendResetPasswordEmail = async (req, res) => {
       return res.status(404).json({ message: `No user with email ${email}.` });
     }
 
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    existingUser.resetToken = resetToken;
+    existingUser.resetTokenExpiration = Date.now() + 3600000;
+
+    await existingUser.save();
+
     const mailOptions = {
-      from: 'cryptomentaihelp@gmail.com',
+      from: "cryptomentaihelp@gmail.com",
       to: email,
-      subject: 'Password Reset',
-      html: `<p>Dear ${existingUser.username},</p><p>Please click the following link to reset your password: <a href="https://localhost/changePassword">Reset Password</a></p>`
+      subject: "Password Reset",
+      html: `<p>Dear ${existingUser.username},</p><p>Please click the following link to reset your password: <a href="https://localhost:8000/resetPassword/${resetToken}">Reset Password</a></p>`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log('Error sending email:', error);
+        console.log("Error sending email:", error);
         res.status(500).json({ message: "Error occurred while sending password reset email." });
       } else {
-        console.log('Email sent:', info.response);
+        console.log("Email sent:", info.response);
         res.status(200).json({ message: "Password reset email sent successfully." });
       }
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error occurred during password reset." });
+  }
+};
+
+
+export const postChangePassword = async (req, res) => {
+  const schema = Joi.object({
+    newPassword: Joi.string().required(),
+  });
+
+  const { error, value } = schema.validate(req.body);
+  if (error) {
+    return res
+      .status(400)
+      .json({ message: `Please provide ${error.details[0].message}.` });
+  }
+
+  try {
+    const user = await User.findOne({ resetToken: req.params.token });
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "Invalid or expired token." });
+    }
+
+    const hashedPassword = await bcrypt.hash(value.newPassword, saltRounds);
+    user.password = hashedPassword;
+    user.resetToken = null;
+
+    await user.save();
+
+    return res.status(200).json({ message: "Password changed successfully." });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Error occurred during password change." });
   }
 };
 
