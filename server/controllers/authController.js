@@ -107,12 +107,24 @@ const transporter = nodemailer.createTransport({
   }
 });
 export const postSendResetPasswordEmail = async (req, res) => {
+  try {
+    const existingUser = await User.findOne({ email: value.email });
+    if (!existingUser) {
+      return res.status(404).json({ message: `No user with email ${value.email}.` });
+    }
+    const email = existingUser.email;
+    const username = existingUser.username;
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error occurred password reset." });
+  }
 
   const mailOptions = {
     from: 'cryptomentaihelp@gmail.com',
-    to: 'ankitahlwat54@gmail.com',
+    to: '<user email>',
     subject: 'Password Reset',
-    html: '<p>Dear User,</p><p>Please click the following link to reset your password: <a href="https://example.com/reset-password">Reset Password</a></p>'
+    html: `<p>Dear ${username},</p><p>Please click the following link to reset your password: <a href="https://localhost/changePassword">Reset Password</a></p>`
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
