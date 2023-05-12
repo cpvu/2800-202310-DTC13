@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { LOGIN_ENDPOINT } from '@/constants/endpoints';
 
 const options = {
+  secret: process.env.SECRET,
   providers: [
     CredentialsProvider({
       // Credentials provider options
