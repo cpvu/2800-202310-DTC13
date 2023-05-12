@@ -33,14 +33,6 @@ export default function SignUpForm() {
 
   async function handleLogin(values, { setSubmitting, setErrors }) {
     setTimeout(async () => {
-      const payload = {
-        username: values.username,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        password: values.password,
-      };
-
       const options = {
         method: "POST",
         headers: {
