@@ -24,6 +24,8 @@ const options = {
           console.log(credentials);
 
           const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL; 
+
+          console.log(baseURL + LOGIN_ENDPOINT)
     
           try {
             let response = await fetch(baseURL + LOGIN_ENDPOINT, options);

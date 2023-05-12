@@ -13,9 +13,11 @@ export default function LogoutButton() {
             },
             body: {}
           };
+
+          const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
     
           try {
-            let response = await fetch("http://localhost:8000/logout", options);
+            let response = await fetch(baseURL + "/logout", options);
             let responseJSON = await response.json();
             console.log(responseJSON)
     
