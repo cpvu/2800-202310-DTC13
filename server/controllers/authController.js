@@ -112,7 +112,7 @@ export const postSendResetPasswordEmail = async (req, res) => {
   try {
     const { email } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: email });
 
     if (!existingUser) {
       return res.status(404).json({ message: `No user with email ${email}.` });

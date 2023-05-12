@@ -7,7 +7,7 @@ export const apiRouter = () => {
     //Add routes here for API call
     router.post("/login", postLogin);
     router.post("/signup", postSignup);
-    router.post("/postSendResetPasswordEmail", postSendResetPasswordEmail);
+    router.post("/forgotPassword", postSendResetPasswordEmail);
 
     return router;
 }
