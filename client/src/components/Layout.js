@@ -1,5 +1,5 @@
 import Navbar from "./Navbar";
-import { Box, Container, useBreakpointValue } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 export default function Layout({ children }) {
@@ -26,7 +26,6 @@ export default function Layout({ children }) {
   
   return (
     <>
-     
       <Container
         minH={"100vh"}
         minW={"100vw"}
