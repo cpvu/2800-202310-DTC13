@@ -17,27 +17,39 @@ import React, { useRef } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import Router, { useRouter } from "next/router";
 
-import {signIn, getSession} from "next-auth/react"
-
-export default function LoginForm() {
+export default function ForgotPasswordForm() {
   const router = useRouter();
 
   const initialValues = {
-    username: "",
-    password: "",
+    email: ""
   };
 
   async function handleLogin(values, { setSubmitting }) {
     setTimeout(async () => {
-      const result = await signIn('credentials', {
-        username: values.username,
-        password: values.password,
-        callbackUrl: '/searchcoin'
-      });
 
-      const session = await getSession();
+      const payload = {
+        email: values.email,
+      };
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      };
 
-      console.log(session)
+      try {
+        let response = await fetch("http://localhost:8000/api/forgotPassword", options);
+        let responseJSON = await response.json();
+
+        if (responseJSON.authenticated) {
+          router.push("/");
+        }
+
+        console.log(responseJSON);
+      } catch (err) {
+        console.log(err);
+      }
 
       setSubmitting(false);
     }, 1000);
@@ -60,13 +72,10 @@ export default function LoginForm() {
         py={12}
         px={6}
       >
-        <Stack>
-          <Heading fontSize={"4xl"}>Log in to your account</Heading>
-          <Text fontSize={"lg"} color={"gray.600"} align={"center"}>
-            Not a user? Sign up{" "}
-            <Link color={"blue.400"} href="./signup">
-              here
-            </Link>
+        <Stack align={"center"}>
+          <Heading fontSize={"4xl"}>Reset your password</Heading>
+          <Text fontSize={"md"} color={"gray.600"} align={"center"}>
+            Reset your password by entering the email you signed up with.
           </Text>
         </Stack>
         <Box
@@ -81,23 +90,13 @@ export default function LoginForm() {
             <Formik initialValues={initialValues} onSubmit={handleLogin}>
               {({ isSubmitting, values, handleChange, handleBlur }) => (
                 <Form>
-                  <FormControl id="username" isRequired>
-                    <FormLabel>Username</FormLabel>
+                  <FormControl id="email" isRequired>
+                    <FormLabel>Email</FormLabel>
                     <Input
-                      type="text"
-                      name="username"
+                      type="email"
+                      name="email"
                       onChange={handleChange}
-                      value={values.username}
-                    />
-                  </FormControl>
-                  <FormControl id="password">
-                    <FormLabel>Password</FormLabel>
-                    <Input
-                      type="password"
-                      name="password"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.password}
+                      value={values.email}
                     />
                   </FormControl>
                   <Stack spacing={10}>
@@ -106,8 +105,7 @@ export default function LoginForm() {
                       align={"start"}
                       justify={"space-between"}
                     >
-                      <Checkbox>Remember me</Checkbox>
-                      <Link color={"blue.400"}>Forgot password?</Link>
+
                     </Stack>
                     <Button
                       bg={"blue.400"}
@@ -118,7 +116,7 @@ export default function LoginForm() {
                       type="submit"
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? <ButtonSpinner /> : "Sign In"}
+                      {isSubmitting ? <ButtonSpinner /> : "Send my password reset"}
                     </Button>
                   </Stack>
                 </Form>

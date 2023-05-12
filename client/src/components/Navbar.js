@@ -13,6 +13,9 @@ import {
 
 export default function Navbar() {
   const isDesktop = useBreakpointValue({ md: false, xl: true });
+
+  const navigationButtons = [{ name: "Watchlist", route: "/" }, { name: "Search", route: "/searchcoin" }, { name: "FAQ", route: "/" }, { name: "Settings", route: "/" }]
+
   return (
     <Container
       py={{ sm: "1", base: "2", lg: "5" }}
@@ -30,8 +33,8 @@ export default function Navbar() {
             justifyContent={"center"}
             py={{ base: "5", lg: "0" }}
           >
-            {["Watchlist", "Search", "FAQ", "Settings"].map((item) => (
-              <Button key={item}>{item}</Button>
+            {navigationButtons.map((item, index) => (
+              <Link key={index} href={item.route}><Button key={index}>{item.name}</Button></Link>
             ))}
           </ButtonGroup>
         </Flex>

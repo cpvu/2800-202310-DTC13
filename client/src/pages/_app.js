@@ -1,6 +1,7 @@
 //import "@/styles/globals.css";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import Layout from "../components/Layout";
+import { SessionProvider } from "next-auth/react"
 
 const customTheme = extendTheme({
   styles: {
@@ -13,12 +14,14 @@ const customTheme = extendTheme({
   },
 });
 
-export default function App({ Component, pageProps }) {
+export default function App({ Component, pageProps: { session, ...pageProps } }) {
   return (
-    <ChakraProvider theme={customTheme}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </ChakraProvider>
+    <SessionProvider session={session}>
+      <ChakraProvider theme={customTheme}>
+        <Layout>
+          <Component {...pageProps}  />
+        </Layout>
+      </ChakraProvider>
+    </SessionProvider>
   );
 }
