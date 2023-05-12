@@ -14,7 +14,7 @@
         "src": "/(.*)",
         "status": 301,
         "headers": {
-          "Location": "https://your-vercel-deployment-url/$1"
+          "Location": "2800-202310-dtc-13.vercel.app"
         }
       }
     ]
