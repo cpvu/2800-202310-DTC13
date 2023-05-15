@@ -5,8 +5,7 @@ export default function LogoutButton() {
     const { data: session, status } = useSession();
 
     async function handleLogout(event) {
-        event.preventDefault();
-        signOut();
+        signOut({redirect: false});
 
         const options = {
             method: "POST",
@@ -19,11 +18,7 @@ export default function LogoutButton() {
           const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
     
           try {
-            let response = await fetch(baseURL + "/api/logout", options);
-            let responseJSON = await response.json();
-            console.log(responseJSON)
-    
-            router.push("/");
+            let response = await fetch(baseURL + "/api/logout", options);    
           } catch (err) {
             //setErrors({ server: error.message });
             console.log(err);
