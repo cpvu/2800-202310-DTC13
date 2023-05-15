@@ -4,7 +4,8 @@ import { useSession, signOut } from "next-auth/react";
 export default function LogoutButton() {
     const { data: session, status } = useSession();
 
-    async function handleLogout() {
+    async function handleLogout(event) {
+        event.preventDefault();
         signOut();
 
         const options = {
@@ -31,6 +32,6 @@ export default function LogoutButton() {
     }
 
     return ( 
-        <>  {status == "authenticated" ?  <Button onClick={handleLogout}>Logout</Button> : null}</>
+        <>  {status == "authenticated" ?  <Button onClick={(event) => {handleLogout(event)}}>Logout</Button> : null}</>
     )
 }
