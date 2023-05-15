@@ -27,6 +27,6 @@ export default function LogoutButton() {
     }
 
     return ( 
-        <>  {status == "authenticated" ?  <Button onClick={(event) => {handleLogout(event)}}>Logout</Button> : null}</>
+        <>  {status == "authenticated" ?  <Button width={"80px"} onClick={(event) => {handleLogout(event)}}>Logout</Button> : null}</>
     )
 }

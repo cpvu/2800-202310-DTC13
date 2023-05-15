@@ -17,22 +17,19 @@ import LogoutButton from "./LogoutButton";
 
 export default function Navbar() {
   const isDesktop = useBreakpointValue({ md: false, xl: true });
-  const { data: session, status } = useSession()
-
-  useEffect(()=> {
-    console.log(session)
-  })
+  const { data: session, status } = useSession();
 
   const navigationButtons = [{ name: "Watchlist", route: "/" }, { name: "Search", route: "/searchcoin" }, { name: "FAQ", route: "/" }, { name: "Settings", route: "/" }]
 
   return (
     <Container
-      py={{ sm: "1", base: "1", lg: "3" }}
+      py={{ sm: "1", base: "1", lg: "2" }}
       bg={useColorModeValue("gray.300", "gray.500")}
       minW={"100vw"}
       position={isDesktop ? "static" : "sticky"}
       bottom={isDesktop ? "auto" : "0"}
       zIndex={10}
+      minH={"60px"}
     >
       <HStack spacing="11" justify="space-between">
         <Flex justify="space-between" flex="1">
@@ -47,34 +44,23 @@ export default function Navbar() {
             ))}
           </ButtonGroup>
         </Flex>
-
-        {isDesktop && status != "authenticated" ? (
+        
+        {isDesktop && status != "authenticated" && (
           <Link href="/signup">
             <Button>Signup</Button>
           </Link>
-        ) :  null}
+        )}
 
         {isDesktop && status !="authenticated" ? (
           <Link href="/login">
-            <Button>Login</Button>
+            <Button py={{ sm: "1", base: "1", lg: "2" }} >Login</Button>
           </Link>
         ) : null}
 
-        {isDesktop && status == "authenticated" ? 
-        <LogoutButton></LogoutButton>
-      : null}
+        {isDesktop && status == "authenticated" &&
+        (<LogoutButton py={{ sm: "1", base: "1", lg: "2" }}></LogoutButton>)}
+
       </HStack>
     </Container>
   );
-}
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-  console.log(session)
-
-  return {
-    props: {
-      session: session,
-    },
-  };
 }
