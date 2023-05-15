@@ -60,9 +60,9 @@ export default function Navbar() {
           </Link>
         ) : null}
 
-        {isDesktop && status == "authenticated" ? <Link href="./signup">
+        {isDesktop && status == "authenticated" ? 
         <LogoutButton></LogoutButton>
-      </Link> : null}
+      : null}
       </HStack>
     </Container>
   );
