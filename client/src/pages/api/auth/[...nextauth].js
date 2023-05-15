@@ -34,7 +34,7 @@ const options = {
             console.log(responseJSON);
 
             if (responseJSON.authenticated) {
-                return { id: 1, name: 'Admin' };
+                return { id: 1, name: credentials.username };
               } 
           } catch (err) {
             console.log(err);
