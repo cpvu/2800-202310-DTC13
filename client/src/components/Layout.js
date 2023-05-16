@@ -1,7 +1,7 @@
 import Navbar from "./Navbar";
-import { Container } from "@chakra-ui/react";
+import { Container, Flex, useColorModeValue } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import Footer from "./footer";
+import Footer from "./Footer";
 
 export default function Layout({ children }) {
   const [isDesktop, setIsDesktop] = useState(null);
@@ -26,18 +26,19 @@ export default function Layout({ children }) {
 
   return (
     <>
-      <Container
+      <Flex
         minH={"100vh"}
         minW={"100vw"}
         display="flex"
         flexDirection="column"
         overflow="hidden"
-        p={0}
+        bg={useColorModeValue("white.50", "gray.800")}
       >
         {isDesktop && <Navbar />}
         {children}
-      </Container>
-      <Footer></Footer>
+        <Container flex={"1"}></Container>
+        <Footer></Footer>
+      </Flex>
       {!isDesktop && <Navbar />}
     </>
   );
