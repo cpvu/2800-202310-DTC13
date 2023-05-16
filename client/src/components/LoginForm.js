@@ -13,9 +13,9 @@ import {
   useColorModeValue,
   ButtonSpinner,
 } from "@chakra-ui/react";
+import React, { useRef } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import { useRouter } from "next/router";
-import { signIn, getSession } from "next-auth/react"
+import Router, { useRouter } from "next/router";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -27,17 +27,33 @@ export default function LoginForm() {
 
   async function handleLogin(values, { setSubmitting }) {
     setTimeout(async () => {
-      const baseURL = process.env.NEXT_PUBLIC_CLIENT_BASE_URL;
-
-      console.log(baseURL)
-
-      const result = await signIn('credentials', {
-        username: values.username,
+      const payload = {
+        email: values.username,
         password: values.password,
-        callbackUrl: baseURL + '/searchcoin'
-      });
+      };
+
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      };
+
+      try {
+        let response = await fetch("http://localhost:8000/api/login", options);
+        let responseJSON = await response.json();
+
+        if (responseJSON.authenticated) {
+          router.push("/searchcoin");
+        }
+
+        console.log(responseJSON);
+      } catch (err) {
+        console.log(err);
+      }
+
       setSubmitting(false);
-      alert("Successfully logged in!")
     }, 1000);
   }
 
@@ -48,7 +64,6 @@ export default function LoginForm() {
       align={"center"}
       justify={"center"}
       flex={"1"}
-      bg={useColorModeValue("gray.50", "gray.800")}
     >
       <Stack
         align={"center"}
@@ -69,7 +84,6 @@ export default function LoginForm() {
         </Stack>
         <Box
           rounded={"lg"}
-          bg={useColorModeValue("white", "gray.700")}
           boxShadow={"lg"}
           minW={"20vw"}
           align={"center"}
@@ -80,10 +94,10 @@ export default function LoginForm() {
               {({ isSubmitting, values, handleChange, handleBlur }) => (
                 <Form>
                   <FormControl id="username" isRequired>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Email address</FormLabel>
                     <Input
                       type="text"
-                      name="username"
+                      name="email"
                       onChange={handleChange}
                       value={values.username}
                     />
@@ -105,7 +119,7 @@ export default function LoginForm() {
                       justify={"space-between"}
                     >
                       <Checkbox>Remember me</Checkbox>
-                      <Link href="/forgot/password" color={"blue.400"}>Forgot password?</Link>
+                      <Link color={"blue.400"}>Forgot password?</Link>
                     </Stack>
                     <Button
                       bg={"blue.400"}

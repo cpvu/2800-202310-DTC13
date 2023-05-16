@@ -48,12 +48,11 @@ export default function SignUpForm() {
         let response = await fetch(baseURL + SIGN_UP_ENDPOINT, options);
         let responseJSON = await response.json();
         router.push("/login");
-
       } catch (err) {
         //setErrors({ server: error.message });
         console.log(err);
       }
-      alert("Successfully signed up!")
+      alert("Successfully signed up!");
     });
     setSubmitting(false);
   }
@@ -65,7 +64,6 @@ export default function SignUpForm() {
       align={"center"}
       justify={"center"}
       flex={"1"}
-      bg={useColorModeValue("gray.50", "gray.800")}
     >
       <Stack spacing={4} px={{ base: 4, md: 6 }}>
         <Stack align={"center"} spacing={2}>
