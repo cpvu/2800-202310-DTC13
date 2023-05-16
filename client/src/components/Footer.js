@@ -8,7 +8,13 @@ import {
 
 export default function Footer() {
   return (
-    <Container as="footer" role="contentinfo" py={{ base: "12", md: "16" }}>
+    <Container
+      as="footer"
+      role="contentinfo"
+      pt={{ base: "12", md: "16" }}
+      pb={{ base: "4", md: "6" }}
+      align={"center"}
+    >
       <Stack spacing={{ base: "4", md: "5" }}>
         <Stack justify="space-between" direction="row" align="center">
           <ButtonGroup variant="ghost">
