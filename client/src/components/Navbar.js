@@ -19,7 +19,12 @@ export default function Navbar() {
   const isDesktop = useBreakpointValue({ md: false, xl: true });
   const { data: session, status } = useSession();
 
-  const navigationButtons = [{ name: "Watchlist", route: "/" }, { name: "Search", route: "/searchcoin" }, { name: "FAQ", route: "/" }, { name: "Settings", route: "/" }]
+  const navigationButtons = [
+    { name: "Watchlist", route: "/" },
+    { name: "Search", route: "/searchcoin" },
+    { name: "FAQ", route: "/" },
+    { name: "Settings", route: "/" },
+  ];
 
   return (
     <Container
@@ -40,26 +45,28 @@ export default function Navbar() {
             py={{ base: "5", lg: "0" }}
           >
             {navigationButtons.map((item, index) => (
-              <Link key={index} href={item.route}><Button key={index}>{item.name}</Button></Link>
+              <Link key={index} href={item.route}>
+                <Button key={index}>{item.name}</Button>
+              </Link>
             ))}
           </ButtonGroup>
         </Flex>
-        
+
         {isDesktop && status != "authenticated" && (
           <Link href="/signup">
             <Button>Signup</Button>
           </Link>
         )}
 
-        {isDesktop && status !="authenticated" ? (
+        {isDesktop && status != "authenticated" ? (
           <Link href="/login">
-            <Button py={{ sm: "1", base: "1", lg: "2" }} >Login</Button>
+            <Button py={{ sm: "1", base: "1", lg: "2" }}>Login</Button>
           </Link>
         ) : null}
 
-        {isDesktop && status == "authenticated" &&
-        (<LogoutButton py={{ sm: "1", base: "1", lg: "2" }}></LogoutButton>)}
-
+        {isDesktop && status == "authenticated" && (
+          <LogoutButton py={{ sm: "1", base: "1", lg: "2" }}></LogoutButton>
+        )}
       </HStack>
     </Container>
   );
