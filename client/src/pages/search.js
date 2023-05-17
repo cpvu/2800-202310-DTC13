@@ -18,20 +18,17 @@ import {
   AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
 
-export default function Searchtoken() {
+export default function SearchToken() {
   const router = useRouter();
   const { data: session } = useSession();
 
   let tokens = ["ETH", "Bitcoin"];
 
   async function handleSuggestions(token) {
-    console.log(token);
     router.push({
       pathname: `/search/${token}`,
       query: { token: `${token}` },
     });
-
-    return;
   }
 
   return (
@@ -53,7 +50,7 @@ export default function Searchtoken() {
                           value={token}
                           name={token}
                           textTransform="capitalize"
-                          onClick={(e) => handleSuggestions(token)}
+                          onClick={() => handleSuggestions(token)}
                         >
                           {token}
                         </AutoCompleteItem>
