@@ -1,8 +1,15 @@
-import HomeHeader from "./HomeHeader";
-import LoginForm from "./LoginForm";
-import Navbar from "./Navbar";
-import SignUpForm from "./SignUpForm";
-import ForgotPasswordForm from "./ForgotPasswordForm";
-import ResetPasswordForm from "./ResetPasswordForm";
+import HomeHeader from "./home/HomeHeader";
+import LoginForm from "./login/LoginForm";
+import Navbar from "./common/Navbar";
+import SignUpForm from "./signup/SignUpForm";
+import ForgotPasswordForm from "./forgotpassword/ForgotPasswordForm";
+import ResetPasswordForm from "./resetpassword/ResetPasswordForm";
 
-export { HomeHeader, LoginForm, Navbar, SignUpForm, ForgotPasswordForm, ResetPasswordForm };
+export {
+  HomeHeader,
+  LoginForm,
+  Navbar,
+  SignUpForm,
+  ForgotPasswordForm,
+  ResetPasswordForm,
+};

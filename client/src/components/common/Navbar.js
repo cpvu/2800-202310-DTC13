@@ -21,7 +21,7 @@ export default function Navbar() {
 
   const navigationButtons = [
     { name: "Watchlist", route: "/" },
-    { name: "Search", route: "/search" },
+    { name: "Search", route: "/searchcoin" },
     { name: "FAQ", route: "/" },
     { name: "Settings", route: "/" },
   ];
@@ -49,9 +49,12 @@ export default function Navbar() {
                 <Button key={index}>{item.name}</Button>
               </Link>
             ))}
+
+            <Button visibility={"hidden"}></Button>
           </ButtonGroup>
         </Flex>
 
+        <Button visibility={"hidden"}></Button>
         {isDesktop && status != "authenticated" && (
           <Link href="/signup">
             <Button>Signup</Button>
