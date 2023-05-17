@@ -20,10 +20,6 @@ export default function Layout({ children }) {
     };
   }, []);
 
-  if (isDesktop === null) {
-    return null; // Render null or loading state while isDesktop is being determined
-  }
-
   return (
     <>
       <Flex
