@@ -1,5 +1,6 @@
 import { Container, Stack, ButtonGroup, IconButton, Text } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
+import SnakeMiniGame from "./SnakeMiniGame";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -8,7 +9,7 @@ export default function Footer() {
 
   useEffect(() => {
     if (easterEggCount === 5) {
-      window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+      SnakeMiniGame();
     }
   }, [easterEggCount]);
 
@@ -18,7 +19,7 @@ export default function Footer() {
 
     clickTimeout = setTimeout(() => {
       setEasterEggCount(0);
-    }, 3000); 
+    }, 3000);
   };
 
   return (
