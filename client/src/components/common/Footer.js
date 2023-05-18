@@ -1,5 +1,6 @@
 import { Container, Stack, ButtonGroup, IconButton, Text } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
+import SnakeMiniGame from "../SnakeMiniGame";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
