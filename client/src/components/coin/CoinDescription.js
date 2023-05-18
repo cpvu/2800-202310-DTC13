@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Box } from "@chakra-ui/react";
 
 export default function CoinDescription() {
   //const [description, setDescription] = useState("");
@@ -20,9 +21,15 @@ export default function CoinDescription() {
   }, []);
 
   return (
-    <div>
+    <Box>  
       <h2>Ethereum Description</h2>
       <p>{description}</p>
-    </div>
+      <h2>Ethereum Description</h2>
+      <p>{description}</p>
+      <h2>Ethereum Description</h2>
+      <p>{description}</p>
+      <h2>Ethereum Description</h2>
+      <p>{description}</p>
+    </Box>
   );
 };
