@@ -16,7 +16,7 @@ import { useEffect } from "react";
 import LogoutButton from "./LogoutButton";
 
 export default function Navbar() {
-  const isDesktop = useBreakpointValue({ md: false, xl: true });
+  const isDesktop = useBreakpointValue({ sm: false, xl: true });
   const { data: session, status } = useSession();
 
   const navigationButtons = [
@@ -30,8 +30,8 @@ export default function Navbar() {
     <Container
       py={{ sm: "1", base: "1", lg: "2" }}
       bg={useColorModeValue("gray.300", "gray.500")}
-      minW={"100vw"}
-      position={isDesktop ? "static" : "sticky"}
+      minW={"100%"}
+      position={isDesktop ? "static" : "fixed"}
       bottom={isDesktop ? "auto" : "0"}
       zIndex={10}
       minH={"60px"}
