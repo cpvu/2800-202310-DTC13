@@ -32,7 +32,7 @@ export default function Layout({ children }) {
       >
         {isDesktop && <Navbar />}
         {children}
-        <Container ></Container>
+        <Container flex={"1"} ></Container>
         <Footer></Footer>
         {!isDesktop && <Navbar />}
       </Flex>
