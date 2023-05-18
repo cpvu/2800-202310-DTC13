@@ -30,10 +30,10 @@ export default function Navbar() {
     <Container
       py={{ sm: "1", base: "1", lg: "2" }}
       bg={useColorModeValue("gray.300", "gray.500")}
-      minW={"100vw"}
-      position={isDesktop ? "static" : "sticky"}
-      bottom={isDesktop ? "auto" : "0"}
-      zIndex={10}
+      minW={"100%"}
+      position={{ base: "fixed", md: "static" }}
+      bottom={{ base: 0, md: "auto" }}
+      zIndex="999"
       minH={"60px"}
     >
       <HStack spacing="11" justify="space-between">

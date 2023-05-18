@@ -23,6 +23,28 @@ export default function CoinDescription() {
     <div>
       <h2>Ethereum Description</h2>
       <p>{description}</p>
+      <h2>Ethereum Description</h2>
+      <p>{description}</p>
+      <h2>Ethereum Description</h2>
+      <p>{description}</p>
+      <h2>Ethereum Description</h2>
+      <p>{description}</p>
+      <h2>Ethereum Description</h2>
+      <p>{description}</p>
+      <h2>Ethereum Description</h2>
+      <p>{description}</p>
+      <h2>Ethereum Description</h2>
+      <p>{description}</p>
+      <h2>Ethereum Description</h2>
+      <p>{description}</p>
+      <h2>Ethereum Description</h2>
+      <p>{description}</p>
+      <h2>Ethereum Description</h2>
+      <p>{description}</p>
+      <h2>Ethereum Description</h2>
+      <p>{description}</p>
+      <h2>Ethereum Description</h2>
+      <p>{description}</p>
     </div>
   );
 };
