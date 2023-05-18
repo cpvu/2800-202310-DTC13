@@ -16,8 +16,6 @@ const customTheme = extendTheme({
       "html, body": {
         overscrollBehavior: "none",
         scrollBehavior: "smooth",
-        height: "100%",
-        width: "100%",
       },
     },
   },
