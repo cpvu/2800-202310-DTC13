@@ -22,12 +22,12 @@ export default function SearchToken() {
   const router = useRouter();
   const { data: session } = useSession();
 
-  let tokens = ["ETH", "Bitcoin"];
+  let tokens = {"Ethereum": "ETHUSDT","Bitcoin": "BTCUSD"};
 
   async function handleSuggestions(token) {
     router.push({
       pathname: `/search/${token}`,
-      query: { token: `${token}` },
+      query: { token: `${token}`, symbol: `${tokens[token]}` },
     });
   }
 
@@ -44,11 +44,11 @@ export default function SearchToken() {
                   <AutoComplete openOnFocus>
                     <AutoCompleteInput variant="filled" />
                     <AutoCompleteList>
-                      {tokens.map((token, cid) => (
+                      {Object.keys(tokens).map((token, cid) => (
                         <AutoCompleteItem
                           key={`option-${cid}`}
-                          value={token}
-                          name={token}
+                          value={tokens[token]}
+                          name={tokens[token]}
                           textTransform="capitalize"
                           onClick={() => handleSuggestions(token)}
                         >

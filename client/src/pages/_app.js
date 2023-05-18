@@ -1,7 +1,7 @@
 //import "@/styles/globals.css";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import Layout from "../components/Layout";
 import { SessionProvider } from "next-auth/react";
+import Layout from "@/components/layouts/Layout";
 
 const customTheme = extendTheme({
   breakpoints: {

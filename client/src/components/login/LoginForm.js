@@ -48,7 +48,6 @@ export default function LoginForm() {
       align={"center"}
       justify={"center"}
       flex={"1"}
-      bg={useColorModeValue("gray.50", "gray.800")}
     >
       <Stack
         align={"center"}

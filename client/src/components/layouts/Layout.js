@@ -1,9 +1,18 @@
-import Navbar from "./Navbar";
-import { Container, Flex, useColorModeValue } from "@chakra-ui/react";
+import Navbar from "../common/Navbar";
+import {
+  Container,
+  Flex,
+  useColorModeValue,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import Footer from "./Footer";
+import Footer from "../common/Footer";
+import dynamic from "next/dynamic";
+
+const ComponentA = dynamic(() => import("../common/Navbar"));
 
 export default function Layout({ children }) {
+  const [isSmallerScreen] = useMediaQuery("(max-width: 48em)");
   const [isDesktop, setIsDesktop] = useState(null);
 
   useEffect(() => {
@@ -30,12 +39,24 @@ export default function Layout({ children }) {
         overflow="hidden"
         bg={useColorModeValue("white.50", "gray.800")}
       >
-        {isDesktop && <Navbar />}
-        {children}
-        <Container flex={"1"}></Container>
-        <Footer></Footer>
+        {isSmallerScreen ? (
+          <>
+            {" "}
+            {children}
+            <Container flex={"1"}></Container>
+            <Footer></Footer>
+            {<Navbar />}
+          </>
+        ) : (
+          <>
+            {" "}
+            {<Navbar />}
+            {children}
+            <Container flex={"1"}></Container>
+            <Footer></Footer>
+          </>
+        )}
       </Flex>
-      {!isDesktop && <Navbar />}
     </>
   );
 }

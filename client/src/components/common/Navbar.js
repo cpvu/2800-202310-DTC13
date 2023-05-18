@@ -49,9 +49,12 @@ export default function Navbar() {
                 <Button key={index}>{item.name}</Button>
               </Link>
             ))}
+
+            <Button visibility={"hidden"}></Button>
           </ButtonGroup>
         </Flex>
 
+        <Button visibility={"hidden"}></Button>
         {isDesktop && status != "authenticated" && (
           <Link href="/signup">
             <Button>Signup</Button>
