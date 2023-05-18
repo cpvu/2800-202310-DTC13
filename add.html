@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Table with User Input</title>
+</head>
+<body>
+  <input type="text" id="textInput" placeholder="Enter data">
+  <button id="addButton">Add Row</button>
+  <table id="myTable">
+    <thead>
+      <tr>
+        <th>Row</th>
+        <th>Data</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const inputElement = document.getElementById('textInput');
+    const tableBody = document.querySelector('#myTable tbody');
+    const addButton = document.getElementById('addButton');
+    let tableData = [];
+
+    // Retrieve saved data from local storage if available
+    if (localStorage.getItem('tableData')) {
+      tableData = JSON.parse(localStorage.getItem('tableData'));
+      populateTable();
+    }
+
+    function addRow() {
+      const inputValue = inputElement.value.trim();
+      if (inputValue !== '') {
+        const row = tableBody.insertRow();
+        const cell1 = row.insertCell();
+        const cell2 = row.insertCell();
+        const cell3 = row.insertCell();
+
+        cell1.textContent = 'Row ' + (tableBody.rows.length);
+        cell2.textContent = inputValue;
+        cell3.innerHTML = '<button class="deleteButton">Delete</button>';
+
+        // Save the data to the tableData array
+        tableData.push({ row: cell1.textContent, data: cell2.textContent });
+
+        saveDataToLocalStorage(); // Save data to local storage
+
+        inputElement.value = ''; // Clear the input field
+      }
+    }
+
+    function deleteRow(row) {
+      const rowIndex = row.rowIndex - 1; // Subtract 1 to adjust for the table header
+      row.remove();
+
+      // Remove the corresponding data from the tableData array
+      tableData.splice(rowIndex, 1);
+
+      saveDataToLocalStorage(); // Save data to local storage
+    }
+
+    function populateTable() {
+      tableData.forEach((data, index) => {
+        const row = tableBody.insertRow();
+        const cell1 = row.insertCell();
+        const cell2 = row.insertCell();
+        const cell3 = row.insertCell();
+
+        cell1.textContent = data.row;
+        cell2.textContent = data.data;
+        cell3.innerHTML = '<button class="deleteButton">Delete</button>';
+
+        // Add event listener to the delete button
+        cell3.querySelector('.deleteButton').addEventListener('click', () => deleteRow(row));
+      });
+    }
+
+    function saveDataToLocalStorage() {
+      localStorage.setItem('tableData', JSON.stringify(tableData));
+    }
+
+    addButton.addEventListener('click', addRow);
+
+    // Example usage: Print the tableData array
+    function printTableData() {
+      console.log(tableData);
+    }
+  </script>
+</body>
+</html>

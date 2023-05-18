@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   email: String,
   password: String,
   resetToken: String,
+  records: [{"record": String}]
 });
 
 export const User = mongoose.model("User", userSchema);

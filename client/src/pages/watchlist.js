@@ -95,8 +95,6 @@ const server = http.createServer((req, res) => {
       const formData = new URLSearchParams(body);
       const newRow = {
         column1: formData.get('column1'),
-        column2: formData.get('column2'),
-        column3: formData.get('column3')
       };
       tableRows.push(newRow);
       res.statusCode = 302;
