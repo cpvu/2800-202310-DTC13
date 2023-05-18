@@ -22,7 +22,7 @@ export default function SearchToken() {
   const router = useRouter();
   const { data: session } = useSession();
 
-  let tokens = {"Ethereum": "ETHUSDT","Bitcoin": "BTCUSD"};
+  let tokens = {"Ethereum": "ETHUSDT","Bitcoin": "BTCUSDT"};
 
   async function handleSuggestions(token) {
     router.push({
