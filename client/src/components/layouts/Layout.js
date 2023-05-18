@@ -2,15 +2,30 @@ import Navbar from "../common/Navbar";
 import { Container, Flex, Box, useMediaQuery } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Footer from "../common/Footer";
-import dynamic from "next/dynamic";
-
-const DynamicNavbar = dynamic(() => import("../common/Navbar"), {
-  ssr: true,
-});
+import BottomNavbar from "../common/BottomNavbar";
 
 export default function Layout({ children }) {
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [shouldRenderBottomNavbar, setShouldRenderBottomNavbar] = useState(false);
 
-  const [isDesktop] = useMediaQuery("(min-width: 768px)");
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+
+    const handleResize = () => {
+      setIsDesktop(mediaQuery.matches);
+      setShouldRenderBottomNavbar(!mediaQuery.matches);
+    };
+
+    handleResize(); // Set the initial value
+
+    // Add event listener for resize
+    mediaQuery.addEventListener("change", handleResize);
+
+    // Clean up the event listener
+    return () => {
+      mediaQuery.removeEventListener("change", handleResize);
+    };
+  }, []);
 
   return (
     <>
@@ -22,10 +37,11 @@ export default function Layout({ children }) {
         overflow="hidden"
         p={0}
       >
-        {<DynamicNavbar />}
+        {isDesktop && <Navbar />}
         {children}
-        <Container id ="root" flex={"1"}></Container>
+        <Container id="root" flex={"1"}></Container>
         <Footer></Footer>
+        {shouldRenderBottomNavbar && <BottomNavbar />}
       </Flex>
     </>
   );
