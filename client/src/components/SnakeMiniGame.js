@@ -1,3 +1,4 @@
+
 export default function SnakeMiniGame() {
     const canvasStyles = {
         backgroundColor: 'black',
@@ -11,7 +12,7 @@ export default function SnakeMiniGame() {
 
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    document.body.prepend(canvas);
+    document.getElementById("root").appendChild(canvas);
 
     const SCREEN_WIDTH = 700;
     const SCREEN_HEIGHT = 700;
@@ -181,16 +182,16 @@ export default function SnakeMiniGame() {
 
     canvas.width = SCREEN_WIDTH;
     canvas.height = SCREEN_HEIGHT;
+    canvas.style.border = '10px solid gray';
+    canvas.style.backgroundColor = 'black';
+    canvas.style.display = 'block';
+    canvas.style.justifyContent = 'center';
     document.addEventListener('keydown', keyPressed);
     startGame();
 
     return (
         <div>
-            <canvas
-                width={SCREEN_WIDTH}
-                height={SCREEN_HEIGHT}
-                style={canvasStyles}
-            ></canvas>
+            <canvas ></canvas>
         </div>
     );
 

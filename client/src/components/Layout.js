@@ -29,10 +29,13 @@ export default function Layout({ children }) {
         flexDirection="column"
         overflow="hidden"
         bg={useColorModeValue("white.50", "gray.800")}
+        justifyContent="center" // Add this line
+        alignItems="center" // Add this line
       >
         {isDesktop && <Navbar />}
         {children}
         <Container flex={"1"}></Container>
+        <div id="root"></div>
         <Footer></Footer>
       </Flex>
       {!isDesktop && <Navbar />}
