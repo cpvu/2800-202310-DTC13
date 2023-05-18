@@ -2,21 +2,33 @@ import { useSession } from "next-auth/react";
 import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import {
-  Stack,
   Container,
   Heading,
   HStack,
   Box,
-  Center,
-  Divider,
+  Text
 } from "@chakra-ui/react";
 import TokenPageDivider from "@/components/coin/TokenPageDivider";
+import CoinPrice from "@/components/coin/CoinPrice";
+import fetchCoinPrice from "@/components/coin/services/fetchCoinPrice";
+import CoinDescription from "@/components/coin/CoinDescription";
 
-export default function CryptocurrencyCoinPage() {
+
+export default function CryptocurrencyCoinPage({ token, symbol, initialPrice, volume }) {
   const router = useRouter();
   const { data: session } = useSession();
+    const [price, setPrice] = useState(initialPrice);
 
-  let { token } = router.query;
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const updatedPrice = await fetchCoinPrice(symbol);
+      const formattedPrice = (Math.floor(updatedPrice.lastPrice * 100) / 100).toFixed(2);
+      setPrice(formattedPrice);
+    }, 1000); 
+
+    return () => clearInterval(interval);
+  }, [price]);
+
 
   return (
     <Container
@@ -40,9 +52,42 @@ export default function CryptocurrencyCoinPage() {
       >
         <Box>{session ? <Heading>{token}</Heading> : <p></p>}</Box>
         <TokenPageDivider />
-        <Box>{session ? <Heading>Price</Heading> : <p></p>}</Box>
+        <CoinPrice price={price}></CoinPrice>
+        <TokenPageDivider />
+        <Box minH={"100%"} display={"flex"} flexDirection={"column"}>
+          <Box display={"flex"} flexDirection={"row"}>
+            <Heading  py={"3px"}  size={"md"}>Symbol:</Heading> 
+            <Text py={"4px"} mx={"5px"}>{symbol}</Text>
+          </Box>
+          <Box display={"flex"} flexDirection={"row"}>
+            <Heading  py={"3px"}  size={"md"}>Volume:</Heading> 
+            <Text py={"4px"} mx={"5px"}>{volume}</Text>
+          </Box>
+        </Box>
         <TokenPageDivider />
       </HStack>
+      <Box p={"20px"}>
+        <CoinDescription></CoinDescription>
+      </Box>
     </Container>
   );
+}
+
+
+export async function getServerSideProps(context) {
+
+  const { token, symbol } = context.query;
+  let price = await fetchCoinPrice(symbol);
+
+  const volume = (Math.floor(price.volume * 100) / 100).toFixed(2)
+  const lastPrice = (Math.floor(price.lastPrice * 100) / 100).toFixed(2)
+
+  return {
+    props: {
+      initialPrice: lastPrice,
+      token: token, 
+      symbol: symbol,
+      volume: volume
+    }
+  }
 }
