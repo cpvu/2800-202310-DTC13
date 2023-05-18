@@ -14,16 +14,21 @@ import fetchCoinPrice from "@/components/coin/services/fetchCoinPrice";
 import CoinDescription from "@/components/coin/CoinDescription";
 
 
-export default function CryptocurrencyCoinPage({ token, symbol, initialPrice, volume }) {
+export default function CryptocurrencyCoinPage({ invalid, token, symbol, initialPrice, volume }) {
   const router = useRouter();
   const { data: session } = useSession();
     const [price, setPrice] = useState(initialPrice);
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      const updatedPrice = await fetchCoinPrice(symbol);
-      const formattedPrice = (Math.floor(updatedPrice.lastPrice * 100) / 100).toFixed(2);
-      setPrice(formattedPrice);
+      try {
+        const updatedPrice = await fetchCoinPrice(symbol);
+        const formattedPrice = (Math.floor(updatedPrice.lastPrice * 100) / 100).toFixed(2);
+        setPrice(formattedPrice);
+      } catch (e) {
+        console.log(e)
+      }
+  
     }, 1000); 
 
     return () => clearInterval(interval);
@@ -77,17 +82,27 @@ export default function CryptocurrencyCoinPage({ token, symbol, initialPrice, vo
 export async function getServerSideProps(context) {
 
   const { token, symbol } = context.query;
-  let price = await fetchCoinPrice(symbol);
 
-  const volume = (Math.floor(price.volume * 100) / 100).toFixed(2)
-  const lastPrice = (Math.floor(price.lastPrice * 100) / 100).toFixed(2)
-
-  return {
-    props: {
-      initialPrice: lastPrice,
-      token: token, 
-      symbol: symbol,
-      volume: volume
-    }
+  if (!token || !symbol) {
+    return { notFound: true };
   }
+  try {
+    let price = await fetchCoinPrice(symbol);
+    const volume = (Math.floor(price.volume * 100) / 100).toFixed(2)
+    const lastPrice = (Math.floor(price.lastPrice * 100) / 100).toFixed(2)
+
+    return {
+      props: {
+        initialPrice: lastPrice,
+        token: token, 
+        symbol: symbol,
+        volume: volume
+      }
+    }
+
+  } catch (e) {
+    return { notFound: true };
+  }
+
+
 }
