@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
 import LogoutButton from "./LogoutButton";
 
 export default function Navbar() {
@@ -23,7 +22,7 @@ export default function Navbar() {
     { name: "Watchlist", route: "/" },
     { name: "Search", route: "/search" },
     { name: "FAQ", route: "/" },
-    { name: "Settings", route: "/" },
+    { name: "Settings", route: "/settings" },
   ];
 
   return (

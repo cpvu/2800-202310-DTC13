@@ -20,7 +20,6 @@ export default function LogoutButton() {
           try {
             let response = await fetch(baseURL + "/api/logout", options);    
           } catch (err) {
-            //setErrors({ server: error.message });
             console.log(err);
           }
 
