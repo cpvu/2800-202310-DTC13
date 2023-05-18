@@ -7,6 +7,7 @@ export default function Settings() {
     const { data: session } = useSession()
     return (
         <>
+            {session ? 
             <Box minW={"40vh"} w={"25%"} maxW="50%" minH={"40vh"} mx="auto" p={"80px"} bg="light blue" boxShadow="lg" borderRadius="md" mt={"100"} bgGradient="linear(to-r, #E2E8F0, #EDF2F7)">
                 <Box textAlign="center" mb={8}>
                     <Avatar size="xl" name="John Doe" src="/path-to-profile-image.jpg" mb={2} />
@@ -48,6 +49,7 @@ export default function Settings() {
 
                 <Button colorScheme="blue">Save Changes</Button>
             </Box>
+            : <h1>Unauthorized</h1>}
         </>
     )
 }
