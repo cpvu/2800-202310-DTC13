@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { postLogin, postSignup, postLogout, postSendResetPasswordEmail, postResetPassword, getCoinDescription } from "../controllers/index.js";
+import { postLogin, postSignup, postLogout, postSendResetPasswordEmail, postResetPassword, getCoinDescription, postAskQuestion } from "../controllers/index.js";
 
 export const apiRouter = () => {
     const router = Router();
@@ -12,7 +12,8 @@ export const apiRouter = () => {
     router.post("/resetPassword/:token", postResetPassword);
 
     // Chat GPT Model API Routes
-    router.get("/coinDescription", getCoinDescription); 
+    router.get("/coinDescription", getCoinDescription);
+    router.post("/askQuestion", postAskQuestion);
 
     return router;
 }
