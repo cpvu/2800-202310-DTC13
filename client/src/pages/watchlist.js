@@ -1,45 +1,54 @@
-import { useSession, getSession } from "next-auth/react"
-import { Router, useRouter } from "next/router";
-const express = require('express');
-const app = express();
-const session = require('express-session')
-const usersModel = require('./server/src/models/authScema');
 
-export default function addRecord() {
-    const router = useRouter()
-    const { data: session } = useSession()
-    return (
-        <>
-        {session ? <> <h1>Welcome</h1>
-        <p>Add a coin to your records!</p>
-        <input type="input"></input>
-        <h1>{session.user.name}</h1>   </>: <h1>Sign up or login to get access!</h1>}
-        </>
-    )
-}
+// // import { useSession, getSession } from "next-auth/react"
+// // import { Router, useRouter } from "next/router";
 
-export async function getServerSideProps(context) {
-    const session = await getSession(context);
-    return {
-      props: {
-        session: session,
-      },
-    };
-  }
+// // export default function SearchCoin() {
+// //     const router = useRouter()
+// //     const { data: session } = useSession()
+// //     return (
+// //         <>
+// //         {session ? <> <h1>Welcome User!</h1>
+// //         <p>Insert a coin to your Record!</p>
+// //         <input type="input" id="record_value"></input>
+// //         <h1>{session.user.name}</h1>   </>: <h1>Sign up or login to get access!</h1>}
+// //         </>
+// //     )
+// // }
 
+// const usersModel = require('./server/src/models/authSchema');
 
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-let tableRows = [];
+const DATA_FILE = path.join(__dirname, 'data.json');
 
-export default function generateTable() {
+
+// replace
+let tableRows = [
+    { record: 'A' },
+    { record: 'B' }
+  ];
+
+function loadData() {
+  if (fs.existsSync(DATA_FILE)) {
+    const data = fs.readFileSync(DATA_FILE, 'utf8');
+    tableRows = JSON.parse(data);
+  }
+}
+
+function saveData() {
+  const data = JSON.stringify(tableRows);
+  fs.writeFileSync(DATA_FILE, data, 'utf8');
+}
+
+function generateTable() {
   let tableBody = '';
-  for (const row of tableRows) {
+  for (const [index, row] of tableRows.entries()) {
     tableBody += '<tr>';
-    tableBody += '<td>' + row.column1 + '</td>';
-    tableBody += '<td><button onclick="deleteRow(this)">Delete</button></td>';
+    tableBody += '<td>' + row.record + '</td>';
+    tableBody +=
+      '<td><button onclick="deleteRow(' + index + ')">Delete</button></td>';
     tableBody += '</tr>';
   }
 
@@ -54,13 +63,13 @@ export default function generateTable() {
     '<body>' +
     '<h1>Dynamically Generated Table</h1>' +
     '<form id="addForm" method="POST">' +
-    '<input type="text" name="column1" placeholder="Column 1" required>' +
+    '<input type="text" name="record" placeholder="Record" required>' +
     '<button type="submit">Add Row</button>' +
     '</form>' +
     '<table>' +
     '<thead>' +
     '<tr>' +
-    '<th>Column 1</th>' +
+    '<th>Record</th>' +
     '<th></th>' +
     '</tr>' +
     '</thead>' +
@@ -69,10 +78,11 @@ export default function generateTable() {
     '</tbody>' +
     '</table>' +
     '<script>' +
-    'function deleteRow(button) {' +
-    'const row = button.parentNode.parentNode;' +
-    'const rowIndex = row.rowIndex - 1;' +
-    'row.remove();' +
+    'function deleteRow(index) {' +
+    '  fetch("/", { method: "DELETE", body: JSON.stringify({ index }) })' +
+    '    .then(function () {' +
+    '      location.reload();' +
+    '    });' +
     '}' +
     '</script>' +
     '</body>' +
@@ -82,8 +92,10 @@ export default function generateTable() {
 
 const server = http.createServer((req, res) => {
   if (req.url === '/' && req.method === 'GET') {
+    
     res.setHeader('Content-Type', 'text/html');
     res.statusCode = 200;
+    loadData();
     const html = generateTable();
     res.end(html);
   } else if (req.url === '/' && req.method === 'POST') {
@@ -94,11 +106,28 @@ const server = http.createServer((req, res) => {
     req.on('end', () => {
       const formData = new URLSearchParams(body);
       const newRow = {
-        column1: formData.get('column1'),
+        record: formData.get('record'),
       };
       tableRows.push(newRow);
+      saveData();
       res.statusCode = 302;
       res.setHeader('Location', '/');
+      res.end();
+    });
+  } else if (req.url === '/' && req.method === 'DELETE') {
+    let body = '';
+    req.on('data', (chunk) => {
+      body += chunk.toString();
+    });
+    req.on('end', () => {
+      const { index } = JSON.parse(body);
+      if (index >= 0 && index < tableRows.length) {
+        tableRows.splice(index, 1);
+        saveData();
+        res.statusCode = 200;
+      } else {
+        res.statusCode = 400;
+      }
       res.end();
     });
   } else {
@@ -107,54 +136,6 @@ const server = http.createServer((req, res) => {
   }
 });
 
-app.use(express.urlencoded({ extended: false }))
-
-
-app.get('/watchlist', async (req, res) => {
-    const result = await usersModel.findOne( { username: req.session.username })
-    records = result.records
-    let watchlist = ` <form action="/addRecord" method="POST">
-    <label for="x"> Add new item</label>
-    <input type="text" value="item name goes here" id="x" placeholder="item name">
-    <input type="submit" value="Add">
-</form>`
-
-    records.forEach(function(record)  {
-        watchlist += ` <li>
-        <ul>
-            <li>
-                ${record.record}
-            </li>
-            <li>
-                <form action="deleteRecord" method="POST">
-                    <input type="hidden" value="">
-                    <input type="submit" value="Delete">
-                </form>
-            </li>
-        </ul>
-    </li>`
-    })
-    res.render(watchlist)
-})
-
-
-app.post('/addRecord', async (req, res) => {
-    const updateResult = await usersModel.updateOne({ username: req.session.username }, { $push: { records: { "record": req.body.theLabelOfThenNewItem } } })
-    console.log(updateResult);
-    res.redirect('/watchlist');
-})
-
-
-app.post('/deleteRecord', async (req, res) => {
-    try {
-        const result = await usersModel.findOne({ username: req.session.username })
-        const newArr = result.todos.filter(todoItem =>
-            todoItem.name != req.body.x
-        )
-        const updateResult = await usersModel.updateOne({ username: req.session.username }, { $set: { todos: newArr } })
-        res.redirect('/watchlist');
-    }
-    catch (error) {
-        console.log(error);
-    }
-})
+server.listen(3000, 'localhost', () => {
+  console.log('Server running at http://localhost:3000/');
+});
