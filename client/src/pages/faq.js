@@ -1,6 +1,33 @@
 import { Box, Button, ChakraProvider, Textarea, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+
+
+const handleClickEvent = async (event) => {
+    const prompt = document.getElementsByName('prompt')[0].value;
+    const ChatBox = document.getElementById('ChatBox');
+    const newQuestion = document.createElement('div');
+    newQuestion.innerHTML = `<h3 style="font-size: 18px; font-weight: bold; margin-bottom: 8px;">Q: ${prompt}</h3>`;
+    ChatBox.appendChild(newQuestion);
+    document.getElementsByName('prompt')[0].value = '';
+    event.preventDefault();
+    await fetch("http://localhost:8000/api/askQuestion", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            prompt: prompt,
+        }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            const newAnswer = document.createElement('p');
+            newAnswer.innerHTML = `A: ${data.bot}`;
+            ChatBox.appendChild(newAnswer);
+        }
+        );
+};
 const FAQPage = () => {
     return (
         <ChakraProvider>
@@ -17,7 +44,7 @@ const FAQPage = () => {
                         borderRadius={20}
                         maxWidth={600}
                     >
-                        <div>
+                        <div id='ChatBox'>
                             <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '16px' }}>FAQ</h2>
                             <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '8px' }}>Q: What is cryptocurrency?</h3>
                             <p style={{ marginBottom: '16px' }}>A: Cryptocurrency is a digital or virtual form of currency that uses cryptography for secure financial transactions, control the creation of new units, and verify the transfer of assets.</p>
@@ -62,7 +89,7 @@ const FAQPage = () => {
                                 _placeholder={{ color: 'gray.500' }}
                                 _hover={{ borderColor: 'gray.400' }}
                             ></Textarea>
-                            <Button colorScheme="blue" size="lg" width="100%">
+                            <Button colorScheme="blue" size="lg" width="100%" onClick={handleClickEvent}>
                                 Send Prompt
                             </Button>
                         </form>
