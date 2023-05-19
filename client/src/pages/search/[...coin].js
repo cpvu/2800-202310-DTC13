@@ -13,88 +13,105 @@ import CoinPrice from "@/components/coin/CoinPrice";
 import fetchCoinPrice from "@/components/coin/services/fetchCoinPrice";
 import CoinDescription from "@/components/coin/CoinDescription";
 
-
-export default function CryptocurrencyCoinPage({ invalid, token, symbol, initialPrice, volume }) {
+export default function CryptocurrencyCoinPage({ invalid, coin, symbol, initialPrice, volume }) {
   const router = useRouter();
   const { data: session } = useSession();
-    const [price, setPrice] = useState(initialPrice);
+  const [price, setPrice] = useState(initialPrice);
 
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
-        const updatedPrice = await fetchCoinPrice(symbol);
-        const formattedPrice = (Math.floor(updatedPrice.lastPrice * 100) / 100).toFixed(2);
-        setPrice(formattedPrice);
+        let updatedPrice = await fetchCoinPrice(symbol);
+
+        if (updatedPrice.lastPrice > 1) {
+          updatedPrice = (Math.floor(updatedPrice.lastPrice * 100) / 100).toFixed(2);
+        } else {
+          updatedPrice = updatedPrice.lastPrice
+        }
+
+        setPrice(updatedPrice);
       } catch (e) {
         console.log(e)
       }
-  
-    }, 1000); 
+
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [price]);
 
 
   return (
-    <Container
-      border={"1px"}
-      borderColor={"gray.300"}
-      mx={"auto"}
-      mt={"60px"}
-      minH={"100%"}
-      width={"85%"}
-      maxW={"85%"}
-      boxShadow={"0px 2px 4px rgba(0, 0, 0, 0.1)"}
-    >
-      <HStack
-        border={"1px"}
-        borderColor={"gray.300"}
-        width={"100%"}
-        maxWidth={"100%"}
-        my={"25px"}
-        p={"20px"}
-        overflow={"hidden"}
-      >
-        <Box>{session ? <Heading>{token}</Heading> : <p></p>}</Box>
-        <TokenPageDivider />
-        <CoinPrice price={price}></CoinPrice>
-        <TokenPageDivider />
-        <Box minH={"100%"} display={"flex"} flexDirection={"column"}>
-          <Box display={"flex"} flexDirection={"row"}>
-            <Heading  py={"3px"}  size={"md"}>Symbol:</Heading> 
-            <Text py={"4px"} mx={"5px"}>{symbol}</Text>
+    <>
+      {session ?
+        <Container
+          border={"1px"}
+          borderColor={"gray.300"}
+          mx={"auto"}
+          mt={"60px"}
+          minH={"100%"}
+          width={"85%"}
+          maxW={"85%"}
+          boxShadow={"0px 2px 4px rgba(0, 0, 0, 0.1)"}
+        >
+          <HStack
+            border={"1px"}
+            borderColor={"gray.300"}
+            width={"100%"}
+            maxWidth={"100%"}
+            my={"25px"}
+            p={"20px"}
+            overflow={"hidden"}
+          >
+            <Box>{session ? <Heading>{coin}</Heading> : <p></p>}</Box>
+            <TokenPageDivider />
+            <CoinPrice price={price}></CoinPrice>
+            <TokenPageDivider />
+            <Box minH={"100%"} display={"flex"} flexDirection={"column"}>
+              <Box display={"flex"} flexDirection={"row"}>
+                <Heading py={"3px"} size={"md"}>Symbol:</Heading>
+                <Text py={"4px"} mx={"5px"}>{symbol}</Text>
+              </Box>
+              <Box display={"flex"} flexDirection={"row"}>
+                <Heading py={"3px"} size={"md"}>Volume:</Heading>
+                <Text py={"4px"} mx={"5px"}>{volume}</Text>
+              </Box>
+            </Box>
+            <TokenPageDivider />
+          </HStack>
+          <Box p={"20px"}>
+            <CoinDescription></CoinDescription>
           </Box>
-          <Box display={"flex"} flexDirection={"row"}>
-            <Heading  py={"3px"}  size={"md"}>Volume:</Heading> 
-            <Text py={"4px"} mx={"5px"}>{volume}</Text>
-          </Box>
-        </Box>
-        <TokenPageDivider />
-      </HStack>
-      <Box p={"20px"}>
-        <CoinDescription></CoinDescription>
-      </Box>
-    </Container>
+        </Container>
+        : <h1>Unauthorized</h1>}
+    </>
   );
+
 }
 
 
 export async function getServerSideProps(context) {
 
-  const { token, symbol } = context.query;
+  const { coin, symbol } = context.query;
 
-  if (!token || !symbol) {
+  if (!coin || !symbol) {
     return { notFound: true };
   }
   try {
     let price = await fetchCoinPrice(symbol);
+  
     const volume = (Math.floor(price.volume * 100) / 100).toFixed(2)
-    const lastPrice = (Math.floor(price.lastPrice * 100) / 100).toFixed(2)
+    let lastPrice = price.lastPrice
+
+    if (price.lastPrice > 1) {
+      lastPrice = (Math.floor(price.lastPrice * 100) / 100).toFixed(2)
+    }
+
+    console.log(lastPrice)
 
     return {
       props: {
         initialPrice: lastPrice,
-        token: token, 
+        coin: coin,
         symbol: symbol,
         volume: volume
       }

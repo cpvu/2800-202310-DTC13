@@ -17,17 +17,16 @@ import {
   AutoCompleteItem,
   AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
+import { COINS } from "@/constants/coins";
 
 export default function SearchToken() {
   const router = useRouter();
   const { data: session } = useSession();
 
-  let tokens = {"Ethereum": "ETHUSDT","Bitcoin": "BTCUSDT"};
-
-  async function handleSuggestions(token) {
+  async function handleSuggestions(coin) {
     router.push({
-      pathname: `/search/${token}`,
-      query: { token: `${token}`, symbol: `${tokens[token]}` },
+      pathname: `/search/${coin}`,
+      query: { coin: `${coin}`, symbol: `${COINS[coin]}` },
     });
   }
 
@@ -44,15 +43,15 @@ export default function SearchToken() {
                   <AutoComplete openOnFocus>
                     <AutoCompleteInput variant="filled" />
                     <AutoCompleteList>
-                      {Object.keys(tokens).map((token, cid) => (
+                      {Object.keys(COINS).map((coin, cid) => (
                         <AutoCompleteItem
                           key={`option-${cid}`}
-                          value={tokens[token]}
-                          name={tokens[token]}
+                          value={COINS[coin]}
+                          name={COINS[coin]}
                           textTransform="capitalize"
-                          onClick={() => handleSuggestions(token)}
+                          onClick={() => handleSuggestions(coin)}
                         >
-                          {token}
+                          {coin}
                         </AutoCompleteItem>
                       ))}
                     </AutoCompleteList>

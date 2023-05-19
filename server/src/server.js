@@ -18,7 +18,7 @@ export let expressServer = () => {
     });
 
     console.log("Mongoose connected")
-
+    
     const app = express();
 
     app.use(bodyParser.urlencoded({ extended: true }));
@@ -38,6 +38,7 @@ export let expressServer = () => {
         }),
       })
     );
+
     app.use("/api", apiRouter());
 
     return app;
@@ -45,10 +46,6 @@ export let expressServer = () => {
   } catch (e) {
     console.log(e)
   }
-
-
-  //add root routes here and router
-
 }
 
 export const checkSession = (req, res, next) => {

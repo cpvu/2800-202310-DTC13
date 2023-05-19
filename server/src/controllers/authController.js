@@ -113,17 +113,19 @@ export const postLogout = (req, res) => {
   });
 };
 
-// Attempting to implement reset password functionality
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASS,
-  }
-});
 
 export const postSendResetPasswordEmail = async (req, res) => {
   try {
+
+    // Attempting to implement reset password functionality
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
+      }
+    });
+
     const { email } = req.body;
 
     const existingUser = await User.findOne({ email: email });
@@ -161,7 +163,7 @@ export const postSendResetPasswordEmail = async (req, res) => {
 };
 
 
-export const postChangePassword = async (req, res) => {
+export const postResetPassword = async (req, res) => {
   const schema = Joi.object({
     newPassword: Joi.string().required(),
   });
