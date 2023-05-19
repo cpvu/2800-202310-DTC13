@@ -25,7 +25,7 @@ export const postAskQuestion = async (req, res) => {
     try {
         // AI response
         const prompt = req.body.prompt;
-        const gptPrompt = `Describe ${prompt} in detail assuming I have no knowledge in this.`;
+        const gptPrompt = `Describe ${prompt} assuming I have no knowledge in this. After you are done, provide me a link to learn more about ${prompt}.`;
 
         const response = await openaiAPI.createCompletion({
             model: "text-davinci-003",
