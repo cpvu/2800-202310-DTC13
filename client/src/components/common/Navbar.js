@@ -21,7 +21,7 @@ export default function Navbar() {
   const navigationButtons = [
     { name: "Watchlist", route: "/" },
     { name: "Search", route: "/search" },
-    { name: "FAQ", route: "/" },
+    { name: "FAQ", route: "/faq" },
     { name: "Settings", route: "/settings" },
   ];
 
