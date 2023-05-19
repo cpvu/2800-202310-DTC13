@@ -1,14 +1,27 @@
-export default async function fetchCoinInformation() {
+import { COIN_INFORMATION } from "@/constants/endpoints";
+
+export default async function fetchCoinInformation(coin) {
     try {
-        const options = {
-            "method": "GET", 
-            "Content-header": "application/json"
+
+        const payload = {
+            "coin": coin
         }
 
-        const baseURL = process.env.NEXT_PUBLIC_CLIENT_BASE_URL;
-        const endpoint = 
+        const options = {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json",   
+            },
+            body: JSON.stringify(payload),
+        }
 
-        let coinInformation = await fetch()
+        const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+        const endpoint = COIN_INFORMATION;
+
+        let response = await fetch(baseURL + endpoint, options);
+
+        return response.json();
+
     } catch (e) {
         console.log("Error fetching coin information");
         console.log(e); 
