@@ -1,3 +1,4 @@
+import { FAQ_ENDPOINT } from '@/constants/endpoints';
 import { Box, Button, ChakraProvider, Textarea, VStack } from '@chakra-ui/react';
 import React from 'react';
 
@@ -11,7 +12,8 @@ const handleClickEvent = async (event) => {
     ChatBox.appendChild(newQuestion);
     document.getElementsByName('prompt')[0].value = '';
     event.preventDefault();
-    await fetch("http://localhost:8000/api/askQuestion", {
+    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+    await fetch(baseURL + FAQ_ENDPOINT, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
