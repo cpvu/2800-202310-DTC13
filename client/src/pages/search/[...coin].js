@@ -13,8 +13,7 @@ import CoinPrice from "@/components/coin/CoinPrice";
 import fetchCoinPrice from "@/components/coin/services/fetchCoinPrice";
 import CoinDescription from "@/components/coin/CoinDescription";
 
-
-export default function CryptocurrencyCoinPage({ invalid, token, symbol, initialPrice, volume }) {
+export default function CryptocurrencyCoinPage({ invalid, coin, symbol, initialPrice, volume }) {
   const router = useRouter();
   const { data: session } = useSession();
   const [price, setPrice] = useState(initialPrice);
@@ -22,9 +21,15 @@ export default function CryptocurrencyCoinPage({ invalid, token, symbol, initial
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
-        const updatedPrice = await fetchCoinPrice(symbol);
-        const formattedPrice = (Math.floor(updatedPrice.lastPrice * 100) / 100).toFixed(2);
-        setPrice(formattedPrice);
+        let updatedPrice = await fetchCoinPrice(symbol);
+
+        if (updatedPrice.lastPrice > 1) {
+          updatedPrice = (Math.floor(updatedPrice.lastPrice * 100) / 100).toFixed(2);
+        } else {
+          updatedPrice = updatedPrice.lastPrice
+        }
+
+        setPrice(updatedPrice);
       } catch (e) {
         console.log(e)
       }
@@ -57,7 +62,7 @@ export default function CryptocurrencyCoinPage({ invalid, token, symbol, initial
             p={"20px"}
             overflow={"hidden"}
           >
-            <Box>{session ? <Heading>{token}</Heading> : <p></p>}</Box>
+            <Box>{session ? <Heading>{coin}</Heading> : <p></p>}</Box>
             <TokenPageDivider />
             <CoinPrice price={price}></CoinPrice>
             <TokenPageDivider />
@@ -86,20 +91,27 @@ export default function CryptocurrencyCoinPage({ invalid, token, symbol, initial
 
 export async function getServerSideProps(context) {
 
-  const { token, symbol } = context.query;
+  const { coin, symbol } = context.query;
 
-  if (!token || !symbol) {
+  if (!coin || !symbol) {
     return { notFound: true };
   }
   try {
     let price = await fetchCoinPrice(symbol);
+  
     const volume = (Math.floor(price.volume * 100) / 100).toFixed(2)
-    const lastPrice = (Math.floor(price.lastPrice * 100) / 100).toFixed(2)
+    let lastPrice = price.lastPrice
+
+    if (price.lastPrice > 1) {
+      lastPrice = (Math.floor(price.lastPrice * 100) / 100).toFixed(2)
+    }
+
+    console.log(lastPrice)
 
     return {
       props: {
         initialPrice: lastPrice,
-        token: token,
+        coin: coin,
         symbol: symbol,
         volume: volume
       }
