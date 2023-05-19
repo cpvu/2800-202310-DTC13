@@ -1,0 +1,24 @@
+{
+    "functions": {
+      "timeout": 30
+    },
+    "routes": [
+      {
+        "src": "/search/.*",
+        "dest": "/client/src/pages/search/[...coin].js",
+        "methods": ["GET"],
+        "headers": {
+          "Cache-Control": "no-cache"
+        },
+        "continue": true,
+        "status": 200,
+        "rewrites": [
+          {
+            "source": "/(.*)",
+            "destination": "/client/src/pages/search/[...coin].js"
+          }
+        ]
+      }
+    ]
+  }
+  
