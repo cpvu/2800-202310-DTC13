@@ -1,6 +1,8 @@
 import { openaiAPI } from "../utils/openai/openai.js";
 
-export const getCoinDescription = async (req, res) => {
+export const postCoinDescription = async (req, res) => {
+
+    const {coin} = req.body; 
 
     try {
         const response = await openaiAPI.createCompletion({
