@@ -1,6 +1,10 @@
 import { useSession } from "next-auth/react";
 import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import TokenPageDivider from "@/components/coin/TokenPageDivider";
+import CoinPrice from "@/components/coin/CoinPrice";
+import fetchCoinPrice from "@/components/coin/services/fetchCoinPrice";
+import CoinDescription from "@/components/coin/CoinDescription";
 import {
   Container,
   Heading,
@@ -8,16 +12,12 @@ import {
   Box,
   Text
 } from "@chakra-ui/react";
-import TokenPageDivider from "@/components/coin/TokenPageDivider";
-import CoinPrice from "@/components/coin/CoinPrice";
-import fetchCoinPrice from "@/components/coin/services/fetchCoinPrice";
-import CoinDescription from "@/components/coin/CoinDescription";
 
-export default function CryptocurrencyCoinPage({ invalid, coin, symbol, initialPrice, volume }) {
-  const router = useRouter();
+export default function CryptocurrencyCoinPage({coin, symbol, initialPrice, volume }) {
   const { data: session } = useSession();
   const [price, setPrice] = useState(initialPrice);
 
+  //Update coin price dynamically at an interval of 1s
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
@@ -38,7 +38,6 @@ export default function CryptocurrencyCoinPage({ invalid, coin, symbol, initialP
 
     return () => clearInterval(interval);
   }, [price]);
-
 
   return (
     <>
@@ -96,8 +95,11 @@ export async function getServerSideProps(context) {
   if (!coin || !symbol) {
     return { notFound: true };
   }
+
   try {
     let price = await fetchCoinPrice(symbol);
+    let coinInformation = await fetchCoinInformation(symbol)
+    console.log(symbol)
   
     const volume = (Math.floor(price.volume * 100) / 100).toFixed(2)
     let lastPrice = price.lastPrice
@@ -105,8 +107,6 @@ export async function getServerSideProps(context) {
     if (price.lastPrice > 1) {
       lastPrice = (Math.floor(price.lastPrice * 100) / 100).toFixed(2)
     }
-
-    console.log(lastPrice)
 
     return {
       props: {
@@ -120,6 +120,4 @@ export async function getServerSideProps(context) {
   } catch (e) {
     return { notFound: true };
   }
-
-
 }
