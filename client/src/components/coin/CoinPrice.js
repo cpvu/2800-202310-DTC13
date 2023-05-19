@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 import fetchCoinPrice from "./services/fetchCoinPrice";
 import { useRouter } from "next/router";
 
-export default function CoinPrice({price}) {
+export default function CoinPrice({ price }) {
     return (
         <Box>
-            <Heading>{price}</Heading>
+            <Heading size={{ xs: "lg", lg: "2xl" }} >{price}</Heading>
         </Box>
     )
 }

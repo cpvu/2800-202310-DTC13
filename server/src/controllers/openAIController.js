@@ -1,22 +1,24 @@
 import { openaiAPI } from "../utils/openai/openai.js";
 
-export const getCoinDescription = async (req, res) => {
+export const postCoinDescription = async (req, res) => {
+
+    const { coin } = req.body; 
 
     try {
         const response = await openaiAPI.createCompletion({
             "model": "text-davinci-003",
-            "prompt": "What is crypto?",
-            "max_tokens": 400,
+            "prompt": `Give me a detailed description of ${coin} in this format: history (Make it detailed), founder, yearFounded, marketCap and currentSentiment as a json.`,
+            "max_tokens": 500,
             "temperature": 0,
             "top_p": 1,
             "n": 1,
             "stream": false,
             "logprobs": null,
         })
+        
+        const responseJSON = await JSON.parse(response.data.choices[0].text)
 
-        console.log(response.data.choices[0].text);
-
-        return res.status(200).json({ "text": response.data.choices[0].text });
+        return res.status(200).json(responseJSON);
     } catch (e) {
         console.log(e)
     }

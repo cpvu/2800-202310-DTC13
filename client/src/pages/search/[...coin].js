@@ -1,23 +1,27 @@
 import { useSession } from "next-auth/react";
 import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import TokenPageDivider from "@/components/coin/TokenPageDivider";
+import CoinPrice from "@/components/coin/CoinPrice";
+import fetchCoinPrice from "@/components/coin/services/fetchCoinPrice";
+import CoinDescription from "@/components/coin/CoinDescription";
 import {
   Container,
   Heading,
   HStack,
   Box,
-  Text
+  Text,
+  Flex,
+  useMediaQuery,
+  Stack
 } from "@chakra-ui/react";
-import TokenPageDivider from "@/components/coin/TokenPageDivider";
-import CoinPrice from "@/components/coin/CoinPrice";
-import fetchCoinPrice from "@/components/coin/services/fetchCoinPrice";
-import CoinDescription from "@/components/coin/CoinDescription";
+import fetchCoinInformation from "@/components/coin/services/fetchCoinInformation";
 
-export default function CryptocurrencyCoinPage({ invalid, coin, symbol, initialPrice, volume }) {
-  const router = useRouter();
+export default function CryptocurrencyCoinPage({ coin, symbol, initialPrice, volume, description }) {
   const { data: session } = useSession();
   const [price, setPrice] = useState(initialPrice);
 
+  //Update coin price dynamically at an interval of 1s
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
@@ -39,7 +43,6 @@ export default function CryptocurrencyCoinPage({ invalid, coin, symbol, initialP
     return () => clearInterval(interval);
   }, [price]);
 
-
   return (
     <>
       {session ?
@@ -47,7 +50,7 @@ export default function CryptocurrencyCoinPage({ invalid, coin, symbol, initialP
           border={"1px"}
           borderColor={"gray.300"}
           mx={"auto"}
-          mt={"60px"}
+          mt={"50px"}
           minH={"100%"}
           width={"85%"}
           maxW={"85%"}
@@ -58,28 +61,38 @@ export default function CryptocurrencyCoinPage({ invalid, coin, symbol, initialP
             borderColor={"gray.300"}
             width={"100%"}
             maxWidth={"100%"}
-            my={"25px"}
+            mt={"25px"}
+            mb={"10px"}
             p={"20px"}
             overflow={"hidden"}
           >
-            <Box>{session ? <Heading>{coin}</Heading> : <p></p>}</Box>
-            <TokenPageDivider />
-            <CoinPrice price={price}></CoinPrice>
-            <TokenPageDivider />
-            <Box minH={"100%"} display={"flex"} flexDirection={"column"}>
-              <Box display={"flex"} flexDirection={"row"}>
-                <Heading py={"3px"} size={"md"}>Symbol:</Heading>
-                <Text py={"4px"} mx={"5px"}>{symbol}</Text>
-              </Box>
-              <Box display={"flex"} flexDirection={"row"}>
-                <Heading py={"3px"} size={"md"}>Volume:</Heading>
-                <Text py={"4px"} mx={"5px"}>{volume}</Text>
-              </Box>
-            </Box>
-            <TokenPageDivider />
+            <Box><Heading size={{ base: "lg", lg: "xl" }}>{coin}</Heading></Box>
+            <TokenPageDivider></TokenPageDivider>
+            <Flex w={{ xs: "10%", lg: "100%" }} justify={{ xs: "left", lg: "right" }}><CoinPrice price={price}></CoinPrice></Flex>
           </HStack>
+
+          <Stack
+            direction={{ base: "column", lg: "row" }}
+            mb={"25px"}
+            mx={"auto"}
+            overflow={"hidden"}
+            px={{ base: "5px", lg: "15px" }}>
+      
+            <Box display={"flex"} flexDirection={"row"}>
+              <Heading py={"3px"} size={{ xs: "xs", lg: "sm" }}>Symbol:</Heading>
+              <Text py={"4px"} mx={"5px"} fontSize={{ xs: "xs", lg: "0.8em" }}>{symbol}</Text>
+            </Box>
+            <Box display={"flex"} flexDirection={"row"}>
+              <Heading py={"3px"} size={{ xs: "xs", lg: "sm" }}>Volume:</Heading>
+              <Text fontSize={{ xs: "xs", lg: "0.8em" }} py={"4px"} mx={"5px"}>{volume}</Text>
+            </Box>
+            <Box display={"flex"} flexDirection={"row"}>
+              <Heading py={"3px"} size={{ xs: "xs", lg: "sm" }}>Sentiment</Heading>
+              <Text fontSize={{ xs: "xs", lg: "0.8em" }} py={"4px"} mx={"5px"}>{description.currentSentiment}</Text>
+            </Box>
+          </Stack>
           <Box p={"20px"}>
-            <CoinDescription></CoinDescription>
+            <CoinDescription description={description}></CoinDescription>
           </Box>
         </Container>
         : <h1>Unauthorized</h1>}
@@ -88,7 +101,6 @@ export default function CryptocurrencyCoinPage({ invalid, coin, symbol, initialP
 
 }
 
-
 export async function getServerSideProps(context) {
 
   const { coin, symbol } = context.query;
@@ -96,9 +108,11 @@ export async function getServerSideProps(context) {
   if (!coin || !symbol) {
     return { notFound: true };
   }
+
   try {
     let price = await fetchCoinPrice(symbol);
-  
+    let coinDescription = await fetchCoinInformation(coin);
+
     const volume = (Math.floor(price.volume * 100) / 100).toFixed(2)
     let lastPrice = price.lastPrice
 
@@ -106,20 +120,17 @@ export async function getServerSideProps(context) {
       lastPrice = (Math.floor(price.lastPrice * 100) / 100).toFixed(2)
     }
 
-    console.log(lastPrice)
-
     return {
       props: {
         initialPrice: lastPrice,
         coin: coin,
         symbol: symbol,
-        volume: volume
+        volume: volume,
+        description: coinDescription
       }
     }
 
   } catch (e) {
     return { notFound: true };
   }
-
-
 }
