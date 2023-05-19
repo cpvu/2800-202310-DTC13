@@ -1,4 +1,4 @@
 import { postLogin, postSignup, postLogout, postSendResetPasswordEmail, postResetPassword } from "./authController.js";
-import { getCoinDescription, postAskQuestion } from "./openAIController.js";
+import { postCoinDescription, postAskQuestion } from "./openAiController.js";
 
-export { postLogin, postLogout, postResetPassword, postSignup, postSendResetPasswordEmail, getCoinDescription, postAskQuestion }
+export { postLogin, postLogout, postResetPassword, postSignup, postSendResetPasswordEmail, postAskQuestion, postCoinDescription }
