@@ -5,6 +5,7 @@ import { Box, Heading, FormControl, FormLabel, Button, Switch, Avatar, Input } f
 export default function Settings() {
     const router = useRouter()
     const { data: session } = useSession()
+    console.log(session.user.email)
     return (
         <>
             {session ? 
@@ -23,7 +24,7 @@ export default function Settings() {
                     <FormLabel htmlFor="darkMode" flex="1" mb={0}>
                         First Name:
                     </FormLabel>
-                    <Input type="text" bg={"white"} w={"40%"} placeholder="Calvin" />
+                    <Input type="text" bg={"white"} w={"40%"} placeholder={session.user} />
                 </FormControl>
 
                 <FormControl display="flex" alignItems="center" mb={6}>
