@@ -18,6 +18,8 @@ export const postCoinDescription = async (req, res) => {
         
         const responseJSON = await JSON.parse(response.data.choices[0].text)
 
+        console.log(responseJSON)
+
         return res.status(200).json(responseJSON);
     } catch (e) {
         console.log(e)
