@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import coinNews from "@/components/coin/CoinNews";
 import TokenPageDivider from "@/components/coin/TokenPageDivider";
 import CoinPrice from "@/components/coin/CoinPrice";
 import fetchCoinPrice from "@/components/coin/services/fetchCoinPrice";
@@ -12,34 +13,39 @@ import {
   Box,
   Text,
   Flex,
-  Stack
+  Stack,
+  Image,
+  Stat,
+  StatNumber,
+  StatHelpText,
+  StatArrow,
+  StatGroup,
 } from "@chakra-ui/react";
 import fetchCoinInformation from "@/components/coin/services/fetchCoinInformation";
+import fetchCoinNews from "@/components/coin/services/fetchCoinNews";
+import CustomStatLabel from "@/components/common/CustomStatLabel";
 
-export default function CryptocurrencyCoinPage({ coin, symbol, description }) {
+
+export default function CryptocurrencyCoinPage({ news, coin, symbol, description }) {
   const { data: session } = useSession();
+
   const [price, setPrice] = useState("0");
   const [volume, setVolume] = useState("0");
-
-  function roundPrice(price) {
-    let roundedPrice = price;
-
-    if (price > 1) {
-      roundedPrice = (Math.floor(price * 100) / 100).toFixed(2);
-    } 
-
-    return roundedPrice;
-  }
+  const [hourHigh, setHourHigh] = useState("0");
+  const [hourLow, setHourLow] = useState("0");
+  const [imageUrl, setImageURL] = useState("");
 
   useEffect(() => {
     fetchCoinPrice(symbol).then(data => {
+      setImageURL(`/${coin}.png`);
       setVolume(data.volume);
+      setHourHigh(roundPrice(data.highPrice));
+      setHourLow(roundPrice(data.lowPrice));
       setPrice(roundPrice(data.lastPrice));
     }).catch(e => console.log(e));
 
   }, [])
 
-  //Update coin price dynamically at an interval of 1s
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
@@ -50,11 +56,20 @@ export default function CryptocurrencyCoinPage({ coin, symbol, description }) {
       } catch (e) {
         console.log(e)
       }
-
     }, 1000);
+
 
     return () => clearInterval(interval);
   }, [price]);
+
+  function roundPrice(price) {
+    let roundedPrice = price;
+
+    if (price > 1) {
+      roundedPrice = (Math.floor(price * 100) / 100).toFixed(2);
+    }
+    return roundedPrice;
+  }
 
   return (
     <>
@@ -76,37 +91,46 @@ export default function CryptocurrencyCoinPage({ coin, symbol, description }) {
             maxWidth={"100%"}
             mt={"25px"}
             mb={"10px"}
-            p={"20px"}
+            p={"15px"}
             overflow={"hidden"}
           >
+            <Image w={{ xs: "11%", lg: "3%" }} src={imageUrl} alt={coin} ></Image>
             <Box><Heading size={{ base: "lg", lg: "xl" }}>{coin}</Heading></Box>
             <TokenPageDivider></TokenPageDivider>
             <Flex w={{ xs: "10%", lg: "100%" }} justify={{ xs: "left", lg: "right" }}><CoinPrice price={price}></CoinPrice></Flex>
           </HStack>
 
-          <Stack
-            direction={{ base: "column", lg: "row" }}
-            mb={"25px"}
-            mx={"auto"}
-            overflow={"hidden"}
-            px={{ base: "5px", lg: "15px" }}>
-
-            <Box display={"flex"} flexDirection={"row"}>
-              <Heading py={"3px"} size={{ xs: "xs", lg: "sm" }}>Symbol:</Heading>
-              <Text py={"4px"} mx={"5px"} fontSize={{ xs: "xs", lg: "0.8em" }}>{symbol}</Text>
-            </Box>
-            <Box display={"flex"} flexDirection={"row"}>
-              <Heading py={"3px"} size={{ xs: "xs", lg: "sm" }}>Volume:</Heading>
-              <Text fontSize={{ xs: "xs", lg: "0.8em" }} py={"4px"} mx={"5px"}>{volume}</Text>
-            </Box>
-            <Box display={"flex"} flexDirection={"row"}>
-              <Heading py={"3px"} size={{ xs: "xs", lg: "sm" }}>Sentiment</Heading>
-              <Text fontSize={{ xs: "xs", lg: "0.8em" }} py={"4px"} mx={"5px"}>{description.currentSentiment}</Text>
-            </Box>
+          <Stack direction={{ xs: "column", lg: "row" }} mx={{ xs: "11px", lg: "15px" }}>
+            <Stat >
+              <CustomStatLabel text={"24h Change"}></CustomStatLabel>
+              <StatNumber fontSize={"0.85em"}> <StatArrow type='increase' />DOGEUSDT (23.36%)</StatNumber>
+            </Stat>
+            <Stat>
+              <CustomStatLabel text={"Volume"}></CustomStatLabel>
+              <StatNumber fontSize={"0.85em"}>{volume}</StatNumber>
+            </Stat>
+            <Stat>
+              <CustomStatLabel text={"Sentiment"}></CustomStatLabel>
+              <StatNumber fontSize={"0.85em"}>{description.currentSentiment}</StatNumber>
+            </Stat>
+            <Stat>
+              <CustomStatLabel text={"24 Hour Low"}></CustomStatLabel>
+              <StatNumber fontSize={"0.85em"}>{hourLow}</StatNumber>
+            </Stat>
+            <Stat>
+              <CustomStatLabel text={"24 Hour High"}></CustomStatLabel>
+              <StatNumber fontSize={"0.85em"}>{hourHigh}</StatNumber>
+            </Stat>
           </Stack>
           <Box p={"20px"}>
             <CoinDescription description={description}></CoinDescription>
           </Box>
+
+          {news ? news.map((newsItem) => (
+            <p>{newsItem.title}</p>
+          )) : <></>}
+
+
         </Container>
         : <h1>Unauthorized</h1>}
     </>
@@ -121,18 +145,19 @@ export async function getServerSideProps(context) {
     return { notFound: true };
   }
 
-  const news = await fetch("https://newsdata.io/api/1/news?apikey=pub_22499c45bb1fac4bfbd4adfb4a135e94affbe&qInTitle=ethereum&language=en")
-  const newsJSON = await news.json()
-  console.log(newsJSON.results.slice(0, 5));
-
   try {
-    let coinDescription = await fetchCoinInformation(coin);
+
+    let [coinDescription, coinNews] = await Promise.all([
+      fetchCoinInformation(coin),
+      fetchCoinNews(coin)
+    ]);
 
     return {
       props: {
         coin: coin,
         symbol: symbol,
-        description: coinDescription
+        description: coinDescription,
+        news: coinNews
       }
     }
 
