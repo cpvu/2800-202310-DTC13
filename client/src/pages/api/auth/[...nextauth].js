@@ -15,33 +15,28 @@ const options = {
           password: credentials.password
         }
         const options = {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-          };
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        };
 
-          console.log(credentials);
+        const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-          const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL; 
 
-          console.log(baseURL + LOGIN_ENDPOINT)
-    
-          try {
-            let response = await fetch(baseURL + LOGIN_ENDPOINT, options);
-            let responseJSON = await response.json();
-            console.log(responseJSON);
+        let response = await fetch(baseURL + LOGIN_ENDPOINT, options);
+        let responseJSON = await response.json();
 
-            if (responseJSON.authenticated) {
-                return { id: 1, name: credentials.username };
-              } 
-          } catch (err) {
-            console.log(err);
-          }
+        if (responseJSON.authenticated) {
+          return { id: 1, name: credentials.username };
+        } else {
+          throw new Error(responseJSON.message)
+        }
       },
     }),
   ],
+
   // Other NextAuth.js options
 };
 
