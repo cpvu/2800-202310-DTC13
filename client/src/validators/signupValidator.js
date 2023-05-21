@@ -4,7 +4,7 @@ import * as Yup from "yup";
 export const SignupSchema = Yup.object().shape({
     username: Yup.string()
       .min(5, "Username must be at least 5 characters")
-      .max(12, "Username must be less than 12 characters")
+      .max(20, "Username must be less than 12 characters")
       .required("Username is required"),
     firstName: Yup.string()
       .min(2, "First name must be at least 2 characters")

@@ -5,7 +5,6 @@ import {
   FormLabel,
   Input,
   InputGroup,
-  HStack,
   InputRightElement,
   Stack,
   Button,
@@ -13,6 +12,7 @@ import {
   Heading,
   Text,
   useColorModeValue,
+  ButtonSpinner,
   Link,
   useToast
 } from "@chakra-ui/react";
@@ -20,7 +20,7 @@ import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Formik, Form, ErrorMessage } from "formik";
 import { useRouter } from "next/router";
-import { SignupSchema } from "./SignupSchema";
+import { SignupSchema } from "@/validators/signupValidator";
 import { SIGN_UP_ENDPOINT } from "@/constants/endpoints";
 
 export default function SignUpForm() {
@@ -37,51 +37,57 @@ export default function SignUpForm() {
   };
 
   async function handleSignUp(values, { setSubmitting, setErrors }) {
-    setTimeout(async () => {
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      };
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    };
 
-      const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-      try {
-        let response = await fetch(baseURL + SIGN_UP_ENDPOINT, options);
-        let responseJSON = await response.json();
+    try {
+      let response = await fetch(baseURL + SIGN_UP_ENDPOINT, options);
+      let responseJSON = await response.json();
 
-        console.log(responseJSON)
-
-        if (!responseJSON.success) {
-          throw new Error(responseJSON.message)
-        }
-
-        toast({
-          title: "Succesfully signed up! ",
-          description: `Redirecting you to the login page`,
-          position: "top",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-
-        router.push("/login");
-
-      } catch (err) {
-        toast({
-          title: "Sign up Error",
-          description: `${err}`,
-          position: "top",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-        console.log(err);
+      if (!responseJSON.success) {
+        throw new Error(responseJSON.message)
       }
-    });
-    setSubmitting(false);
+
+      toast({
+        title: "Signing up...",
+        description: `Please wait while we process your account`,
+        position: "top",
+        status: "loading",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+
+      toast({
+        title: "Account successfully created",
+        description: `Login to get started!`,
+        position: "top",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      router.push("/login");
+
+    } catch (err) {
+      toast({
+        title: "Sign up Error",
+        description: `${err}`,
+        position: "top",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      console.log(err);
+    }
   }
 
   return (
@@ -187,16 +193,15 @@ export default function SignUpForm() {
                     <FormErrorMessage fontSize={"0.73em"}>{errors.password}</FormErrorMessage>
                   </FormControl>
                   <Button
-                    loadingText="Submitting"
-                    size="lg"
                     bg={"blue.400"}
                     color={"white"}
                     _hover={{
                       bg: "blue.500",
                     }}
                     type="submit"
+                    disabled={isSubmitting}
                   >
-                    Sign up
+                    {isSubmitting ? <ButtonSpinner /> : "Sign Up"}
                   </Button>
                   <Text align={"center"}>
                     Already a user? <Link color={"blue.400"}>Login</Link>
