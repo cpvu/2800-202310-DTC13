@@ -10,6 +10,7 @@ import {
   Stack,
   Heading,
   Button,
+  useToast
 } from "@chakra-ui/react";
 import * as React from "react";
 import {
@@ -22,9 +23,27 @@ import { COINS } from "@/constants/coins";
 
 export default function SearchToken() {
   const router = useRouter();
+  const toast = useToast();
   const { data: session } = useSession();
   const [selectedCoin, setSelectedCoin] = useState("");
   const [loading, setLoading] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false)
+
+  useEffect(() => {
+    const { success } = router.query;
+
+    if (success === "true" && !authenticated) {
+      toast({
+        title: "Successfully logged in!",
+        description: `Welcome back ${session.user.name}!`,
+        position: "top",
+        status: "success",
+        duration: 1000,
+        isClosable: true,
+      });
+    }
+    router.replace("/search");
+  }, [])
 
   async function handleSuggestions(coin) {
     setLoading(true);
@@ -51,10 +70,10 @@ export default function SearchToken() {
         <>
           <Box w={"100%"}>
             <Stack align={"center"} mt={{ lg: 220, xs: 150 }}>
-              <Heading size="2xl">Welcome {session.user.name}</Heading>         
+              <Heading size="2xl">Welcome {session.user.name}</Heading>
               <Flex pt="2em" justify="center" align="center" w="full" flexDirection={"column"}>
-              <FormLabel w={"50%"} mt={"px"} textAlign={"center"}>Search a token to generate the latest info with AI!</FormLabel>
-                <FormControl w={{sm: "50%", lg: "35%"}} justify="center" align="center">
+                <FormLabel w={"50%"} mt={"px"} textAlign={"center"}>Search a token to generate the latest info with AI!</FormLabel>
+                <FormControl w={{ sm: "50%", lg: "35%" }} justify="center" align="center">
                   <AutoComplete openOnFocus>
                     <AutoCompleteInput
                       variant="filled"
@@ -78,15 +97,15 @@ export default function SearchToken() {
                   <FormHelperText>
                     Select from the list of suggestions
                   </FormHelperText>
-                    <Button
-                      mt={4}
-                      colorScheme="teal"
-                      isLoading={loading}
-                      loadingText="Generating"
-                      onClick={handleSubmit}
-                    >
-                      Generate
-                    </Button>
+                  <Button
+                    mt={4}
+                    colorScheme="teal"
+                    isLoading={loading}
+                    loadingText="Generating"
+                    onClick={handleSubmit}
+                  >
+                    Generate
+                  </Button>
                 </FormControl>
               </Flex>
             </Stack>
