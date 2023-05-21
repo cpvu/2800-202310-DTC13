@@ -5,7 +5,9 @@ export default async function fetchCoinPrice(symbol) {
     }
     try {
         let response = await fetch(`https://api.binance.com/api/v1/ticker/24hr?symbol=${symbol}`, options);
-        return response.json();
+        let responseJSON = await response.json();
+        
+        return responseJSON;
     } catch (e) {
         console.log(e)
     }
