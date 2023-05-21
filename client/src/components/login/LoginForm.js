@@ -12,11 +12,13 @@ import {
   Text,
   useColorModeValue,
   ButtonSpinner,
+  FormErrorMessage,
   useToast
 } from "@chakra-ui/react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Form} from "formik";
 import { useRouter } from "next/router";
 import { signIn, getSession } from "next-auth/react";
+import { LoginSchema } from "@/validators/loginValidator";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -28,7 +30,6 @@ export default function LoginForm() {
   };
 
   async function handleLogin(values, { setSubmitting }) {
-
     toast({
       title: "Redirecting you to log in...",
       description: `Welcome back ${values.username}!`,
@@ -40,20 +41,17 @@ export default function LoginForm() {
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-   
+    const baseURL = process.env.NEXT_PUBLIC_CLIENT_BASE_URL;
 
-      const baseURL = process.env.NEXT_PUBLIC_CLIENT_BASE_URL;
-
-    try{
+    try {
       let result = await signIn("credentials", {
         username: values.username,
         password: values.password,
         callbackUrl: baseURL + "/search?success=true",
         redirect: false
-      }); 
+      });
 
-      if (result.error) {throw new Error(result.error)}
-
+      if (result.error) { throw new Error(result.error) }
       
       router.push(baseURL + "/search?success=true");
 
@@ -69,8 +67,6 @@ export default function LoginForm() {
         isClosable: true,
       });
     }
- 
-
   }
 
   return (
@@ -107,19 +103,21 @@ export default function LoginForm() {
           p={8}
         >
           <Stack spacing={4}>
-            <Formik initialValues={initialValues} onSubmit={handleLogin}>
-              {({ isSubmitting, values, handleChange, handleBlur }) => (
+            <Formik initialValues={initialValues} onSubmit={handleLogin} validationSchema={LoginSchema}>
+              {({ isSubmitting, values, handleChange, handleBlur, errors, touched }) => (
                 <Form>
-                  <FormControl id="username" isRequired>
+                  <FormControl id="username" isRequired isInvalid={!!errors.username && touched.username}>
                     <FormLabel>Username</FormLabel>
                     <Input
                       type="text"
                       name="username"
                       onChange={handleChange}
                       value={values.username}
+                      onBlur={handleBlur}
                     />
+                    <FormErrorMessage fontSize={"0.73em"}>{errors.username}</FormErrorMessage>
                   </FormControl>
-                  <FormControl id="password">
+                  <FormControl id="password" isRequired isInvalid={!!errors.password && touched.password}>
                     <FormLabel>Password</FormLabel>
                     <Input
                       type="password"
@@ -128,8 +126,9 @@ export default function LoginForm() {
                       onBlur={handleBlur}
                       value={values.password}
                     />
+                    <FormErrorMessage fontSize={"0.73em"}>{errors.password}</FormErrorMessage>
                   </FormControl>
-                  <Stack spacing={10}>
+                  <Stack spacing={10} mt={"8px"}>
                     <Stack
                       direction={{ base: "column", sm: "row" }}
                       align={"start"}
