@@ -12,6 +12,7 @@ import {
   Text,
   useColorModeValue,
   ButtonSpinner,
+  useToast
 } from "@chakra-ui/react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useRouter } from "next/router";
@@ -19,6 +20,7 @@ import { signIn, getSession } from "next-auth/react";
 
 export default function LoginForm() {
   const router = useRouter();
+  const toast = useToast();
 
   const initialValues = {
     username: "",
@@ -26,19 +28,49 @@ export default function LoginForm() {
   };
 
   async function handleLogin(values, { setSubmitting }) {
-    setTimeout(async () => {
-      const baseURL = process.env.NEXT_PUBLIC_CLIENT_BASE_URL;
-      console.log(baseURL);
 
-      const result = await signIn("credentials", {
+    toast({
+      title: "Redirecting you to log in...",
+      description: `Welcome back ${values.username}!`,
+      position: "top",
+      status: "loading",
+      duration: 1000,
+      isClosable: true,
+    });
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+   
+
+      const baseURL = process.env.NEXT_PUBLIC_CLIENT_BASE_URL;
+
+    try{
+      let result = await signIn("credentials", {
         username: values.username,
         password: values.password,
-        callbackUrl: baseURL + "/search",
-      });
+        callbackUrl: baseURL + "/search?success=true",
+        redirect: false
+      }); 
 
-      setSubmitting(false);
-      alert("Successfully logged in!");
-    }, 500);
+      if (result.error) {throw new Error(result.error)}
+
+      
+      router.push(baseURL + "/search?success=true");
+
+    } catch (e) {
+      console.log(e)
+
+      toast({
+        title: "Login error!",
+        description: `${e}`,
+        position: "top",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+ 
+
   }
 
   return (
