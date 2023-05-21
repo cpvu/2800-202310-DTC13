@@ -1,6 +1,26 @@
 import { Box, Heading, Text, Button, Container } from "@chakra-ui/react";
+import SnakeMiniGame from "../home/SnakeMiniGame";
+import { useEffect, useState } from "react";
 
 export default function HomeHeader() {
+  const [easterEggCount, setEasterEggCount] = useState(0);
+  let clickTimeout;
+
+  useEffect(() => {
+    if (easterEggCount === 5) {
+      SnakeMiniGame();
+    }
+  }, [easterEggCount]);
+
+  const handleTextClick = () => {
+    clearTimeout(clickTimeout);
+    setEasterEggCount(easterEggCount + 1);
+
+    clickTimeout = setTimeout(() => {
+      setEasterEggCount(0);
+    }, 3000);
+  };
+
   return (
     <Box
       maxW="32rem"
@@ -14,7 +34,7 @@ export default function HomeHeader() {
       boxShadow="rgba(0, 0, 0, 0.4) 0px 1px 8px"
     >
       <Container p={10} textAlign={"center"}>
-        <Heading fontSize={{ sm: "4xl", md: "7xl" }} mb={4}>
+        <Heading onClick={handleTextClick} fontSize={{ sm: "4xl", md: "7xl" }} mb={4}>
           Cryptoment AI
         </Heading>
         <Text fontSize="xl">Innovate your crypto learning and trading</Text>

@@ -12,28 +12,41 @@ import {
   Box,
   Text,
   Flex,
-  useMediaQuery,
   Stack
 } from "@chakra-ui/react";
 import fetchCoinInformation from "@/components/coin/services/fetchCoinInformation";
 
-export default function CryptocurrencyCoinPage({ coin, symbol, initialPrice, volume, description }) {
+export default function CryptocurrencyCoinPage({ coin, symbol, description }) {
   const { data: session } = useSession();
-  const [price, setPrice] = useState(initialPrice);
+  const [price, setPrice] = useState("0");
+  const [volume, setVolume] = useState("0");
+
+  function roundPrice(price) {
+    let roundedPrice = price;
+
+    if (price > 1) {
+      roundedPrice = (Math.floor(price * 100) / 100).toFixed(2);
+    } 
+
+    return roundedPrice;
+  }
+
+  useEffect(() => {
+    fetchCoinPrice(symbol).then(data => {
+      setVolume(data.volume);
+      setPrice(roundPrice(data.lastPrice));
+    }).catch(e => console.log(e));
+
+  }, [])
 
   //Update coin price dynamically at an interval of 1s
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
         let updatedPrice = await fetchCoinPrice(symbol);
+        let newPrice = roundPrice(updatedPrice.lastPrice)
+        setPrice(newPrice);
 
-        if (updatedPrice.lastPrice > 1) {
-          updatedPrice = (Math.floor(updatedPrice.lastPrice * 100) / 100).toFixed(2);
-        } else {
-          updatedPrice = updatedPrice.lastPrice
-        }
-
-        setPrice(updatedPrice);
       } catch (e) {
         console.log(e)
       }
@@ -77,7 +90,7 @@ export default function CryptocurrencyCoinPage({ coin, symbol, initialPrice, vol
             mx={"auto"}
             overflow={"hidden"}
             px={{ base: "5px", lg: "15px" }}>
-      
+
             <Box display={"flex"} flexDirection={"row"}>
               <Heading py={"3px"} size={{ xs: "xs", lg: "sm" }}>Symbol:</Heading>
               <Text py={"4px"} mx={"5px"} fontSize={{ xs: "xs", lg: "0.8em" }}>{symbol}</Text>
@@ -98,7 +111,6 @@ export default function CryptocurrencyCoinPage({ coin, symbol, initialPrice, vol
         : <h1>Unauthorized</h1>}
     </>
   );
-
 }
 
 export async function getServerSideProps(context) {
@@ -109,28 +121,23 @@ export async function getServerSideProps(context) {
     return { notFound: true };
   }
 
+  const news = await fetch("https://newsdata.io/api/1/news?apikey=pub_22499c45bb1fac4bfbd4adfb4a135e94affbe&qInTitle=ethereum&language=en")
+  const newsJSON = await news.json()
+  console.log(newsJSON.results.slice(0, 5));
+
   try {
-    let price = await fetchCoinPrice(symbol);
     let coinDescription = await fetchCoinInformation(coin);
-
-    const volume = (Math.floor(price.volume * 100) / 100).toFixed(2)
-    let lastPrice = price.lastPrice
-
-    if (price.lastPrice > 1) {
-      lastPrice = (Math.floor(price.lastPrice * 100) / 100).toFixed(2)
-    }
 
     return {
       props: {
-        initialPrice: lastPrice,
         coin: coin,
         symbol: symbol,
-        volume: volume,
         description: coinDescription
       }
     }
 
   } catch (e) {
+    console.log(e)
     return { notFound: true };
   }
 }
