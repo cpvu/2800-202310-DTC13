@@ -23,14 +23,14 @@ export const postSignup = async (req, res) => {
   if (error) {
     return res
       .status(400)
-      .json({ error: `Please provide ${error.details[0].message}.` });
+      .json({ success: false, messsage: `Please provide ${error.details[0].message}.` });
   }
 
   try {
     const existingUser = await User.findOne({ $or: [{ email: value.email }, { username: value.username }] });
     if (existingUser) {
       const message = existingUser.email === value.email ? `User with email ${value.email} already exists.` : `User with username ${value.username} already exists.`;
-      return res.status(400).json({ error: message });
+      return res.status(400).json({ success: false, message: message });
     }
 
     const hashedPassword = await bcrypt.hash(value.password, saltRounds);
@@ -53,12 +53,12 @@ export const postSignup = async (req, res) => {
       email: user.email,
     };
 
-    return res.status(200).json({ message: "Signup successful." });
+    return res.status(200).json({ success: true, message: "Signup successful." });
   } catch (error) {
     console.error(error);
     return res
       .status(500)
-      .json({ error: "Error occurred during signup. Please try again." });
+      .json({ success: false, message: "Error occurred during signup. Please try again." });
   }
 };
 
