@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import coinNews from "@/components/coin/CoinNews";
+import CoinNews from "@/components/coin/CoinNews";
 import TokenPageDivider from "@/components/coin/TokenPageDivider";
 import CoinPrice from "@/components/coin/CoinPrice";
 import fetchCoinPrice from "@/components/coin/services/fetchCoinPrice";
@@ -126,10 +126,7 @@ export default function CryptocurrencyCoinPage({ news, coin, symbol, description
             <CoinDescription description={description}></CoinDescription>
           </Box>
 
-          {news ? news.map((newsItem) => (
-            <p>{newsItem.title}</p>
-          )) : <></>}
-
+          <CoinNews news={news}></CoinNews>
 
         </Container>
         : <h1>Unauthorized</h1>}
