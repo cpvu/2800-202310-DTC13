@@ -19,7 +19,7 @@ export default function Navbar() {
   const { data: session, status } = useSession();
 
   const navigationButtons = [
-    { name: "Watchlist", route: "/" },
+    { name: "Watchlist", route: "/watchlist" },
     { name: "Search", route: "/search" },
     { name: "FAQ", route: "/faq" },
     { name: "Settings", route: "/settings" },
