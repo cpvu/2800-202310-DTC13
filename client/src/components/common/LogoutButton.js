@@ -21,13 +21,14 @@ export default function LogoutButton() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: {}
+      credentials:"include"
     };
 
     const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     try {
       let response = await fetch(baseURL + "/api/logout", options);
+
     } catch (err) {
       console.log(err);
     }
