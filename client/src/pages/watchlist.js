@@ -29,21 +29,21 @@ export default function Watchlist() {
                     <Thead>
                         <Tr>
                             {["Name", "Symbol", "Price", "Average Price"].map(heading => {
-                                return (<Th>{heading}</Th>)
+                                return (<Th key={heading}>{heading}</Th>)
                             })}
 
                         </Tr>
                     </Thead>
                     <Tbody>
 
-                        {watchlist ? watchlist.map(coin => {
-                            return (<Tr>
+                        {watchlist ? watchlist.map((coin, index) => {
+                            return (<Tr key={index}>
                                 <Td>{coin.name}</Td>
                                 <Td>{coin.symbol}</Td>
                                 <Td>{coin.amount}</Td>
                                 <Td>{coin.averagePrice}</Td>
                             </Tr>)
-                        }) : <p>No coins yet!</p>}
+                        }) :<Tr></Tr>}
                     </Tbody>
                 </Table>
             </TableContainer>
