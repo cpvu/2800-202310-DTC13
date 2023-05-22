@@ -93,7 +93,7 @@ export const postLogin = async (req, res) => {
 };
 
 export const postLogout = (req, res) => {
-  if (!res.session.user || !req.session.user.authenticated) {
+  if (!req.session.user || !req.session.user.authenticated) {
     res.status(500).json({ message: "Not authenticated" })
   }
 
