@@ -45,14 +45,6 @@ export const postSignup = async (req, res) => {
 
     await user.save();
 
-    req.session.user = {
-      _id: user._id,
-      username: user.username,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-    };
-
     return res.status(200).json({ success: true, message: "Signup successful." });
   } catch (error) {
     console.error(error);
@@ -86,11 +78,13 @@ export const postLogin = async (req, res) => {
     if (!match) {
       return res.status(401).json({ message: "Incorrect password.", authenticated: false });
     }
+
     req.session.user = {
       _id: user._id,
       username: user.username,
       authenticated: true
     };
+
     res.status(200).json({ message: "Login successful.", authenticated: true });
   } catch (error) {
     console.error(error);
@@ -99,7 +93,7 @@ export const postLogin = async (req, res) => {
 };
 
 export const postLogout = (req, res) => {
-  if (!req.session.authenticated) {
+  if (!res.session.user || !req.session.user.authenticated) {
     res.status(500).json({ message: "Not authenticated" })
   }
 
@@ -108,11 +102,10 @@ export const postLogout = (req, res) => {
       console.log(err);
       res.status(500).json({ message: "Internal server error" });
     } else {
-      res.clearCookie("connect.sid").json({ message: "Logout successful", user: req.session.username });
+      res.clearCookie("connect.sid").json({ message: "Logout successful"});
     }
   });
 };
-
 
 export const postSendResetPasswordEmail = async (req, res) => {
   try {
