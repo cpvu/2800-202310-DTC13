@@ -6,6 +6,7 @@ import * as dotenv from "dotenv";
 import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import session from "express-session";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -23,15 +24,15 @@ export let expressServer = () => {
 
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
-    app.use(cors());
+    app.use(cors({ origin: process.env.NODE_ENV === 'production' ? process.env.ORIGIN_PROD : process.env.ORIGIN_DEV, credentials: true}));
+    app.use(cookieParser("secret"));
 
     app.use(
       session({
         secret: "secret",
         saveUninitialized: true,
-        authenticated: Boolean,
-        username: String,
-        cookie: { maxAge: 0 },
+        resave: true,
+        cookie: { maxAge: 7200000, secure: false },
         resave: false,
         store: MongoStore.create({
           mongoUrl: process.env.MONGO_URL,
@@ -47,11 +48,3 @@ export let expressServer = () => {
     console.log(e)
   }
 }
-
-export const checkSession = (req, res, next) => {
-  if (req.session.authenticated) {
-    next();
-  } else {
-    res.status(401).json({ message: "Unauthorized" });
-  }
-};
