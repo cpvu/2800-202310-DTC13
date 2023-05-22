@@ -25,7 +25,7 @@ export let expressServer = () => {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
     app.use(cors({ origin: process.env.NODE_ENV === 'production' ? process.env.ORIGIN_PROD : process.env.ORIGIN_DEV, credentials: true}));
-    app.use(cookieParser("secret"));
+    app.use(cookieParser());
 
     app.use(
       session({
