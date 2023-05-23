@@ -12,6 +12,7 @@ import {
   HStack,
   Box,
   Text,
+  SimpleGrid,
   Flex,
   Stack,
   Wrap,
@@ -26,6 +27,7 @@ import {
 import fetchCoinInformation from "@/components/coin/services/fetchCoinInformation";
 import fetchCoinNews from "@/components/coin/services/fetchCoinNews";
 import CustomStatLabel from "@/components/common/CustomStatLabel";
+import AddWatchlistCoinButton from "@/components/watchlist/AddWatchlistCoinButton";
 
 export default function CryptocurrencyCoinPage({
   news,
@@ -41,6 +43,8 @@ export default function CryptocurrencyCoinPage({
   const [hourLow, setHourLow] = useState("0");
   const [priceChangePercent, setPriceChangePercent] = useState(0);
   const [priceChange, setPriceChange] = useState(0);
+  const [openPrice, setOpenPrice] = useState(0);
+
   const [imageUrl, setImageURL] = useState("");
   const [priceChangeColor, setPriceChangeColor] = useState("");
 
@@ -54,6 +58,7 @@ export default function CryptocurrencyCoinPage({
         setPrice(roundPrice(data.lastPrice));
         setPriceChange(roundPrice(data.priceChange));
         setPriceChangePercent(roundPrice(data.priceChangePercent));
+        setOpenPrice(roundPrice(data.openPrice));
       })
       .catch((e) => console.log(e));
   }, []);
@@ -72,7 +77,6 @@ export default function CryptocurrencyCoinPage({
         } else {
           setPriceChangeColor("");
         }
-
         setPrice(roundPrice(newRoundedPrice));
         setPriceChange(roundPrice(updatedPrice.priceChange));
         setPriceChangePercent(roundPrice(updatedPrice.priceChangePercent));
@@ -100,18 +104,21 @@ export default function CryptocurrencyCoinPage({
           border={"1px"}
           borderColor={"gray.300"}
           mx={"auto"}
-          mt={"50px"}
+          mt={"25px"}
           minH={"100%"}
           width={"85%"}
           maxW={"85%"}
           boxShadow={"0px 2px 4px rgba(0, 0, 0, 0.1)"}
         >
+          <Flex justifyContent={"right"}>
+            <AddWatchlistCoinButton></AddWatchlistCoinButton>
+          </Flex>
           <HStack
             border={"1px"}
             borderColor={"gray.300"}
             width={"100%"}
             maxWidth={"100%"}
-            mt={"25px"}
+
             mb={"10px"}
             p={"15px"}
             overflow={"hidden"}
@@ -144,10 +151,7 @@ export default function CryptocurrencyCoinPage({
             </Flex>
           </HStack>
 
-          <Stack
-            direction={{ xs: "column", lg: "row" }}
-            mx={{ xs: "11px", lg: "15px" }}
-          >
+          <SimpleGrid my={"15px"} px={"15px"} columns={{ xs: 2, lg: 8 }} spacingX='40px' spacingY='15px'>
             <Stat>
               <CustomStatLabel text={"24h Change"}></CustomStatLabel>
               <StatNumber fontSize={"0.85em"} color={priceChangeColor}>
@@ -170,6 +174,10 @@ export default function CryptocurrencyCoinPage({
               </StatNumber>
             </Stat>
             <Stat>
+              <CustomStatLabel text={"Open Price"}></CustomStatLabel>
+              <StatNumber fontSize={"0.85em"}>{openPrice}</StatNumber>
+            </Stat>
+            <Stat>
               <CustomStatLabel text={"24 Hour Low"}></CustomStatLabel>
               <StatNumber fontSize={"0.85em"}>{hourLow}</StatNumber>
             </Stat>
@@ -177,7 +185,9 @@ export default function CryptocurrencyCoinPage({
               <CustomStatLabel text={"24 Hour High"}></CustomStatLabel>
               <StatNumber fontSize={"0.85em"}>{hourHigh}</StatNumber>
             </Stat>
-          </Stack>
+
+          </SimpleGrid>
+
           <Box p={"20px"}>
             <CoinDescription description={description}></CoinDescription>
           </Box>
