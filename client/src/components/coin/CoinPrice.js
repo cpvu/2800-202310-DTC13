@@ -7,7 +7,7 @@ export default function CoinPrice({ price, color }) {
   return (
     <Box>
       <Heading color={color} mx={"5px"} size={{ xs: "md", lg: "2xl" }}>
-        {price}
+        ${price}
       </Heading>
     </Box>
   );
