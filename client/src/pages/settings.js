@@ -5,6 +5,7 @@ import { Box, Heading, FormControl, FormLabel, Button, Switch, Avatar, Input } f
 export default function Settings() {
     const router = useRouter()
     const { data: session } = useSession()
+    console.log('settings session', session)
     console.log(session.user.email)
     return (
         <>
