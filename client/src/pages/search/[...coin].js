@@ -14,50 +14,72 @@ import {
   Text,
   Flex,
   Stack,
+  Wrap,
   Image,
   Stat,
   StatNumber,
   StatHelpText,
   StatArrow,
   StatGroup,
+  Button,
 } from "@chakra-ui/react";
 import fetchCoinInformation from "@/components/coin/services/fetchCoinInformation";
 import fetchCoinNews from "@/components/coin/services/fetchCoinNews";
 import CustomStatLabel from "@/components/common/CustomStatLabel";
 
-
-export default function CryptocurrencyCoinPage({ news, coin, symbol, description }) {
+export default function CryptocurrencyCoinPage({
+  news,
+  coin,
+  symbol,
+  description,
+}) {
   const { data: session } = useSession();
 
   const [price, setPrice] = useState("0");
   const [volume, setVolume] = useState("0");
   const [hourHigh, setHourHigh] = useState("0");
   const [hourLow, setHourLow] = useState("0");
+  const [priceChangePercent, setPriceChangePercent] = useState(0);
+  const [priceChange, setPriceChange] = useState(0);
   const [imageUrl, setImageURL] = useState("");
+  const [priceChangeColor, setPriceChangeColor] = useState("");
 
   useEffect(() => {
-    fetchCoinPrice(symbol).then(data => {
-      setImageURL(`/${coin}.png`);
-      setVolume(data.volume);
-      setHourHigh(roundPrice(data.highPrice));
-      setHourLow(roundPrice(data.lowPrice));
-      setPrice(roundPrice(data.lastPrice));
-    }).catch(e => console.log(e));
-
-  }, [])
+    fetchCoinPrice(symbol)
+      .then((data) => {
+        setImageURL(`/${coin}.png`);
+        setVolume(data.volume);
+        setHourHigh(roundPrice(data.highPrice));
+        setHourLow(roundPrice(data.lowPrice));
+        setPrice(roundPrice(data.lastPrice));
+        setPriceChange(roundPrice(data.priceChange));
+        setPriceChangePercent(roundPrice(data.priceChangePercent));
+      })
+      .catch((e) => console.log(e));
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
         let updatedPrice = await fetchCoinPrice(symbol);
-        let newPrice = roundPrice(updatedPrice.lastPrice)
-        setPrice(newPrice);
 
+        let newRoundedPrice = roundPrice(updatedPrice.lastPrice);
+
+        if (price < newRoundedPrice) {
+          setPriceChangeColor("green");
+        } else if (price > newRoundedPrice) {
+          setPriceChangeColor("red");
+        } else {
+          setPriceChangeColor("");
+        }
+
+        setPrice(roundPrice(newRoundedPrice));
+        setPriceChange(roundPrice(updatedPrice.priceChange));
+        setPriceChangePercent(roundPrice(updatedPrice.priceChangePercent));
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-    }, 1000);
-
+    }, 200);
 
     return () => clearInterval(interval);
   }, [price]);
@@ -73,7 +95,7 @@ export default function CryptocurrencyCoinPage({ news, coin, symbol, description
 
   return (
     <>
-      {session ?
+      {session ? (
         <Container
           border={"1px"}
           borderColor={"gray.300"}
@@ -94,16 +116,48 @@ export default function CryptocurrencyCoinPage({ news, coin, symbol, description
             p={"15px"}
             overflow={"hidden"}
           >
-            <Image w={{ xs: "11%", lg: "3%" }} src={imageUrl} alt={coin} ></Image>
-            <Box><Heading size={{ base: "lg", lg: "xl" }}>{coin}</Heading></Box>
+            <Image
+              w={{ xs: "17%", lg: "4%" }}
+              src={imageUrl}
+              alt={coin}
+            ></Image>
+            <Wrap
+              mx={"5px"}
+              w={{ xs: "40%", lg: "70%" }}
+              maxW={{ xs: "40%", lg: "70%" }}
+            >
+              <Heading size={{ base: "md", lg: "lg" }}>{coin}</Heading>
+              <Heading
+                margin={"0"}
+                fontSize={{ base: "11px" }}
+                size={{ lg: "lg" }}
+              >
+                ({symbol})
+              </Heading>
+            </Wrap>
             <TokenPageDivider></TokenPageDivider>
-            <Flex w={{ xs: "10%", lg: "100%" }} justify={{ xs: "left", lg: "right" }}><CoinPrice price={price}></CoinPrice></Flex>
+            <Flex
+              w={{ xs: "45%", lg: "100%" }}
+              justify={{ xs: "left", lg: "right" }}
+            >
+              <CoinPrice color={priceChangeColor} price={price}></CoinPrice>
+            </Flex>
           </HStack>
 
-          <Stack direction={{ xs: "column", lg: "row" }} mx={{ xs: "11px", lg: "15px" }}>
-            <Stat >
+          <Stack
+            direction={{ xs: "column", lg: "row" }}
+            mx={{ xs: "11px", lg: "15px" }}
+          >
+            <Stat>
               <CustomStatLabel text={"24h Change"}></CustomStatLabel>
-              <StatNumber fontSize={"0.85em"}> <StatArrow type='increase' />DOGEUSDT (23.36%)</StatNumber>
+              <StatNumber fontSize={"0.85em"} color={priceChangeColor}>
+                {priceChange >= 0 ? (
+                  <StatArrow type="increase" />
+                ) : (
+                  <StatArrow type="decrease" />
+                )}{" "}
+                {priceChange} ({priceChangePercent}%)
+              </StatNumber>{" "}
             </Stat>
             <Stat>
               <CustomStatLabel text={"Volume"}></CustomStatLabel>
@@ -111,7 +165,9 @@ export default function CryptocurrencyCoinPage({ news, coin, symbol, description
             </Stat>
             <Stat>
               <CustomStatLabel text={"Sentiment"}></CustomStatLabel>
-              <StatNumber fontSize={"0.85em"}>{description.currentSentiment}</StatNumber>
+              <StatNumber fontSize={"0.85em"}>
+                {description.currentSentiment}
+              </StatNumber>
             </Stat>
             <Stat>
               <CustomStatLabel text={"24 Hour Low"}></CustomStatLabel>
@@ -127,15 +183,15 @@ export default function CryptocurrencyCoinPage({ news, coin, symbol, description
           </Box>
 
           <CoinNews news={news}></CoinNews>
-
         </Container>
-        : <h1>Unauthorized</h1>}
+      ) : (
+        <h1>Unauthorized</h1>
+      )}
     </>
   );
 }
 
 export async function getServerSideProps(context) {
-
   const { coin, symbol } = context.query;
 
   if (!coin || !symbol) {
@@ -143,10 +199,9 @@ export async function getServerSideProps(context) {
   }
 
   try {
-
     let [coinDescription, coinNews] = await Promise.all([
       fetchCoinInformation(coin),
-      fetchCoinNews(coin)
+      fetchCoinNews(coin),
     ]);
 
     return {
@@ -154,12 +209,11 @@ export async function getServerSideProps(context) {
         coin: coin,
         symbol: symbol,
         description: coinDescription,
-        news: coinNews
-      }
-    }
-
+        news: coinNews,
+      },
+    };
   } catch (e) {
-    console.log(e)
+    console.log(e);
     return { notFound: true };
   }
 }
