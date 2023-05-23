@@ -20,9 +20,6 @@ export default function CoinDescription({ description }) {
     <Box width={"100%"}>
       <Card>
         <CardBody>
-          <Flex justifyContent={"right"}>
-            <Button>Add to Watchlist</Button>
-          </Flex>
           <Stack divider={<StackDivider />} spacing="4">
             <Box>
               <Heading size="xs" textTransform="uppercase">
