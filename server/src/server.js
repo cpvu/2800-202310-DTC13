@@ -33,7 +33,6 @@ export let expressServer = () => {
         saveUninitialized: true,
         resave: true,
         cookie: { maxAge: 7200000, secure: false },
-        resave: false,
         store: MongoStore.create({
           mongoUrl: process.env.MONGO_URL,
         }),
