@@ -32,7 +32,7 @@ export let expressServer = () => {
         secret: "secret",
         saveUninitialized: true,
         resave: true,
-        cookie: { maxAge: 7200000, secure: true, httpOnly: true, sameSite:"none", domain: "https://2800-202310-dtc-13.vercel.app"},
+        cookie: { maxAge: 7200000},
         store: MongoStore.create({
           mongoUrl: process.env.MONGO_URL,
         }),
