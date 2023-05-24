@@ -33,11 +33,13 @@ export default function HomeHeader() {
       my={100}
       boxShadow="rgba(0, 0, 0, 0.4) 0px 1px 8px"
     >
+      
       <Container p={10} textAlign={"center"}>
         <Heading onClick={handleTextClick} fontSize={{ sm: "4xl", md: "7xl" }} mb={4}>
           Cryptoment AI
         </Heading>
         <Text fontSize="xl">Innovate your crypto learning and trading</Text>
+        <img src="https://penntoday.upenn.edu/sites/default/files/2022-01/cryptocurrency-main.jpg"></img>
         <Button
           size="lg"
           bg={"blue.400"}
@@ -47,6 +49,7 @@ export default function HomeHeader() {
           }}
           mt="24px"
         >
+          
           Create a free account
         </Button>
       </Container>

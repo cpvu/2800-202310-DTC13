@@ -3,6 +3,18 @@ import { Router, useRouter } from "next/router";
 import { Box, Heading, FormControl, FormLabel, Button, Switch, Avatar, Input } from "@chakra-ui/react";
 
 export default function Settings() {
+
+
+    const styles = {
+        heading: {
+          color: 'red',
+          fontSize: '24px',
+          textAlign: 'center',
+          margin: 100,
+          fontFamily: 'Arial, sans-serif',
+        },
+      };
+      
     const router = useRouter()
     const { data: session } = useSession()
     return (
@@ -13,7 +25,8 @@ export default function Settings() {
                     <Avatar size="xl" name="John Doe" src="/path-to-profile-image.jpg" mb={2} />
                     <Heading size="md">ID: {session.user.name}</Heading>
                     <Box color="gray.500" fontSize="sm" mt={1}>
-                        calvin1234@hotmail.com
+                        {session.user.name}
+                        {/* calvin1234@hotmail.com */}
                     </Box>
                 </Box>
 
@@ -23,14 +36,14 @@ export default function Settings() {
                     <FormLabel htmlFor="darkMode" flex="1" mb={0}>
                         First Name:
                     </FormLabel>
-                    <Input type="text" bg={"white"} w={"40%"} placeholder="Calvin" />
+                    <Input type="text" bg={"white"} w={"60%"} placeholder="first name" />
                 </FormControl>
 
                 <FormControl display="flex" alignItems="center" mb={6}>
                     <FormLabel htmlFor="darkMode" flex="1" mb={0}>
                         Last name
                     </FormLabel>
-                    <Input type="text" bg={"white"} w={"40%"} placeholder="Vu"/>
+                    <Input type="text" bg={"white"} w={"60%"} placeholder="last name"/>
                 </FormControl>
 
                 <FormControl display="flex" alignItems="center" mb={4}>
@@ -49,7 +62,7 @@ export default function Settings() {
 
                 <Button colorScheme="blue">Save Changes</Button>
             </Box>
-            : <h1>Unauthorized</h1>}
+            : <h1 style={styles.heading}>You are not authorized. Please sign up or log in above.</h1>}
         </>
     )
 }

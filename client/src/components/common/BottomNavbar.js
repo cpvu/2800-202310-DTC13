@@ -20,6 +20,7 @@ import {
     const { data: session, status } = useSession();
   
     const navigationButtons = [
+      
       { name: "Watchlist", route: "/" },
       { name: "Search", route: "/search" },
       { name: "FAQ", route: "/" },
