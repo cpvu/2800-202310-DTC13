@@ -93,15 +93,15 @@ export const postLogin = async (req, res) => {
 
 export const postLogout = (req, res) => {
   if (!req.session.user || !req.session.user.authenticated) {
-    res.status(500).json({ message: "Not authenticated" })
+    return res.status(500).json({ message: "Not authenticated" })
   }
 
   req.session.destroy((err) => {
     if (err) {
       console.log(err);
-      res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "Internal server error" });
     } else {
-      res.clearCookie("connect.sid").json({ message: "Logout successful"});
+      return res.clearCookie("connect.sid").json({ message: "Logout successful"});
     }
   });
 };
