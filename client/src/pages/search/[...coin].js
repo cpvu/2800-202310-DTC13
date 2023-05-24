@@ -28,7 +28,8 @@ import fetchCoinInformation from "@/components/coin/services/fetchCoinInformatio
 import fetchCoinNews from "@/components/coin/services/fetchCoinNews";
 import CustomStatLabel from "@/components/common/CustomStatLabel";
 import AddWatchlistCoinButton from "@/components/watchlist/AddWatchlistCoinButton";
-
+import roundPrice from "@/utils/roundPrice";
+import handleColorChange from "@/utils/handleColorChange";
 export default function CryptocurrencyCoinPage({
   news,
   coin,
@@ -56,8 +57,8 @@ export default function CryptocurrencyCoinPage({
         setHourHigh(roundPrice(data.highPrice));
         setHourLow(roundPrice(data.lowPrice));
         setPrice(roundPrice(data.lastPrice));
-        setPriceChange(roundPrice(data.priceChange));
-        setPriceChangePercent(roundPrice(data.priceChangePercent));
+        setPriceChange(roundPrice(parseFloat(data.priceChange).toFixed(2)));
+        setPriceChangePercent(parseFloat(data.priceChangePercent).toFixed(2));
         setOpenPrice(roundPrice(data.openPrice));
       })
       .catch((e) => console.log(e));
@@ -70,32 +71,20 @@ export default function CryptocurrencyCoinPage({
 
         let newRoundedPrice = roundPrice(updatedPrice.lastPrice);
 
-        if (price < newRoundedPrice) {
-          setPriceChangeColor("green");
-        } else if (price > newRoundedPrice) {
-          setPriceChangeColor("red");
-        } else {
-          setPriceChangeColor("");
-        }
-        setPrice(roundPrice(newRoundedPrice));
-        setPriceChange(roundPrice(updatedPrice.priceChange));
-        setPriceChangePercent(roundPrice(updatedPrice.priceChangePercent));
+    
+        setPrice(newRoundedPrice);
+        setPriceChangeColor(handleColorChange(price, newRoundedPrice));
+        setPriceChange(parseFloat(updatedPrice.priceChange).toFixed(2));
+        setPriceChangePercent(parseFloat(roundPrice(updatedPrice.priceChangePercent)).toFixed(2));
       } catch (e) {
         console.log(e);
       }
-    }, 200);
+    }, 500);
 
     return () => clearInterval(interval);
   }, [price]);
 
-  function roundPrice(price) {
-    let roundedPrice = price;
 
-    if (price > 1) {
-      roundedPrice = (Math.floor(price * 100) / 100).toFixed(2);
-    }
-    return roundedPrice;
-  }
 
   return (
     <>
@@ -217,8 +206,7 @@ export async function getServerSideProps(context) {
     if (!coinDescription|| !coinNews) {
       return { notFound: true };
     }
-
-
+    
     return {
       props: {
         coin: coin,
