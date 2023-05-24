@@ -214,6 +214,11 @@ export async function getServerSideProps(context) {
       fetchCoinNews(coin),
     ]);
 
+    if (!coinDescription|| !coinNews) {
+      return { notFound: true };
+    }
+
+
     return {
       props: {
         coin: coin,
