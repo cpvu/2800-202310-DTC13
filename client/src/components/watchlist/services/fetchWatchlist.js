@@ -4,6 +4,7 @@ export default async function fetchWatchlist() {
         method: "GET",
         headers: {
             "Content-type": "application/json",
+            "Access-Control-Allow-Credentials": true,
         },
         credentials:"include"
     }
