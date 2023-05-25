@@ -1,6 +1,7 @@
 import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+
 import {
   Flex,
   FormControl,
@@ -113,7 +114,10 @@ export default function SearchToken() {
           </Box>
         </>
       ) : (
-        <h1>Sign up or login to get access!</h1>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 30}}>
+            <h1 style={{marginTop: 0, fontSize: 30, color: 'red'}}>Please Sign Up or Log to get access!</h1>
+            <img src="https://i0.wp.com/www.globaltrademag.com/wp-content/uploads/2019/07/shutterstock_1110634118.jpg?fit=994%2C516&ssl=1" alt="Cryptocurrency Explained" style={{margin: 'auto'}} />
+        </div>
       )}
     </>
   );

@@ -2,6 +2,7 @@ import fetchWatchlist from "@/components/watchlist/services/fetchWatchlist";
 import fetchCoinPrice from "@/components/coin/services/fetchCoinPrice";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useSession, getSession } from "next-auth/react"
 import {
     Heading,
     Table,
@@ -24,6 +25,7 @@ export default function Watchlist() {
     const [userCoins, setUserCoins] = useState({});
     const [priceChangeColor, setPriceChangeColor] = useState("");
     let [colorMap] = useState({});
+    const { data: session } = useSession();
 
     useEffect(() => {
         const fetchWatchlistData = async () => {
@@ -157,3 +159,12 @@ export default function Watchlist() {
         </>
     )
 }
+
+export async function getServerSideProps(context) {
+    const session = await getSession(context);
+    return {
+      props: {
+        session: session,
+      },
+    };
+  }

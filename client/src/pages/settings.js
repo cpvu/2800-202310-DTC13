@@ -49,7 +49,12 @@ export default function Settings() {
 
                 <Button colorScheme="blue">Save Changes</Button>
             </Box>
-            : <h1>Unauthorized</h1>}
+            : <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 30}}>
+            <h1 style={{marginTop: 0, fontSize: 30, color: 'red'}}>Unauthorized</h1>
+            <img src="https://www.simplilearn.com/ice9/free_resources_article_thumb/cryptocurrency_explained.jpg" alt="Cryptocurrency Explained" style={{margin: 'auto'}} />
+        </div>
+        
+        }
         </>
     )
 }
