@@ -86,7 +86,7 @@ export default function LoginForm() {
         px={6}
       >
         <Stack>
-          <Heading fontSize={"4xl"}>Log in to your account</Heading>
+          <Heading align="center" fontSize={"4xl"}>Log in to your account</Heading>
           <Text fontSize={"lg"} color={"gray.600"} align={"center"}>
             Not a user? Sign up{" "}
             <Link color={"blue.400"} href="./signup">
