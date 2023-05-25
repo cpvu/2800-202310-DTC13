@@ -44,7 +44,7 @@ export default function Navbar() {
   const colorScheme = useColorModeValue("gray.300");
 
   return (
-    <Box bg={colorScheme} py={{ base: 2, lg: 3 }}>
+    <Box bgGradient="linear(to-r, teal.400, teal.600)"  py={{ base: 2, lg: 3 }}>
       <Flex alignItems="center">
         <Box mx={"2px"}> 
           <Link href="/">
@@ -82,7 +82,7 @@ export default function Navbar() {
                     <Stack spacing={4}>
                       {navigationButtons.map((item, index) => (
                         <Link key={index} href={item.route}>
-                          <Button w="100%" onClick={handleDrawerClose}>
+                          <Button shadow={"lg"} w="100%" onClick={handleDrawerClose} bgColor={"teal.500"} color="white" _hover={{bgColor:"teal.800", color: "white"}}>
                             {item.name}
                           </Button>
                         </Link>
@@ -112,7 +112,7 @@ export default function Navbar() {
             <Stack direction="row" spacing={4} px={"60px"}>
               {navigationButtons.map((item, index) => (
                 <Link key={index} href={item.route}>
-                  <Button bgColor={"teal.500"} color="white" _hover={{bgColor:"teal.600", color: "white"}}>{item.name}</Button>
+                  <Button shadow={"lg"} bgColor={"teal.500"} color="white" _hover={{bgColor:"teal.800", color: "white"}}>{item.name}</Button>
                 </Link>
               ))}
               <Spacer />
