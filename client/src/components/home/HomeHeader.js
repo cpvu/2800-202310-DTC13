@@ -35,6 +35,7 @@ export default function HomeHeader() {
         <Heading onClick={handleTextClick} fontSize={{ xs: "3xl", lg: "7xl" }} mb={4}>
           Cryptoment AI
         </Heading>
+        <img src="https://penntoday.upenn.edu/sites/default/files/2022-01/cryptocurrency-main.jpg"></img>
         <Text fontSize="xl">Innovate your crypto learning and trading</Text>
         <Link href="/signup">
           <Button

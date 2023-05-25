@@ -48,24 +48,31 @@ const FAQPage = () => {
                         <Heading fontSize="24px" fontWeight="bold" mb="16px">FAQ</Heading>
                         <Text fontSize="18px" fontWeight="bold" mb="8px">Q: What is cryptocurrency?</Text>
                         <Text mb="16px">A: Cryptocurrency is a digital or virtual form of currency that uses cryptography for secure financial transactions, controls the creation of new units, and verifies the transfer of assets.</Text>
+                        <hr style={{ border: '1px solid black' }} />
 
                         <Text fontSize="18px" fontWeight="bold" mb="8px">Q: What are some popular cryptocurrencies?</Text>
                         <Text mb="16px">A: Some popular cryptocurrencies include Bitcoin (BTC), Ethereum (ETH), Binance Coin (BNB), Cardano (ADA), and Solana (SOL), among others.</Text>
+                        <hr style={{ border: '1px solid black' }} />
 
                         <Text fontSize="18px" fontWeight="bold" mb="8px">Q: How does cryptocurrency mining work?</Text>
                         <Text mb="16px">A: Cryptocurrency mining involves using powerful computers to solve complex mathematical problems that validate and secure transactions on the blockchain network. Miners are rewarded with newly created cryptocurrency tokens for their computational efforts.</Text>
+                        <hr style={{ border: '1px solid black' }} />
 
                         <Text fontSize="18px" fontWeight="bold" mb="8px">Q: What is blockchain technology?</Text>
                         <Text mb="16px">A: Blockchain technology is a decentralized, distributed ledger system that records and verifies transactions across multiple computers. It provides transparency, security, and immutability to various applications, including cryptocurrencies.</Text>
+                        <hr style={{ border: '1px solid black' }} />
 
                         <Text fontSize="18px" fontWeight="bold" mb="8px">Q: How can I buy cryptocurrencies?</Text>
                         <Text mb="16px">A: You can buy cryptocurrencies through cryptocurrency exchanges. These platforms allow you to trade fiat currency (such as USD) for cryptocurrencies or exchange one cryptocurrency for another.</Text>
+                        <hr style={{ border: '1px solid black' }} />
 
                         <Text fontSize="18px" fontWeight="bold" mb="8px">Q: What is a wallet in the context of cryptocurrencies?</Text>
                         <Text mb="16px">A: A cryptocurrency wallet is a software application or a physical device that allows you to securely store, manage, and interact with your cryptocurrencies. It stores your private keys, which are required to access and transfer your digital assets.</Text>
+                        <hr style={{ border: '1px solid black' }} />
 
                         <Text fontSize="18px" fontWeight="bold" mb="8px">Q: What is CrytoMentai?</Text>
                         <Text mb="16px">A: CrytoMentai is a project that focuses on Crypto Twitter Sentiment Analysis. It uses a dataset of tweets related to cryptocurrency and provides sentiment analysis for different coins. It can also provide additional information about a specific coin using ChatGPT.</Text>
+                        <hr style={{ border: '1px solid black' }} />
 
                     </Box>
 
