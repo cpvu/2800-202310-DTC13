@@ -7,6 +7,7 @@ export const FAQ_ENDPOINT = "/api/askQuestion";
 
 //Open AI endpoints
 export const COIN_INFORMATION = "/api/coinDescription"
+export const ARTICLE_SENTIMENT = "/api/generateArticleSentiment"
 
 //Watch list endpoints
 export const ADD_WATCHLIST_COIN = "/api/addWatchlist"
