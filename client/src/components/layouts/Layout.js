@@ -22,15 +22,11 @@ export default function Layout({ children }) {
       overflow="hidden"
       p={0}
     >
-      {isDesktop && <Navbar />}
+    <Navbar />
       {children}
       <Container id="root" flex={'1'}></Container>
       <Footer></Footer>
-      {shouldRenderBottomNavbar && (
-        <Suspense fallback={<div>Loading...</div>}>
-          <BottomNavbar />
-        </Suspense>
-      )}
+
     </Flex>
   );
 }
