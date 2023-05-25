@@ -25,6 +25,31 @@ export const postCoinDescription = async (req, res) => {
         console.log(e)
     }
 }
+
+export const postArticleSentiment = async (req, res) => {
+
+    const { newsArticleTitle, coin } = req.body; 
+
+    try {
+        const response = await openaiAPI.createCompletion({
+            "model": "text-davinci-003",
+            "prompt": `${newsArticleTitle}. Give me only a sentiment score from 1-5 for ${coin} and indicate it it is positive or negative, In this format : "Positive (3)" Include only my format in your response if it is a different format, then reformat it to my format.`,
+            "max_tokens": 500,
+            "temperature": 0,
+            "top_p": 1,
+            "n": 1,
+            "stream": false,
+            "logprobs": null,
+        })
+
+        console.log(response.data)
+
+        return res.status(200).json({score: response.data.choices[0].text.replace("/n", "").trim()});
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 export const postAskQuestion = async (req, res) => {
     try {
         // AI response
