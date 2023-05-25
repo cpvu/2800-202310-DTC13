@@ -109,6 +109,7 @@ export default function LoginForm() {
                   <FormControl id="username" isRequired isInvalid={!!errors.username && touched.username}>
                     <FormLabel>Username</FormLabel>
                     <Input
+                      borderColor={"gray.200"}
                       type="text"
                       name="username"
                       onChange={handleChange}
@@ -120,6 +121,7 @@ export default function LoginForm() {
                   <FormControl id="password" isRequired isInvalid={!!errors.password && touched.password}>
                     <FormLabel>Password</FormLabel>
                     <Input
+                      borderColor={"gray.200"}
                       type="password"
                       name="password"
                       onChange={handleChange}
