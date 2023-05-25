@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react"
+import { Button, useToast } from "@chakra-ui/react"
 import addWatchlistCoin from "../coin/services/addWatchlistCoin"
 import { useRouter } from "next/router";
 
@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 export default function AddWatchlistCoinButton() {
     const router = useRouter();
+    const toast = useToast();
     
     async function handleClick() {
 
@@ -18,12 +19,29 @@ export default function AddWatchlistCoinButton() {
             averagePrice: 0,
         }
 
-        await addWatchlistCoin(coinData);
+        let response = await addWatchlistCoin(coinData);
 
-        console.log("Added");
+        if (response.success) {
+            toast({
+                title: "Success",
+                description: `Added ${coin} to your watchlist`,
+                position: "top",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+              });
+        } else {
+            toast({
+                title: "Error adding",
+                description: `${coin} already exists in your watchlist`,
+                position: "top",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+              });
+          
+        }
         return;
-    
-
     }
 
     return(
