@@ -1,6 +1,7 @@
 import { Box, Heading, Text, Button, Container } from "@chakra-ui/react";
 import SnakeMiniGame from "../home/SnakeMiniGame";
 import { useEffect, useState } from "react";
+import { buttonGroupStyles, containerStyles } from "@/styles/styles";
 
 export default function HomeHeader() {
   const [easterEggCount, setEasterEggCount] = useState(0);
@@ -34,13 +35,13 @@ export default function HomeHeader() {
       boxShadow="rgba(0, 0, 0, 0.4) 0px 1px 8px"
     >
       
-      <Container p={10} textAlign={"center"}>
+      <Container p={10} textAlign={"center"} style={containerStyles}>
         <Heading onClick={handleTextClick} fontSize={{ sm: "4xl", md: "7xl" }} mb={4}>
-          Cryptoment AI
+          CryptomentAI
         </Heading>
         <Text fontSize="xl">Innovate your crypto learning and trading</Text>
         <img src="https://penntoday.upenn.edu/sites/default/files/2022-01/cryptocurrency-main.jpg"></img>
-        <Button
+        <Button style={buttonGroupStyles}
           size="lg"
           bg={"blue.400"}
           color={"white"}

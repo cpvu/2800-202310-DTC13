@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import fetchCoinPrice from "./services/fetchCoinPrice";
 import { useRouter } from "next/router";
 
+
 export default function CoinPrice({ price, color }) {
   return (
     <Box>

@@ -5,7 +5,6 @@
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .description {
@@ -17,7 +16,6 @@
   width: 100%;
   z-index: 2;
   font-family: var(--font-mono);
-  background-color: rgb(36, 128, 128);
 }
 
 .description a {
@@ -25,7 +23,6 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  background-color: aquamarine;
 }
 
 .description p {
@@ -35,15 +32,11 @@
   background-color: rgba(var(--callout-rgb), 0.5);
   border: 1px solid rgba(var(--callout-border-rgb), 0.3);
   border-radius: var(--border-radius);
-  font-size: medium;
-  background-color: rgb(55, 55, 138);
 }
-
 
 .code {
   font-weight: 700;
   font-family: var(--font-mono);
-  font-size: medium;
 }
 
 .grid {
@@ -187,7 +180,6 @@
   }
 
   .grid {
-    background-color: rgb(158, 158, 31);
     grid-template-columns: 1fr;
     margin-bottom: 120px;
     max-width: 320px;

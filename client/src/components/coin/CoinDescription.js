@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   Box,
   Heading,
@@ -14,6 +15,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import fetchCoinInformation from "./services/fetchCoinInformation";
+
 
 export default function CoinDescription({ description }) {
   return (
