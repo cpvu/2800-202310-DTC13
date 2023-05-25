@@ -1,6 +1,0 @@
-{
-    "search/[...coin]": {
-        "memory": 3008,
-        "maxDuration": 30
-    }
-}
