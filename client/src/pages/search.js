@@ -70,9 +70,10 @@ export default function SearchToken() {
         <>
           <Box w={"100%"}>
             <Stack align={"center"} mt={{ lg: 220, xs: 150 }}>
-              <Heading size="2xl">Welcome {session.user.name}</Heading>
+
               <Flex pt="2em" justify="center" align="center" w="full" flexDirection={"column"}>
-                <FormLabel w={"50%"} mt={"px"} textAlign={"center"}>Search a token to generate the latest info with AI!</FormLabel>
+                <Heading align={"center"} mb={"20px"} size="2xl">Welcome {session.user.name}</Heading>
+                <FormLabel w={"50%"} mt={"5px"} textAlign={"center"}>Search a token to generate the latest info with AI!</FormLabel>
                 <FormControl w={{ sm: "50%", lg: "35%" }} justify="center" align="center">
                   <AutoComplete openOnFocus>
                     <AutoCompleteInput
