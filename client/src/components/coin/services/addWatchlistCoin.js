@@ -24,7 +24,8 @@ export default async function addWatchlistCoin(userCoinData) {
     const endpoint = ADD_WATCHLIST_COIN;
 
     const response = await fetch(baseURL + endpoint, options)
-    console.log(response)
+    
+    return response.json()
 
   } catch (e) {
     console.log(e);
