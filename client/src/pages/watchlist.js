@@ -89,9 +89,8 @@ export default function Watchlist() {
 
 
     return (
-        <>
-            <TableContainer w={{ xs: "100%", lg: "100%" }}  fontSize={{xs: "12px", lg: "14px"}}>
-            <Heading align="center" p={"20px"}>My Watchlist</Heading>
+        <>            <Heading align="center" p={"20px"}>My Watchlist</Heading>
+            <TableContainer w={{ xs: "100%", lg: "100%" }} fontSize={{ xs: "12px", lg: "14px" }}>
                 <Table align="center" w={"20%"} minW={{ xs: "60%", lg: "60%" }} maxW={{ xs: "60%", lg: "60%" }} my="auto">
                     <Thead>
                         <Tr>
@@ -103,7 +102,7 @@ export default function Watchlist() {
                                     m={{ xs: "0", lg: "0" }}
                                     p={{ xs: "11px", lg: "25px", }}
                                     w={{ xs: "20%", lg: "10%", }}
-                                    fontSize={{xs:"9px", lg: "14px"}}
+                                    fontSize={{ xs: "9px", lg: "14px" }}
                                 >
                                     {heading}
                                 </Box>
@@ -114,9 +113,9 @@ export default function Watchlist() {
                         {watchlist ? (
                             watchlist.map((coin, index) => (
                                 <Tr key={index}>
-                     
-                                    <Box as={Td} textAlign={"center"} m={{ xs: "0", lg: "0" }} px={{ xs: "8px", lg: "10px" }} py={{xs: "45px", lg: "60px"}}>
-                                    <Image mx="auto" py={"10px"} w={{ xs: "60%", lg: "25%" }} src={`./${coin.name}.png`} />
+
+                                    <Box as={Td} textAlign={"center"} m={{ xs: "0", lg: "0" }} px={{ xs: "8px", lg: "10px" }} py={{ xs: "45px", lg: "60px" }}>
+                                        <Image mx="auto" py={"10px"} w={{ xs: "60%", lg: "25%" }} src={`./${coin.name}.png`} />
                                         {coin.name}
                                     </Box>
                                     <Box as={Td} textAlign={"center"} m={{ xs: "0", lg: "0" }} p={{ xs: "6px", lg: "10px" }}>
