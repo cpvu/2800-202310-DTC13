@@ -23,7 +23,7 @@ export default function HomeHeader() {
 
   return (
     <Box
-      width={{xs:"85%", lg:"60%"}}
+      width={{xs:"85%", lg:"50%"}}
       display={"flex"}
       flexDirection={"column"}
       justifyContent={"center"}

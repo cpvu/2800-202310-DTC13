@@ -48,7 +48,7 @@ export default function Navbar() {
       <Flex alignItems="center">
         <Box mx={"2px"}> 
           <Link href="/">
-            <Heading color={"black"}display={"flex"} w={"100%"} mx={"25px"} size="xl"><Heading color={"teal.500"}>Crypto</Heading>ment <Heading color="white">AI</Heading></Heading>
+            <Heading color={"white"}display={"flex"} w={"100%"} mx={"25px"} size="xl">CryptomentAI</Heading>
           </Link>
         </Box>
         {isMobile ? (
@@ -132,9 +132,7 @@ export default function Navbar() {
               )}
             </Flex>
           </>
-
         )}
-
       </Flex>
     </Box>
   );
