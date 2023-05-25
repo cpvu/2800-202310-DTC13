@@ -1,4 +1,4 @@
-import { Box, Heading, Text, Button, Container } from "@chakra-ui/react";
+import { Box, Heading, Text, Button, Container, Link } from "@chakra-ui/react";
 import SnakeMiniGame from "../home/SnakeMiniGame";
 import { useEffect, useState } from "react";
 
@@ -23,32 +23,32 @@ export default function HomeHeader() {
 
   return (
     <Box
-      maxW="32rem"
+      width={{xs:"85%", lg:"60%"}}
       display={"flex"}
       flexDirection={"column"}
       justifyContent={"center"}
       alignSelf={"center"}
-      paddingLeft={"auto"}
-      paddingRight={"auto"}
       my={100}
       boxShadow="rgba(0, 0, 0, 0.4) 0px 1px 8px"
     >
-      <Container p={10} textAlign={"center"}>
-        <Heading onClick={handleTextClick} fontSize={{ sm: "4xl", md: "7xl" }} mb={4}>
+      <Container minW={{xs:"85%", lg:"60%"}} p={"40px"} textAlign={"center"}>
+        <Heading onClick={handleTextClick} fontSize={{ xs: "3xl", lg: "7xl" }} mb={4}>
           Cryptoment AI
         </Heading>
         <Text fontSize="xl">Innovate your crypto learning and trading</Text>
-        <Button
-          size="lg"
-          bg={"blue.400"}
-          color={"white"}
-          _hover={{
-            bg: "blue.500",
-          }}
-          mt="24px"
-        >
-          Create a free account
-        </Button>
+        <Link href="/signup">
+          <Button
+            size="lg"
+            bg={"teal.500"}
+            color={"white"}
+            _hover={{
+              bg: "teal.600",
+            }}
+            mt="24px"
+          >
+            Create a free account
+          </Button>
+        </Link>
       </Container>
     </Box>
   );

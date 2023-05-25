@@ -197,10 +197,10 @@ export default function SignUpForm() {
                     <FormErrorMessage fontSize={"0.73em"}>{errors.password}</FormErrorMessage>
                   </FormControl>
                   <Button
-                    bg={"blue.400"}
+                    bg={"teal.500"}
                     color={"white"}
                     _hover={{
-                      bg: "blue.500",
+                      bg: "teal.600",
                     }}
                     type="submit"
                     disabled={isSubmitting}

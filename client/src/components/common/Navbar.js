@@ -14,6 +14,7 @@ import {
   useBreakpointValue,
   Heading,
   useColorModeValue,
+  color,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { useSession } from "next-auth/react";
@@ -40,14 +41,14 @@ export default function Navbar() {
   };
 
   const isMobile = useBreakpointValue({ base: true, lg: false });
-  const colorScheme = useColorModeValue("gray.300", "gray.500");
+  const colorScheme = useColorModeValue("gray.300");
 
   return (
     <Box bg={colorScheme} py={{ base: 2, lg: 3 }}>
       <Flex alignItems="center">
         <Box mx={"2px"}> 
           <Link href="/">
-            <Heading w={"100%"} mx={"20px"} size="lg">Cryptoment AI</Heading>
+            <Heading color={"black"}display={"flex"} w={"100%"} mx={"25px"} size="xl"><Heading color={"teal.500"}>Crypto</Heading>ment <Heading color="white">AI</Heading></Heading>
           </Link>
         </Box>
         {isMobile ? (
@@ -108,10 +109,10 @@ export default function Navbar() {
           </>
         ) : (
           <>
-            <Stack direction="row" spacing={4} px={"45px"}>
+            <Stack direction="row" spacing={4} px={"60px"}>
               {navigationButtons.map((item, index) => (
                 <Link key={index} href={item.route}>
-                  <Button>{item.name}</Button>
+                  <Button bgColor={"teal.500"} color="white" _hover={{bgColor:"teal.600", color: "white"}}>{item.name}</Button>
                 </Link>
               ))}
               <Spacer />

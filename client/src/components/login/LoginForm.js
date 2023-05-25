@@ -142,10 +142,10 @@ export default function LoginForm() {
                       </Link>
                     </Stack>
                     <Button
-                      bg={"blue.400"}
+                      bg={"teal.500"}
                       color={"white"}
                       _hover={{
-                        bg: "blue.500",
+                        bg: "teal.600",
                       }}
                       type="submit"
                       disabled={isSubmitting}
