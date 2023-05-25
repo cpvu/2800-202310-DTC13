@@ -14,7 +14,7 @@ export default function Footer() {
           </ButtonGroup>
         </Stack>
         <Text fontSize="sm" color="subtle">
-          &copy; {currentYear} by Ankit Ahlwat, Bryan Fung, Calvin Vu, and Micheal Yu
+          &copy; {currentYear} by Ankit Ahlwat, Bryan Fung, Calvin Vu, and Michael Yu
         </Text>
       </Stack>
     </Container>
