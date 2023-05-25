@@ -30,6 +30,7 @@ import CustomStatLabel from "@/components/common/CustomStatLabel";
 import AddWatchlistCoinButton from "@/components/watchlist/AddWatchlistCoinButton";
 import roundPrice from "@/utils/roundPrice";
 import handleColorChange from "@/utils/handleColorChange";
+
 export default function CryptocurrencyCoinPage({
   news,
   coin,
@@ -53,7 +54,7 @@ export default function CryptocurrencyCoinPage({
     fetchCoinPrice(symbol)
       .then((data) => {
         setImageURL(`/${coin}.png`);
-        setVolume(data.volume);
+        setVolume(roundPrice(data.volume));
         setHourHigh(roundPrice(data.highPrice));
         setHourLow(roundPrice(data.lowPrice));
         setPrice(roundPrice(data.lastPrice));
@@ -71,7 +72,6 @@ export default function CryptocurrencyCoinPage({
 
         let newRoundedPrice = roundPrice(updatedPrice.lastPrice);
 
-    
         setPrice(newRoundedPrice);
         setPriceChangeColor(handleColorChange(price, newRoundedPrice));
         setPriceChange(parseFloat(updatedPrice.priceChange).toFixed(2));
@@ -84,8 +84,6 @@ export default function CryptocurrencyCoinPage({
     return () => clearInterval(interval);
   }, [price]);
 
-
-
   return (
     <>
       {session ? (
@@ -95,8 +93,8 @@ export default function CryptocurrencyCoinPage({
           mx={"auto"}
           mt={"25px"}
           minH={"100%"}
-          width={"85%"}
-          maxW={"85%"}
+          width={"90%"}
+          maxW={"90%"}
           boxShadow={"0px 2px 4px rgba(0, 0, 0, 0.1)"}
         >
           <Flex justifyContent={"right"}>
@@ -140,7 +138,7 @@ export default function CryptocurrencyCoinPage({
             </Flex>
           </HStack>
 
-          <SimpleGrid my={"15px"} px={"15px"} columns={{ xs: 2, lg: 8 }} spacingX='40px' spacingY='15px'>
+          <SimpleGrid my={"15px"} pl={"35px"} columns={{ xs: 2, lg: 8 }} spacingX='20px' spacingY='15px'>
             <Stat>
               <CustomStatLabel text={"24h Change"}></CustomStatLabel>
               <StatNumber fontSize={"0.85em"} color={priceChangeColor}>
@@ -177,7 +175,7 @@ export default function CryptocurrencyCoinPage({
 
           </SimpleGrid>
 
-          <Box p={"20px"}>
+          <Box p={"2px"}>
             <CoinDescription description={description}></CoinDescription>
           </Box>
 
