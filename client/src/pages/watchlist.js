@@ -2,32 +2,34 @@ import fetchWatchlist from "@/components/watchlist/services/fetchWatchlist";
 import fetchCoinPrice from "@/components/coin/services/fetchCoinPrice";
 import { useState } from "react";
 import { useEffect } from "react";
-import handleColorChange from "@/utils/handleColorChange";
-import roundPrice from "@/utils/roundPrice";
-import { getSession } from "next-auth/react";
 import {
     Heading,
     Table,
     Thead,
     Tbody,
+    Tfoot,
     Image,
     Tr,
     Th,
     Box,
     Td,
+    TableCaption,
     TableContainer,
 } from "@chakra-ui/react";
+import handleColorChange from "@/utils/handleColorChange";
+import roundPrice from "@/utils/roundPrice";
+import { getSession } from "next-auth/react";
 
-export default function Watchlist({username, _id}) {
+export default function Watchlist({session}) {
     const [watchlist, setWatchlist] = useState(false);
     const [userCoins, setUserCoins] = useState({});
+    const [priceChangeColor, setPriceChangeColor] = useState("");
     let [colorMap] = useState({});
 
     useEffect(() => {
         const fetchWatchlistData = async () => {
             try {
-                console.log(_id)
-                const response = await fetchWatchlist(_id);
+                const response = await fetchWatchlist();
                 const watchlistData = response.collection;
                 setWatchlist(watchlistData);
 
@@ -57,6 +59,7 @@ export default function Watchlist({username, _id}) {
         };
 
         fetchWatchlistData();
+        console.log(session);
     }, []);
 
     useEffect(() => {
@@ -160,14 +163,9 @@ export default function Watchlist({username, _id}) {
 export async function getServerSideProps(context) {
     //Get the current user session and return it as a prop to the component
     const session = await getSession(context);
-    
-    const username = session.user.name
-    const _id = session.user.email
-    
     return {
       props: {
-        "username": username,
-        "_id": _id
+        session: session,
       },
     };
   }
