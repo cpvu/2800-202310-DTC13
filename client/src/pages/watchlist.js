@@ -18,8 +18,9 @@ import {
 } from "@chakra-ui/react";
 import handleColorChange from "@/utils/handleColorChange";
 import roundPrice from "@/utils/roundPrice";
+import { getSession } from "next-auth/react";
 
-export default function Watchlist() {
+export default function Watchlist({session}) {
     const [watchlist, setWatchlist] = useState(false);
     const [userCoins, setUserCoins] = useState({});
     const [priceChangeColor, setPriceChangeColor] = useState("");
@@ -58,7 +59,7 @@ export default function Watchlist() {
         };
 
         fetchWatchlistData();
-
+        console.log(session);
     }, []);
 
     useEffect(() => {
@@ -157,3 +158,15 @@ export default function Watchlist() {
         </>
     )
 }
+
+//Retrieve data server side to be used by component before rendering
+export async function getServerSideProps(context) {
+    //Get the current user session and return it as a prop to the component
+    const session = await getSession(context);
+    return {
+      props: {
+        session: session,
+      },
+    };
+  }
+  
