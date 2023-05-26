@@ -3,12 +3,13 @@ import { userWatchlist } from "../models/watchListSchema.js"
 //Get watchlist route logic
 export const getWatchlist = async (req, res) => {
     try {
-        const watchlistExists = await userWatchlist.findById({"_id": req.session.user._id});
+        console.log(req.body._id)
+        const watchlistExists = await userWatchlist.findById({"_id": req.body._id});
 
         // Check if watchlist exists, if not creates a new entry for user
         if (!watchlistExists) {
             await userWatchlist.create({
-                _id: req.session.user._id, 
+                _id: req.body._id, 
                 coin_collection: []
             })
             console.log(`New watchlist created for ${req.session.user.username}`)
