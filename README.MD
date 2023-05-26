@@ -17,12 +17,11 @@ Michael Yu
 
 # Technologies
 
-<b>Front-end Client -</b>  ReactJS, NextJs, ChakraUI
+<b>Front-end Client -</b>  ReactJS, NextJs, ChakraUI, JavaScript
 <br>
-<b>Back-end API -</b>  ExpressJS
+<b>Back-end API -</b>  ExpressJS, JavaScript
 <br>
 <b>Database -</b> MongoDB
-
 
 # Installation
 
@@ -39,7 +38,7 @@ cd client OR cd server
 ```
 </br>
 
-Install required dependencies
+Install all required dependencies
 ```
 npm i
 ```
@@ -47,16 +46,7 @@ npm i
 
 ## Start the client or server
 
-Ensure to create an env file containing necessary values as shown in <b>'.env.example'</b> in the root folder
-
-Server env example:
-
-![image](https://ibb.co/23LZrZy)
-
-Client env example:
-
-![image](https://ibb.co/93LxmY1)
-
+Ensure to create an env file containing necessary values as shown in <b>'.env.example'</b> in the root folder.
 
 To run the developmental environment
 ```
