@@ -46,7 +46,26 @@ npm i
 
 ## Start the client or server
 
-Ensure to create an env file containing necessary values as shown in <b>'.env.example'</b> in the root folder.
+Ensure to create an env file containing necessary values as shown in <b>'.env.example'</b> in the root folder of client and server.
+
+### Server Env:
+```
+MONGO_URL= <Add your Mongo database URl>
+PORT= <port number>
+GMAIL_USER=<gmail username>
+GMAIL_PASS=<gmail password>
+OPENAI_API_KEY=<OpenAI Api key>
+OPENAI_API_ORGANIZATION=<OpenAI Organization key>
+ORIGIN_DEV=<Client side URL for development>
+ORIGIN_PROD=<Client side URL for production>
+```
+
+### Client Env:
+```
+NEXT_PUBLIC_CLIENT_BASE_URL=<CLIENT BASE URL>
+NEXT_PUBLIC_API_BASE_URL=<SERVER BASE URL>
+NEXT_PUBLIC_SECRET=<secret phrase>
+```
 
 To run the developmental environment
 ```
