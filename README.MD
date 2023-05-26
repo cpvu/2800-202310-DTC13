@@ -50,14 +50,14 @@ npm i
 Ensure to create an env file containing necessary values as shown in <b>'.env.example'</b> in the root folder
 
 Server env example:
-```
+
 ![image](https://ibb.co/23LZrZy)
-```
+
 Client env example:
-```
+
 ![image](https://ibb.co/93LxmY1)
 
-```
+
 To run the developmental environment
 ```
 npm run dev
