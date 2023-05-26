@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import handleColorChange from "@/utils/handleColorChange";
 import roundPrice from "@/utils/roundPrice";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import {
     Heading,
     Table,
@@ -22,11 +22,12 @@ export default function Watchlist({username, _id}) {
     const [watchlist, setWatchlist] = useState(false);
     const [userCoins, setUserCoins] = useState({});
     let [colorMap] = useState({});
+    const {data: session} = useSession();
 
     useEffect(() => {
         const fetchWatchlistData = async () => {
             try {
-                console.log(_id)
+                console.log(session)
                 const response = await fetchWatchlist(_id);
                 const watchlistData = response.collection;
                 setWatchlist(watchlistData);
@@ -163,12 +164,12 @@ export async function getServerSideProps(context) {
     
     const username = session.user.name
     const _id = session.user.email
-    
+    console.log(session)
     return {
       props: {
         "username": username,
         "_id": _id
       },
     };
-  }
+  } 
   
