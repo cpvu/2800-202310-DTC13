@@ -128,7 +128,6 @@ export default function SearchToken() {
 export async function getServerSideProps(context) {
   //Get the current user session and return it as a prop to the component
   const session = await getSession(context);
-  console.log(session)
   return {
     props: {
       session: session,
