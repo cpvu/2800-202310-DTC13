@@ -1,8 +1,10 @@
- 
-## 1.Project Description
+## Project Title
+Cryptoment AI
+
+## Project Description
 Our app Cryptoment AI lets users view sentimental analysis and performance of different cryptocurrencies.
 
-## 2.Names of Contributors
+## Names of Contributors
 Team Members 
 Ankit
 Bryan Fung
@@ -10,7 +12,7 @@ Calvin Vu
 Michael Yu
 
 
-## 3. Technologies and Resources Used
+## Technologies and Resources Used
 List technologies (with version numbers), API's, icons, fonts, images, media or data sources, and other resources that were used.
 HTML, CSS, JavaScript
 Bootstrap 5.0 (Frontend library)
@@ -19,13 +21,12 @@ Google Material Symbols
 Google Material Icons
 Vercel app
 
-
-## 4. Complete setup/installion/usage
+## Complete setup/installion/usage
 State what a user needs to do when they come to your project.  How do others start using your code or application?
 Click the link below
 https://2800-202310-dtc-13.vercel.app/
 
-## 5. Contents of Folder
+## Contents of Folder
 Content of the project folder:
 
 ```
@@ -169,3 +170,19 @@ Server
 
 
 ```
+
+## Runing the project
+Type in cd client
+Then type in npm run dev
+
+## Using AI
+We used AI to help create our app by using it to generate the latest information on different tokens and using it to answer questions users may ask. 
+We used AI in a FAQ tab where AI answers questions for users.
+We used AI in a search tab where AI gives the user information on a token the user searches up
+
+## Contact Information
+Emails:
+Michael Yu: michaelyuyue2012@gmail.com
+Ankit Ahlwat: ankitahlwat54@gmail.com
+Calvin Vu: calvinvu20@gmail.com
+Byran Fung: bryan_fung@yahoo.com
