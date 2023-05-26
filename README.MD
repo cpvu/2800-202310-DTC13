@@ -1,6 +1,6 @@
  
 # Cryptoment AI
-CryptomentAI is a web application that uses openAI to generate real time data and sentiments related to a Cryptocurrency coin
+CryptomentAI is a web application that uses openAI to generate real time data and sentiments related to a Cryptocurrency coin.
 
 # Names of Contributors
 Team DTC-13
@@ -47,10 +47,17 @@ npm i
 
 ## Start the client or server
 
-
 Ensure to create an env file containing necessary values as shown in <b>'.env.example'</b> in the root folder
-</br></br>
 
+Server env example:
+```
+![image](https://github.com/cpvu/2800-202310-DTC13/assets/90016338/c186f5a6-f820-4195-9605-169ca2d9058b)
+```
+Client env example:
+```
+![image](https://github.com/cpvu/2800-202310-DTC13/assets/90016338/36e884ce-1aa0-40b8-a775-0ff7c062cd1e)
+
+```
 To run the developmental environment
 ```
 npm run dev
