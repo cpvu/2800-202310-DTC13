@@ -1,3 +1,4 @@
+// API service to fetch real time latest news related to coin
 export default async function fetchCoinNews(coin) {
     const options = {
         "method": "GET", 

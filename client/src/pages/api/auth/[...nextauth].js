@@ -2,14 +2,13 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials"
 import { LOGIN_ENDPOINT } from '@/constants/endpoints';
 
+//Next auth config file
 const nextAuthOptions = (req, res) => {
   return {
-
     secret: process.env.SECRET,
     csrf: false,
     providers: [
       CredentialsProvider({
-        // Credentials provider options
         async authorize(credentials) {
 
           const payload = {
@@ -34,7 +33,7 @@ const nextAuthOptions = (req, res) => {
             const customCookie = response.headers.get("set-cookie")
             res.setHeader('Set-Cookie', [customCookie])
 
-            return { id: 1, name: credentials.username };
+            return { name: credentials.username };
           } else {
             throw new Error(responseJSON.message)
           }
@@ -42,7 +41,6 @@ const nextAuthOptions = (req, res) => {
       }),
     ],
   }
-
   // Other NextAuth.js options
 };
 

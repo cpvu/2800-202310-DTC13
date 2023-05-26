@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import { SignupSchema } from "@/validators/signupValidator";
 import { SIGN_UP_ENDPOINT } from "@/constants/endpoints";
 
+//Component for sign up form and logic/functionality
 export default function SignUpForm() {
   const router = useRouter();
   const toast = useToast();
@@ -36,6 +37,7 @@ export default function SignUpForm() {
     password: "",
   };
 
+  //Handle sign up button submit
   async function handleSignUp(values, { setSubmitting, setErrors }) {
     const options = {
       method: "POST",

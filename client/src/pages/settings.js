@@ -1,9 +1,8 @@
 import { useSession, getSession } from "next-auth/react"
-import { Router, useRouter } from "next/router";
 import { Box, Heading, FormControl, FormLabel, Button, Switch, Avatar, Input } from "@chakra-ui/react";
 
+//Component to display setting
 export default function Settings() {
-    const router = useRouter()
     const { data: session } = useSession()
     return (
         <>

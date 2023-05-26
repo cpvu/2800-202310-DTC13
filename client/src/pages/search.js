@@ -1,6 +1,14 @@
 import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import * as React from "react";
+import { COINS } from "@/constants/coins";
+import {
+  AutoComplete,
+  AutoCompleteInput,
+  AutoCompleteItem,
+  AutoCompleteList,
+} from "@choc-ui/chakra-autocomplete";
 import {
   Flex,
   FormControl,
@@ -12,23 +20,18 @@ import {
   Button,
   useToast
 } from "@chakra-ui/react";
-import * as React from "react";
-import {
-  AutoComplete,
-  AutoCompleteInput,
-  AutoCompleteItem,
-  AutoCompleteList,
-} from "@choc-ui/chakra-autocomplete";
-import { COINS } from "@/constants/coins";
 
+
+//Client search page
 export default function SearchToken() {
   const router = useRouter();
-  const toast = useToast();
-  const { data: session } = useSession();
-  const [selectedCoin, setSelectedCoin] = useState("");
-  const [loading, setLoading] = useState(false);
+  const toast = useToast(); 
+  const { data: session } = useSession(); // Next Auth session state to manage client side user data
+  const [selectedCoin, setSelectedCoin] = useState(""); // State to store user's selected coin
+  const [loading, setLoading] = useState(false); // State for button loading
   const [authenticated, setAuthenticated] = useState(false)
 
+  //On render, check if the user is newly signed in using URL params and if so it will display a welcome pop up
   useEffect(() => {
     const { success } = router.query;
 
@@ -45,6 +48,7 @@ export default function SearchToken() {
     router.replace("/search");
   }, [])
 
+  //Handle selecting of coins in search/dropdown
   async function handleSuggestions(coin) {
     setLoading(true);
     try {
@@ -58,6 +62,7 @@ export default function SearchToken() {
     }
   }
 
+  //Handle submit event button to create API requests to retrieve data related to coin
   const handleSubmit = () => {
     if (selectedCoin) {
       handleSuggestions(selectedCoin);
@@ -119,7 +124,9 @@ export default function SearchToken() {
   );
 }
 
+//Retrieve data server side to be used by component before rendering
 export async function getServerSideProps(context) {
+  //Get the current user session and return it as a prop to the component
   const session = await getSession(context);
   return {
     props: {

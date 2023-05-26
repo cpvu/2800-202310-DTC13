@@ -2,19 +2,15 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Heading,
-  Flex,
-  HStack,
   Text,
   Card,
-  CardHeader,
   CardBody,
-  CardFooter,
   Stack,
   StackDivider,
-  Button,
 } from "@chakra-ui/react";
 import fetchCoinInformation from "./services/fetchCoinInformation";
 
+//Component to display coin description
 export default function CoinDescription({ description }) {
   return (
     <Box width={"100%"}>

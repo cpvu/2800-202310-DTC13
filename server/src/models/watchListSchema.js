@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+//Coin schema for information related to coin
 const coinSchema = new mongoose.Schema({
     name: {type: String, required: true}, 
     symbol: String,
@@ -7,6 +8,7 @@ const coinSchema = new mongoose.Schema({
     averagePrice: Number, 
 })
 
+// Watchlist schema for Mongo collection containing user watchlists
 const watchlistSchema = new mongoose.Schema({
     _id:  {
         type: String,
