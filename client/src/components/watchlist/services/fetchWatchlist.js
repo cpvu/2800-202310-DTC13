@@ -1,13 +1,11 @@
 // APi service to retrieve user's watchlist
-export default async function fetchWatchlist(_id) {
-    console.log(_id)
+export default async function fetchWatchlist() {
     const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL
     const options = {
-        method: "POST",
+        method: "GET",
         headers: {
             "Content-type": "application/json",
         },
-        body: JSON.stringify({_id: _id}),
         credentials:"include"
     }
 
