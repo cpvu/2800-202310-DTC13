@@ -2,7 +2,6 @@ export default async function fetchWatchlist() {
     const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL
     const options = {
         method: "GET",
-        mode: 'no-cors',
         headers: {
             "Content-type": "application/json",
         },
