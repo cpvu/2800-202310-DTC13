@@ -8,7 +8,6 @@ export default async function fetchWatchlist(_id) {
             "Content-type": "application/json",
         },
         body: JSON.stringify({_id: _id}),
-        credentials:"include"
     }
 
     try {
