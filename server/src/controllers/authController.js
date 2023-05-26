@@ -97,7 +97,7 @@ export const postLogin = async (req, res) => {
       authenticated: true
     };
 
-    res.status(200).json({ message: "Login successful.", authenticated: true, _id: user._id });
+    res.status(200).json({ message: "Login successful.", authenticated: true });
   } catch (error) {
     console.error(error);
   }

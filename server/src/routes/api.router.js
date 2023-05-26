@@ -17,7 +17,7 @@ export const apiRouter = () => {
     router.post("/generateArticleSentiment", postArticleSentiment);
 
     //Watch list API Routes
-    router.post("/getWatchlist", getWatchlist);
+    router.get("/getWatchlist", getWatchlist);
     router.post("/addWatchlist", postAddWatchlist);
 
     return router;
