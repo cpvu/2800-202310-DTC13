@@ -33,7 +33,7 @@ const nextAuthOptions = (req, res) => {
             const customCookie = response.headers.get("set-cookie")
             res.setHeader('Set-Cookie', [customCookie])
 
-            return { name: credentials.username };
+            return {name: credentials.username, email: responseJSON._id};
           } else {
             throw new Error(responseJSON.message)
           }
