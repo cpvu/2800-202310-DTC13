@@ -1,4 +1,4 @@
-
+//Easter snake game logic and functionality
 export default function SnakeMiniGame() {
     const canvasStyles = {
         backgroundColor: 'black',

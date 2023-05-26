@@ -1,9 +1,8 @@
 import { openaiAPI } from "../utils/openai/openai.js";
 
+//Coin description route to generate data related to the coin
 export const postCoinDescription = async (req, res) => {
-
-    const { coin } = req.body; 
-
+    const { coin } = req.body;
     try {
         const response = await openaiAPI.createCompletion({
             "model": "text-davinci-003",
@@ -15,7 +14,7 @@ export const postCoinDescription = async (req, res) => {
             "stream": false,
             "logprobs": null,
         })
-        
+
         const responseJSON = await JSON.parse(response.data.choices[0].text)
 
         console.log(responseJSON)
@@ -26,10 +25,9 @@ export const postCoinDescription = async (req, res) => {
     }
 }
 
+//Generate article sentiment route logic
 export const postArticleSentiment = async (req, res) => {
-
-    const { newsArticleTitle, coin } = req.body; 
-
+    const { newsArticleTitle, coin } = req.body;
     try {
         const response = await openaiAPI.createCompletion({
             "model": "text-davinci-003",
@@ -44,7 +42,7 @@ export const postArticleSentiment = async (req, res) => {
 
         console.log(response.data)
 
-        return res.status(200).json({score: response.data.choices[0].text.replace("/n", "").trim()});
+        return res.status(200).json({ score: response.data.choices[0].text.replace("/n", "").trim() });
     } catch (e) {
         console.log(e)
     }

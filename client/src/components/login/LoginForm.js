@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 import { signIn, getSession } from "next-auth/react";
 import { LoginSchema } from "@/validators/loginValidator";
 
+//Component containin login form
 export default function LoginForm() {
   const router = useRouter();
   const toast = useToast();
@@ -29,6 +30,7 @@ export default function LoginForm() {
     password: "",
   };
 
+  //Handle button click to execute login logic
   async function handleLogin(values, { setSubmitting }) {
     toast({
       title: "Redirecting you to log in...",
@@ -40,10 +42,10 @@ export default function LoginForm() {
     });
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
-
     const baseURL = process.env.NEXT_PUBLIC_CLIENT_BASE_URL;
 
     try {
+      //Next Auth sign in callback
       let result = await signIn("credentials", {
         username: values.username,
         password: values.password,
@@ -52,7 +54,6 @@ export default function LoginForm() {
       });
 
       if (result.error) { throw new Error(result.error) }
-      
       router.push(baseURL + "/search?success=true");
 
     } catch (e) {
@@ -69,6 +70,7 @@ export default function LoginForm() {
     }
   }
 
+  //Component to display form UI
   return (
     <Flex
       py={{ base: "5", md: "auto" }}

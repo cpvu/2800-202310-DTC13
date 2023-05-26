@@ -21,6 +21,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
 
+//Component to display navbar UI
 export default function Navbar() {
   const { data: session, status } = useSession();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -41,14 +42,13 @@ export default function Navbar() {
   };
 
   const isMobile = useBreakpointValue({ base: true, lg: false });
-  const colorScheme = useColorModeValue("gray.300");
 
   return (
-    <Box bgGradient="linear(to-r, teal.400, teal.600)"  py={{ base: 2, lg: 3 }}>
+    <Box bgGradient="linear(to-r, teal.400, teal.600)" py={{ base: 2, lg: 3 }}>
       <Flex alignItems="center">
-        <Box mx={"2px"}> 
+        <Box mx={"2px"}>
           <Link href="/">
-            <Heading color={"white"}display={"flex"} w={"100%"} mx={"25px"} size="xl">CryptomentAI</Heading>
+            <Heading color={"white"} display={"flex"} w={"100%"} mx={"25px"} size="xl">CryptomentAI</Heading>
           </Link>
         </Box>
         {isMobile ? (
@@ -82,7 +82,7 @@ export default function Navbar() {
                     <Stack spacing={4}>
                       {navigationButtons.map((item, index) => (
                         <Link key={index} href={item.route}>
-                          <Button shadow={"lg"} w="100%" onClick={handleDrawerClose} bgColor={"teal.500"} color="white" _hover={{bgColor:"teal.800", color: "white"}}>
+                          <Button shadow={"lg"} w="100%" onClick={handleDrawerClose} bgColor={"teal.500"} color="white" _hover={{ bgColor: "teal.800", color: "white" }}>
                             {item.name}
                           </Button>
                         </Link>
@@ -93,10 +93,10 @@ export default function Navbar() {
                         ) : (
                           <>
                             <Link href="/signup">
-                            <Button mx={"px"} onClick={() => handleDrawerClose()}>Signup</Button>
+                              <Button mx={"px"} onClick={() => handleDrawerClose()}>Signup</Button>
                             </Link>
                             <Link href="/login">
-                            <Button mx={"7px"} onClick={() => handleDrawerClose()}>Login</Button>
+                              <Button mx={"7px"} onClick={() => handleDrawerClose()}>Login</Button>
                             </Link>
                           </>
                         )}
@@ -112,7 +112,7 @@ export default function Navbar() {
             <Stack direction="row" spacing={4} px={"60px"}>
               {navigationButtons.map((item, index) => (
                 <Link key={index} href={item.route}>
-                  <Button shadow={"lg"} bgColor={"teal.500"} color="white" _hover={{bgColor:"teal.800", color: "white"}}>{item.name}</Button>
+                  <Button shadow={"lg"} bgColor={"teal.500"} color="white" _hover={{ bgColor: "teal.800", color: "white" }}>{item.name}</Button>
                 </Link>
               ))}
               <Spacer />

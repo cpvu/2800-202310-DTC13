@@ -6,8 +6,9 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { ARTICLE_SENTIMENT } from '@/constants/endpoints';
 
+//Component to display coin news UI
 const NewsComponent = ({ news }) => {
-  const [sentiments, setSentiments] = useState({});
+  const [sentiments, setSentiments] = useState({}); // State to manage news sentiments
   const [isLoadingStates, setIsLoadingStates] = useState(false);
   const { coin } = useRouter().query;
 
@@ -46,16 +47,16 @@ const NewsComponent = ({ news }) => {
 
   const handleSentimentAnalysis = async (title) => {
     try {
-      setIsLoadingStates((prevLoadingStates) => ({...prevLoadingStates, [title]: true}))
+      setIsLoadingStates((prevLoadingStates) => ({ ...prevLoadingStates, [title]: true }))
       const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
       const endpoint = ARTICLE_SENTIMENT;
 
-      const options =  {
+      const options = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({"newsArticleTitle": title, coin: coin})
+        body: JSON.stringify({ "newsArticleTitle": title, coin: coin })
       }
 
       const response = await fetch(baseURL + endpoint, options);
@@ -66,10 +67,10 @@ const NewsComponent = ({ news }) => {
       } else {
         console.error('Failed to analyze sentiment');
       }
-      setIsLoadingStates((prevLoadingStates) => ({...prevLoadingStates, [title]: false}))
+      setIsLoadingStates((prevLoadingStates) => ({ ...prevLoadingStates, [title]: false }))
     } catch (error) {
       console.error('Error analyzing sentiment:', error);
-      setIsLoadingStates((prevLoadingStates) => ({...prevLoadingStates, [title]: false}))
+      setIsLoadingStates((prevLoadingStates) => ({ ...prevLoadingStates, [title]: false }))
     }
   };
 
@@ -109,9 +110,9 @@ const NewsComponent = ({ news }) => {
                     isLoading={isLoadingStates[newsItem.title]}
                     loadingText="Analyzing"
                   >
-                    {sentiments[newsItem.title] ?  <p>{sentiments[newsItem.title]}</p> : 'Analyze Sentiment'}
+                    {sentiments[newsItem.title] ? <p>{sentiments[newsItem.title]}</p> : 'Analyze Sentiment'}
                   </Button>
-    
+
                 </Flex>
               </Box>
             ))

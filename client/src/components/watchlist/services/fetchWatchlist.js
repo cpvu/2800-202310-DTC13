@@ -1,3 +1,4 @@
+// APi service to retrieve user's watchlist
 export default async function fetchWatchlist() {
     const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL
     const options = {

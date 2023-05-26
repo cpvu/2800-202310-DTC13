@@ -12,19 +12,20 @@ dotenv.config();
 
 export let expressServer = () => {
   try {
+    //Database connection
     mongoose.connect(process.env.MONGO_URL, {
       dbName: "CryptomentAI",
-      useUnifiedTopology: true, // Added option for unified topology
-      useNewUrlParser: true, // Added option for new URL parser
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
     });
-
     console.log("Mongoose connected")
-    
+
     const app = express();
 
+    //Middleware
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
-    app.use(cors({ origin: process.env.NODE_ENV === 'production' ? process.env.ORIGIN_PROD : process.env.ORIGIN_DEV, credentials: true}));
+    app.use(cors({ origin: process.env.NODE_ENV === 'production' ? process.env.ORIGIN_PROD : process.env.ORIGIN_DEV, credentials: true }));
     app.use(cookieParser());
 
     app.use(
@@ -38,7 +39,8 @@ export let expressServer = () => {
         }),
       })
     );
-
+    
+    //Setting routers
     app.use("/api", apiRouter());
 
     return app;

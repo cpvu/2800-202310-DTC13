@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { postLogin, postSignup, postLogout, postSendResetPasswordEmail, postResetPassword, postCoinDescription, postAskQuestion, getWatchlist, postAddWatchlist, postRemoveWatchlist, postUpdateWatchlist, postArticleSentiment } from "../controllers/index.js";
+import { postLogin, postSignup, postLogout, postSendResetPasswordEmail, postResetPassword, postCoinDescription, postAskQuestion, getWatchlist, postAddWatchlist, postArticleSentiment } from "../controllers/index.js";
 
 export const apiRouter = () => {
     const router = Router();
@@ -19,8 +19,6 @@ export const apiRouter = () => {
     //Watch list API Routes
     router.get("/getWatchlist", getWatchlist);
     router.post("/addWatchlist", postAddWatchlist);
-    router.post("/updateWatchlist", postUpdateWatchlist);
-    router.post("/removeWatchlist", postRemoveWatchlist);
 
     return router;
 }

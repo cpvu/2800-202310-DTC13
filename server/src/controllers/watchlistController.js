@@ -1,9 +1,11 @@
 import { userWatchlist } from "../models/watchListSchema.js"
 
+//Get watchlist route logic
 export const getWatchlist = async (req, res) => {
     try {
         const watchlistExists = await userWatchlist.findById({"_id": req.session.user._id});
-        
+
+        // Check if watchlist exists, if not creates a new entry for user
         if (!watchlistExists) {
             await userWatchlist.create({
                 _id: req.session.user._id, 
@@ -22,9 +24,9 @@ export const getWatchlist = async (req, res) => {
 
 export const postAddWatchlist = async (req, res) => {
     try {
-    
         const {name, symbol, amount, averagePrice } = req.body;
-
+        
+        //Check if coin exists in user's collection
         const coinExists = await userWatchlist.findOne({
             $and:[
                 {_id: req.session.user._id},
@@ -32,10 +34,12 @@ export const postAddWatchlist = async (req, res) => {
             ]
         })
 
+        //End response if coin is already in the user's collection
         if (coinExists) {
             return res.status(200).json({success: false, message: "Coin already exists in watchlist!"})
         }
 
+        //Update user's collection with new coin
         const result = await userWatchlist.findByIdAndUpdate(
             req.session.user._id, {$push: {coin_collection: {
                 name: name,
@@ -53,10 +57,3 @@ export const postAddWatchlist = async (req, res) => {
     }
 }
 
-export const postRemoveWatchlist = (req, res) => {
-
-}
-
-export const postUpdateWatchlist = (req, res) => {
-    
-}
