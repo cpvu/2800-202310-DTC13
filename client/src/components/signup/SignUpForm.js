@@ -123,6 +123,7 @@ export default function SignUpForm() {
                   <FormControl id="username" isRequired isInvalid={!!errors.username && touched.username}>
                     <FormLabel>Username</FormLabel>
                     <Input
+                      borderColor={"gray.200"}
                       type="text"
                       name="username"
                       onChange={handleChange}
@@ -134,6 +135,7 @@ export default function SignUpForm() {
                   <FormControl id="firstName" isRequired isInvalid={!!errors.firstName && touched.firstName}>
                     <FormLabel>First Name</FormLabel>
                     <Input
+                      borderColor={"gray.200"}
                       type="text"
                       name="firstName"
                       onChange={handleChange}
@@ -145,6 +147,7 @@ export default function SignUpForm() {
                   <FormControl id="lastName" isRequired isInvalid={!!errors.lastName && touched.lastName}>
                     <FormLabel>Last Name</FormLabel>
                     <Input
+                      borderColor={"gray.200"}
                       type="text"
                       name="lastName"
                       onChange={handleChange}
@@ -157,6 +160,7 @@ export default function SignUpForm() {
                   <FormControl id="email" isRequired isInvalid={!!errors.email && touched.email}>
                     <FormLabel>Email address</FormLabel>
                     <Input
+                      borderColor={"gray.200"}
                       type="email"
                       name="email"
                       onChange={handleChange}
@@ -178,7 +182,7 @@ export default function SignUpForm() {
                   >
                     <FormLabel>Password</FormLabel >
                     <InputGroup>
-                      <Input type={showPassword ? "text" : "password"} />
+                      <Input borderColor={"gray.200"} type={showPassword ? "text" : "password"} />
                       <InputRightElement h={"full"}>
                         <Button
                           variant={"ghost"}
@@ -193,10 +197,10 @@ export default function SignUpForm() {
                     <FormErrorMessage fontSize={"0.73em"}>{errors.password}</FormErrorMessage>
                   </FormControl>
                   <Button
-                    bg={"blue.400"}
+                    bg={"teal.500"}
                     color={"white"}
                     _hover={{
-                      bg: "blue.500",
+                      bg: "teal.600",
                     }}
                     type="submit"
                     disabled={isSubmitting}
@@ -204,7 +208,7 @@ export default function SignUpForm() {
                     {isSubmitting ? <ButtonSpinner /> : "Sign Up"}
                   </Button>
                   <Text align={"center"}>
-                    Already a user? <Link color={"blue.400"}>Login</Link>
+                    Already a user? <Link href="./login" color={"blue.400"}>Login</Link>
                   </Text>
                 </Stack>
               </Form>

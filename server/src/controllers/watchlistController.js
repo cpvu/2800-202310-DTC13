@@ -25,6 +25,17 @@ export const postAddWatchlist = async (req, res) => {
     
         const {name, symbol, amount, averagePrice } = req.body;
 
+        const coinExists = await userWatchlist.findOne({
+            $and:[
+                {_id: req.session.user._id},
+                { coin_collection: { $elemMatch: { symbol: symbol } } }
+            ]
+        })
+
+        if (coinExists) {
+            return res.status(200).json({success: false, message: "Coin already exists in watchlist!"})
+        }
+
         const result = await userWatchlist.findByIdAndUpdate(
             req.session.user._id, {$push: {coin_collection: {
                 name: name,

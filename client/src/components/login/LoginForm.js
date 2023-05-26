@@ -86,7 +86,7 @@ export default function LoginForm() {
         px={6}
       >
         <Stack>
-          <Heading fontSize={"4xl"}>Log in to your account</Heading>
+          <Heading align="center" fontSize={"4xl"}>Log in to your account</Heading>
           <Text fontSize={"lg"} color={"gray.600"} align={"center"}>
             Not a user? Sign up{" "}
             <Link color={"blue.400"} href="./signup">
@@ -109,6 +109,7 @@ export default function LoginForm() {
                   <FormControl id="username" isRequired isInvalid={!!errors.username && touched.username}>
                     <FormLabel>Username</FormLabel>
                     <Input
+                      borderColor={"gray.200"}
                       type="text"
                       name="username"
                       onChange={handleChange}
@@ -120,6 +121,7 @@ export default function LoginForm() {
                   <FormControl id="password" isRequired isInvalid={!!errors.password && touched.password}>
                     <FormLabel>Password</FormLabel>
                     <Input
+                      borderColor={"gray.200"}
                       type="password"
                       name="password"
                       onChange={handleChange}
@@ -140,10 +142,10 @@ export default function LoginForm() {
                       </Link>
                     </Stack>
                     <Button
-                      bg={"blue.400"}
+                      bg={"teal.500"}
                       color={"white"}
                       _hover={{
-                        bg: "blue.500",
+                        bg: "teal.600",
                       }}
                       type="submit"
                       disabled={isSubmitting}

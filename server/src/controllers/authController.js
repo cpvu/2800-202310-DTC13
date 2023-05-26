@@ -101,7 +101,7 @@ export const postLogout = (req, res) => {
       console.log(err);
       return res.status(500).json({ message: "Internal server error" });
     } else {
-      res.clearCookie("connect.sid").json({ message: "Logout successful"});
+      return res.clearCookie("connect.sid").json({ message: "Logout successful"});
     }
   });
 };

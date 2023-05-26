@@ -1,8 +1,6 @@
 import { FAQ_ENDPOINT } from '@/constants/endpoints';
-import { Box, Button, ChakraProvider, Textarea, VStack } from '@chakra-ui/react';
+import { ChakraProvider, Box, VStack, Heading, Text, Button, Textarea } from "@chakra-ui/react";
 import React from 'react';
-
-
 
 const handleClickEvent = async (event) => {
     const prompt = document.getElementsByName('prompt')[0].value;
@@ -27,14 +25,14 @@ const handleClickEvent = async (event) => {
             const newAnswer = document.createElement('p');
             newAnswer.innerHTML = `A: ${data.bot}`;
             ChatBox.appendChild(newAnswer);
-        }
-        );
+        });
 };
+
 const FAQPage = () => {
     return (
         <ChakraProvider>
             <Box minH="100vh" p={10} display="flex" justifyContent="center" alignItems="center">
-                <VStack spacing={8} align="center">
+                <VStack spacing={8} align="center" maxW="600px" w="100%">
                     <Box
                         id="chat_container"
                         w="100%"
@@ -44,40 +42,38 @@ const FAQPage = () => {
                         p={4}
                         boxShadow="md"
                         borderRadius={20}
-                        maxWidth={600}
+                        bg="white"
                     >
-                        <div id='ChatBox'>
-                            <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '16px' }}>FAQ</h2>
-                            <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '8px' }}>Q: What is cryptocurrency?</h3>
-                            <p style={{ marginBottom: '16px' }}>A: Cryptocurrency is a digital or virtual form of currency that uses cryptography for secure financial transactions, control the creation of new units, and verify the transfer of assets.</p>
+                        <div id="ChatBox"></div>
+                        <Heading fontSize="24px" fontWeight="bold" mb="16px">FAQ</Heading>
+                        <Text fontSize="18px" fontWeight="bold" mb="8px">Q: What is cryptocurrency?</Text>
+                        <Text mb="16px">A: Cryptocurrency is a digital or virtual form of currency that uses cryptography for secure financial transactions, controls the creation of new units, and verifies the transfer of assets.</Text>
 
-                            <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '8px' }}>Q: What are some popular cryptocurrencies?</h3>
-                            <p style={{ marginBottom: '16px' }}>A: Some popular cryptocurrencies include Bitcoin (BTC), Ethereum (ETH), Binance Coin (BNB), Cardano (ADA), and Solana (SOL), among others.</p>
+                        <Text fontSize="18px" fontWeight="bold" mb="8px">Q: What are some popular cryptocurrencies?</Text>
+                        <Text mb="16px">A: Some popular cryptocurrencies include Bitcoin (BTC), Ethereum (ETH), Binance Coin (BNB), Cardano (ADA), and Solana (SOL), among others.</Text>
 
-                            <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '8px' }}>Q: How does cryptocurrency mining work?</h3>
-                            <p style={{ marginBottom: '16px' }}>A: Cryptocurrency mining involves using powerful computers to solve complex mathematical problems that validate and secure transactions on the blockchain network. Miners are rewarded with newly created cryptocurrency tokens for their computational efforts.</p>
+                        <Text fontSize="18px" fontWeight="bold" mb="8px">Q: How does cryptocurrency mining work?</Text>
+                        <Text mb="16px">A: Cryptocurrency mining involves using powerful computers to solve complex mathematical problems that validate and secure transactions on the blockchain network. Miners are rewarded with newly created cryptocurrency tokens for their computational efforts.</Text>
 
-                            <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '8px' }}>Q: What is blockchain technology?</h3>
-                            <p style={{ marginBottom: '16px' }}>A: Blockchain technology is a decentralized, distributed ledger system that records and verifies transactions across multiple computers. It provides transparency, security, and immutability to various applications, including cryptocurrencies.</p>
+                        <Text fontSize="18px" fontWeight="bold" mb="8px">Q: What is blockchain technology?</Text>
+                        <Text mb="16px">A: Blockchain technology is a decentralized, distributed ledger system that records and verifies transactions across multiple computers. It provides transparency, security, and immutability to various applications, including cryptocurrencies.</Text>
 
-                            <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '8px' }}>Q: How can I buy cryptocurrencies?</h3>
-                            <p style={{ marginBottom: '16px' }}>A: You can buy cryptocurrencies through cryptocurrency exchanges. These platforms allow you to trade fiat currency (such as USD) for cryptocurrencies or exchange one cryptocurrency for another.</p>
+                        <Text fontSize="18px" fontWeight="bold" mb="8px">Q: How can I buy cryptocurrencies?</Text>
+                        <Text mb="16px">A: You can buy cryptocurrencies through cryptocurrency exchanges. These platforms allow you to trade fiat currency (such as USD) for cryptocurrencies or exchange one cryptocurrency for another.</Text>
 
-                            <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '8px' }}>Q: What is a wallet in the context of cryptocurrencies?</h3>
-                            <p style={{ marginBottom: '16px' }}>A: A cryptocurrency wallet is a software application or a physical device that allows you to securely store, manage, and interact with your cryptocurrencies. It stores your private keys, which are required to access and transfer your digital assets.</p>
+                        <Text fontSize="18px" fontWeight="bold" mb="8px">Q: What is a wallet in the context of cryptocurrencies?</Text>
+                        <Text mb="16px">A: A cryptocurrency wallet is a software application or a physical device that allows you to securely store, manage, and interact with your cryptocurrencies. It stores your private keys, which are required to access and transfer your digital assets.</Text>
 
-                            <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '8px' }}>Q: What is CrytoMentai?</h3>
-                            <p style={{ marginBottom: '16px' }}>A: CrytoMentai is a project that focuses on Crypto Twitter Sentiment Analysis. It uses a dataset of tweets related to cryptocurrency and provides sentiment analysis for different coins. It can also provide additional information about a specific coin using ChatGPT.</p>
-
-                            <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '8px' }}>Q: What is NFT price analysis?</h3>
-                            <p style={{ marginBottom: '16px' }}>A: NFT price analysis involves analyzing data related to Non-Fungible Tokens (NFTs) to determine suggested popular NFT investment values. It helps users make informed decisions about investing in NFTs.</p>
-                        </div>
+                        <Text fontSize="18px" fontWeight="bold" mb="8px">Q: What is CrytoMentai?</Text>
+                        <Text mb="16px">A: CrytoMentai is a project that focuses on Crypto Twitter Sentiment Analysis. It uses a dataset of tweets related to cryptocurrency and provides sentiment analysis for different coins. It can also provide additional information about a specific coin using ChatGPT.</Text>
 
                     </Box>
-                    <Button colorScheme="blue" size="lg" fontSize="xl" fontWeight="bold">
+
+                    <Button colorScheme="blue" size="lg" fontSize="xl" fontWeight="bold" mb={6}>
                         Next Question
                     </Button>
-                    <Box w="100%" maxWidth={600}>
+
+                    <Box w="100%" maxW="600px">
                         <form>
                             <Textarea
                                 name="prompt"
@@ -90,7 +86,8 @@ const FAQPage = () => {
                                 _focus={{ borderColor: 'blue.500' }}
                                 _placeholder={{ color: 'gray.500' }}
                                 _hover={{ borderColor: 'gray.400' }}
-                            ></Textarea>
+                            />
+
                             <Button colorScheme="blue" size="lg" width="100%" onClick={handleClickEvent}>
                                 Send Prompt
                             </Button>

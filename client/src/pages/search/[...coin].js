@@ -28,6 +28,8 @@ import fetchCoinInformation from "@/components/coin/services/fetchCoinInformatio
 import fetchCoinNews from "@/components/coin/services/fetchCoinNews";
 import CustomStatLabel from "@/components/common/CustomStatLabel";
 import AddWatchlistCoinButton from "@/components/watchlist/AddWatchlistCoinButton";
+import roundPrice from "@/utils/roundPrice";
+import handleColorChange from "@/utils/handleColorChange";
 
 export default function CryptocurrencyCoinPage({
   news,
@@ -52,12 +54,12 @@ export default function CryptocurrencyCoinPage({
     fetchCoinPrice(symbol)
       .then((data) => {
         setImageURL(`/${coin}.png`);
-        setVolume(data.volume);
+        setVolume(roundPrice(data.volume));
         setHourHigh(roundPrice(data.highPrice));
         setHourLow(roundPrice(data.lowPrice));
         setPrice(roundPrice(data.lastPrice));
-        setPriceChange(roundPrice(data.priceChange));
-        setPriceChangePercent(roundPrice(data.priceChangePercent));
+        setPriceChange(roundPrice(parseFloat(data.priceChange).toFixed(2)));
+        setPriceChangePercent(parseFloat(data.priceChangePercent).toFixed(2));
         setOpenPrice(roundPrice(data.openPrice));
       })
       .catch((e) => console.log(e));
@@ -70,32 +72,17 @@ export default function CryptocurrencyCoinPage({
 
         let newRoundedPrice = roundPrice(updatedPrice.lastPrice);
 
-        if (price < newRoundedPrice) {
-          setPriceChangeColor("green");
-        } else if (price > newRoundedPrice) {
-          setPriceChangeColor("red");
-        } else {
-          setPriceChangeColor("");
-        }
-        setPrice(roundPrice(newRoundedPrice));
-        setPriceChange(roundPrice(updatedPrice.priceChange));
-        setPriceChangePercent(roundPrice(updatedPrice.priceChangePercent));
+        setPrice(newRoundedPrice);
+        setPriceChangeColor(handleColorChange(price, newRoundedPrice));
+        setPriceChange(parseFloat(updatedPrice.priceChange).toFixed(2));
+        setPriceChangePercent(parseFloat(roundPrice(updatedPrice.priceChangePercent)).toFixed(2));
       } catch (e) {
         console.log(e);
       }
-    }, 200);
+    }, 500);
 
     return () => clearInterval(interval);
   }, [price]);
-
-  function roundPrice(price) {
-    let roundedPrice = price;
-
-    if (price > 1) {
-      roundedPrice = (Math.floor(price * 100) / 100).toFixed(2);
-    }
-    return roundedPrice;
-  }
 
   return (
     <>
@@ -106,8 +93,8 @@ export default function CryptocurrencyCoinPage({
           mx={"auto"}
           mt={"25px"}
           minH={"100%"}
-          width={"85%"}
-          maxW={"85%"}
+          width={"90%"}
+          maxW={"90%"}
           boxShadow={"0px 2px 4px rgba(0, 0, 0, 0.1)"}
         >
           <Flex justifyContent={"right"}>
@@ -151,7 +138,7 @@ export default function CryptocurrencyCoinPage({
             </Flex>
           </HStack>
 
-          <SimpleGrid my={"15px"} px={"15px"} columns={{ xs: 2, lg: 8 }} spacingX='40px' spacingY='15px'>
+          <SimpleGrid my={"15px"} pl={"35px"} columns={{ xs: 2, lg: 8 }} spacingX='20px' spacingY='15px'>
             <Stat>
               <CustomStatLabel text={"24h Change"}></CustomStatLabel>
               <StatNumber fontSize={"0.85em"} color={priceChangeColor}>
@@ -188,7 +175,7 @@ export default function CryptocurrencyCoinPage({
 
           </SimpleGrid>
 
-          <Box p={"20px"}>
+          <Box p={"2px"}>
             <CoinDescription description={description}></CoinDescription>
           </Box>
 
@@ -217,8 +204,7 @@ export async function getServerSideProps(context) {
     if (!coinDescription|| !coinNews) {
       return { notFound: true };
     }
-
-
+    
     return {
       props: {
         coin: coin,

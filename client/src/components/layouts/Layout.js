@@ -1,9 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { Container, Flex, Box, useMediaQuery } from '@chakra-ui/react';
+import Navbar from '../common/Navbar';
 import Footer from '../common/Footer';
-
-const Navbar = lazy(() => import('../common/Navbar'));
-const BottomNavbar = lazy(() => import('../common/BottomNavbar'));
 
 export default function Layout({ children }) {
   const [isDesktop] = useMediaQuery('(min-width: 768px)');
@@ -22,15 +20,10 @@ export default function Layout({ children }) {
       overflow="hidden"
       p={0}
     >
-      {isDesktop && <Navbar />}
+    <Navbar />
       {children}
       <Container id="root" flex={'1'}></Container>
       <Footer></Footer>
-      {shouldRenderBottomNavbar && (
-        <Suspense fallback={<div>Loading...</div>}>
-          <BottomNavbar />
-        </Suspense>
-      )}
     </Flex>
   );
 }
